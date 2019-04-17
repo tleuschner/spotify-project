@@ -1,7 +1,7 @@
 .spotify-btn{
   color: #fff;
   background-color: #1db954;
-  font-size: 14px;
+  font-size: 18px;
   line-height: 1;
   border-radius: 500px;
   padding: 16px 48px 18px;
@@ -14,5 +14,6 @@
   white-space: normal;
 }
 .spotify-infoText{
-  font-family: Circular,Helvetica,Arial,sans-serif;
+  color: #191414;
+  font-family: GothamMedium;
 }
