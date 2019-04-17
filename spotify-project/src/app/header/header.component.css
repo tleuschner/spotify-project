@@ -1,0 +1,65 @@
+.navigation-container {
+    height: 100vh;
+    width: 0;
+    position: fixed;
+    z-index: 22;
+    top: 0;
+    left: 0;
+    background-color: #191414;
+    overflow-x: hidden;
+    padding-top: 128px;
+    padding-left: 0%;
+    padding-right: 0%;
+    transition: 500ms;
+}
+
+.navigation-container a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #1DB954;
+    display: block;
+    transition: 300ms;
+}
+
+.navigation-container span {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #a1a1a1;
+    display: block;
+    transition: 300ms;
+}
+
+.navigation-container a:hover {
+    color: #f1f1f1;
+}
+
+.navigation-container span:hover {
+    color: #ffffff;
+}
+
+.navigation-container .close {
+    position: absolute;
+    top: 80px;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+  }
+
+.navigation-item:hover {
+    background-color: black;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.navigation-icon {
+    padding-right: 25px;
+}
+
+.no-link {
+    text-decoration: none;
+    color: white;
+}
