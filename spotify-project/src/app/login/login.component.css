@@ -1,9 +1,18 @@
 .spotify-btn{
-  color: #FFFFFF;
-  background-color: #1DB954;
-  border: 1px solid #191414;
-  font-size: 24px;
-  border-radius: 10px;
-  height: 60px;
-  width: 300px;
+  color: #fff;
+  background-color: #1db954;
+  font-size: 14px;
+  line-height: 1;
+  border-radius: 500px;
+  padding: 16px 48px 18px;
+  transition-property: background-color,border-color,color,box-shadow,filter;
+  transition-duration: .3s;
+  border-width: 0;
+  letter-spacing: 2px;
+  min-width: 160px;
+  text-transform: uppercase;
+  white-space: normal;
+}
+.spotify-infoText{
+  font-family: Circular,Helvetica,Arial,sans-serif;
 }
