@@ -9,7 +9,6 @@ import { JwksValidationHandler } from 'angular-oauth2-oidc';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'spotify-project';
 
   constructor(private oauthService: OAuthService) {
     this.configureWithNewConfigApi();

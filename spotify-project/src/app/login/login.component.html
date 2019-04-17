@@ -1,8 +1,19 @@
-<p>
-  login works!
-</p>
-
-<button class="btn btn-primary" (click)="login()">Bei Spotify anmelden</button>
-
-<button (click)="login()">Spotify Login</button>
- 
+<div class="container">
+  <div style="text-align:center">
+    <img class="img-fluid" alt="SpotifyAnalyzer" src="../assets/SpotifyAnalyzer.png">
+    <h3>
+      Du wurdest schon mal nach deinem Musikgeschmack gefragt, aber wusstest nicht recht was du darauf antworten solltest?
+      Mit Spotify Analyzer kannst du jetzt deine persönlichen Statistiken zu meist gehörten Tracks, Alben und vieles mehr dir graphisch darstellen lassen.
+      Die Zeiten der Unwissenheit sind vorbei! Erkenne dich selbst und lass dich nie mehr von persönlichen Fragen verunsichern.
+      Einfach jetzt mit deinem Spotify Account hier einloggen. <br> <br> Viel Spaß!
+    </h3>
+    <br><br><br>
+    <button class="btn btn-primary spotify-btn" (click)="login()">Bei Spotify anmelden</button>
+  </div>
+  <div style="alignment-baseline: baseline; text-align: right">
+    <h4>
+      <br><br><br><br><br><br>
+      {{seitenaufrufe}}
+    </h4>
+  </div>
+</div>
