@@ -1,18 +1,20 @@
-<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-    <div class="navbar-brand col-sm-3 col-md-2 mr-0">
-        <i class="fas fa-bars fa-2x clickable navigation-icon" (click)="toggleNavBar()"></i>
-        <a class="no-link" href="#">Spotify Analyzer</a>
+<div *ngIf="loggedIn">
+    <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+        <div class="navbar-brand col-sm-3 col-md-2 mr-0">
+            <i class="fas fa-bars fa-2x clickable navigation-icon" (click)="toggleNavBar()"></i>
+            <a class="no-link" href="#">Spotify Analyzer</a>
+        </div>
+
+        <ul class="navbar-nav px-3">
+            <li class="nav-item text-nowrap">
+                <a class="nav-link" href="#">Ausloggen</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="navigation-container col-sm-3 col-md-2 mr-0" id="nav-container">
+        <span class="close clickable" (click)="toggleNavBar()"><i class="fas fa-times fa-lg"></i></span>
+        <a href="#">Top Songs</a>
+        <a href="#">Top Artists</a>
     </div>
-
-    <ul class="navbar-nav px-3">
-        <li class="nav-item text-nowrap">
-            <a class="nav-link" href="#">Ausloggen</a>
-        </li>
-    </ul>
-</nav>
-
-<div class="navigation-container col-sm-3 col-md-2 mr-0" id="nav-container">
-    <span class="close clickable" (click)="toggleNavBar()"><i class="fas fa-times fa-lg"></i></span>
-    <a href="#">Top Songs</a>
-    <a href="#">Top Artists</a>
 </div>

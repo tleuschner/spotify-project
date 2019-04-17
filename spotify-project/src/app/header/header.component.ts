@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 @Component({
   selector: 'app-header',
@@ -8,10 +9,12 @@ import { Component, OnInit } from '@angular/core';
 export class HeaderComponent implements OnInit {
 
   navOpen = false;
+  loggedIn = false;
 
-  constructor() { }
+  constructor(private oauthService: OAuthService) { }
 
   ngOnInit() {
+    this.loggedIn = this.oauthService.hasValidAccessToken();
   }
 
   toggleNavBar() {
