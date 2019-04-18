@@ -30,4 +30,5 @@ const authConfig: AuthConfig = {
   redirectUri: 'http://localhost:4200',
   scope: 'playlist-read-private user-library-read user-top-read user-read-recently-played user-read-private',
   loginUrl: 'https://accounts.spotify.com/authorize',
+  customQueryParams: { 'show_dialog': true },
 };
