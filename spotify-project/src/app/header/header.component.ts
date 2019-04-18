@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
+import { Router } from '@angular/router';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-header',
@@ -7,23 +9,29 @@ import { OAuthService } from 'angular-oauth2-oidc';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
+  @ViewChild('navContainer', { read: ElementRef }) navBar: ElementRef;
+  isOpen: boolean = false;
 
-  navOpen = false;
-  loggedIn = false;
-
-  constructor(private oauthService: OAuthService) { }
+  constructor(private oauthService: OAuthService,
+    private router: Router,
+    private authService: AuthService,
+    private renderer: Renderer2) { }
 
   ngOnInit() {
-    this.loggedIn = this.oauthService.hasValidAccessToken();
   }
 
   toggleNavBar() {
-    if (!this.navOpen) {
-      document.getElementById('nav-container').style.width = "250px";
+    if(!this.isOpen) {
+      this.renderer.setStyle(this.navBar.nativeElement, 'width', '250px');
     } else {
-      document.getElementById('nav-container').style.width = "0%";
+      this.renderer.setStyle(this.navBar.nativeElement, 'width', '0px');
     }
-    this.navOpen = !this.navOpen;
+    this.isOpen = !this.isOpen;
+  }
+
+  logout() {
+    this.oauthService.logOut();
+    this.router.navigate(['login']);
   }
 
 }
