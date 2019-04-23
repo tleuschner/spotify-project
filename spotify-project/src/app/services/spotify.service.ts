@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { TopArtists, TopArtistsPagingObject } from '../models/TopArtists';
 import { TopTracks, TopTracksPagingObject } from '../models/TopTracks';
-import { Playlist, Item } from '../models/Playlists';
+import { Playlist, Item } from '../models/TopPlaylists';
 
 @Injectable({
   providedIn: 'root'

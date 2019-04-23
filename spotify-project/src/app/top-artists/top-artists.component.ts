@@ -17,10 +17,6 @@ export class TopArtistsComponent implements OnInit {
     this.spotifyService.getTopArtists('').subscribe(res => {
       this.topArtists = res;
     })
-
-    this.spotifyService.getPlaylists().subscribe(res => {
-      document.getElementById('test').innerText = JSON.stringify(res);
-    });
   }
 
 }

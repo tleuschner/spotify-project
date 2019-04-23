@@ -11,6 +11,7 @@ import { FooterComponent } from './footer/footer.component';
 import { ContentWrapperComponent } from './content-wrapper/content-wrapper.component';
 import { TopArtistsComponent } from './top-artists/top-artists.component';
 import { TopSongsComponent } from './top-songs/top-songs.component';
+import {TopPlaylistsComponent} from "./top-playlists/top-playlists.component";
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { TopSongsComponent } from './top-songs/top-songs.component';
     FooterComponent,
     ContentWrapperComponent,
     TopArtistsComponent,
-    TopSongsComponent
+    TopSongsComponent,
+    TopPlaylistsComponent
   ],
   imports: [
     BrowserModule,
