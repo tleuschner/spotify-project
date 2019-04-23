@@ -1,7 +1,9 @@
-<h2>Top Songs</h2>
+<h1>Top Songs</h1>
 
 <div *ngFor=" let song of topSongs">
-  <p>{{song.name}}</p>
-  <p>{{song.popularity}}</p>
+  <h3>{{song.name}}</h3>
+  <h4>{{song.artists[0].name}}</h4>
+  <p><img src="{{song.album.images[0].url}}"
+          width="{{song.album.images[0].width/2}}" height="{{song.album.images[0].height/2}}"></p>
   <hr style="border: 5px solid black">
 </div>
