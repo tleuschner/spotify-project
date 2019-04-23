@@ -1,0 +1,30 @@
+#platzEins {
+  position: center;
+  float: left;
+  width: 320px;
+  height: 320px;
+  background: #aaaaaa;
+  margin-bottom: 50px;
+}
+
+#platzZwei {
+  position: center;
+  margin-top: 100px;
+  float: left;
+  width: 320px;
+  height: 220px;
+  background: #aaaaaa;
+}
+
+#platzDrei {
+  position: center;
+  margin-top: 200px;
+  float: left;
+  width: 320px;
+  height: 120px;
+  background: #aaaaaa;
+}
+
+.content {
+  margin-top: 50px;
+}

@@ -7,8 +7,6 @@
     background-color: green;
     border: 1px solid black;
     overflow-y: scroll;
-    margin-top: 50px;
-    
 }
 
 @media screen and (max-width:575px) {
@@ -22,4 +20,3 @@
         max-height: calc(100vh - 52px);
     }    
 }
-
