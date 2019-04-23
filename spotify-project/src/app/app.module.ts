@@ -8,19 +8,31 @@ import { LoginComponent } from './login/login.component';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
+import { ContentWrapperComponent } from './content-wrapper/content-wrapper.component';
+import { TopArtistsComponent } from './top-artists/top-artists.component';
+import { TopSongsComponent } from './top-songs/top-songs.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    ContentWrapperComponent,
+    TopArtistsComponent,
+    TopSongsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    OAuthModule.forRoot(),
+    // automatically sends access token in header to spotify 
+    OAuthModule.forRoot({
+      resourceServer: {
+          allowedUrls: ['https://api.spotify.com/v1'],
+          sendAccessToken: true
+      }
+  }),
   ],
   providers: [],
   bootstrap: [AppComponent]

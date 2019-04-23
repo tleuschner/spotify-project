@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
 import { OAuthService } from 'angular-oauth2-oidc';
 import { Router } from '@angular/router';
@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+  @ViewChild('rememberMe', { read: ElementRef }) rememberMe: ElementRef;
   seitenaufrufe = "Besucher insgesamt: 2";
 
   constructor(
@@ -18,12 +19,30 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    if(this.oauthService.hasValidAccessToken()) {
+    if (this.oauthService.hasValidAccessToken()) {
       this.router.navigate(['']);
     }
   }
 
   login(): void {
+    let rememberCheck = this.rememberMe.nativeElement.checked;
+    let skipDialog: Boolean;
+
+    if (rememberCheck) {
+      localStorage.setItem('skipLoginForm', 'true');
+    } else {
+      localStorage.removeItem('skipLoginForm');
+    }
+
+    skipDialog = !!localStorage.getItem('skipLoginForm');
+
+
+    if (!skipDialog) {
+      this.oauthService.customQueryParams = { 'show_dialog': true };
+    } else {
+      this.oauthService.customQueryParams = {};
+    }
+
     this.oauthService.initImplicitFlow();
   }
 
