@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { TopArtists, TopArtistsPagingObject } from '../models/TopArtists';
 import { TopTracks, TopTracksPagingObject } from '../models/TopTracks';
+import { Playlist, Item } from '../models/Playlists';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +32,12 @@ export class SpotifyService {
   public getTopSongs(time_range: string): Observable<TopTracks[]> {
     return this.http.get<TopTracksPagingObject>(`${this.apiBaseUrl}/me/top/tracks`, { headers: this.headers }).pipe(
      map(res => res.items)
+    );
+  }
+
+  public getPlaylists(): Observable<Item[]> {
+    return this.http.get<Playlist>(`${this.apiBaseUrl}/me/playlists`, {headers: this.headers}).pipe(
+      map(res => res.items)
     );
   }
 }
