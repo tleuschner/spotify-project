@@ -11,15 +11,15 @@ export class TopSongsComponent implements OnInit {
   @Input() isMobile: Boolean;
 
   private topSongs: TopTracks[];
-  
+
   constructor(
     private spotifyService: SpotifyService,
-    
+
   ) { }
 
   ngOnInit() {
     //Get data from spotify
-    this.spotifyService.getTopSongs('').subscribe(res => {
+    this.spotifyService.getTopSongs('3', undefined, 'long_term').subscribe(res => {
       this.topSongs = res;
     });
   }

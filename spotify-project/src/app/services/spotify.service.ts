@@ -23,20 +23,34 @@ export class SpotifyService {
     "Authorization": "Bearer " + this.oauthService.getAccessToken()
   });
 
-  public getTopArtists(time_range: string): Observable<TopArtists[]> {
-    return this.http.get<TopArtistsPagingObject>(`${this.apiBaseUrl}/me/top/artists`, { headers: this.headers }).pipe(
+  public getTopArtists(limit = '20', offset = '0', timeRange = 'medium_term'): Observable<TopArtists[]> {
+    return this.http.get<TopArtistsPagingObject>(`${this.apiBaseUrl}/me/top/artists`, {
+      headers: this.headers,
+      params: {
+        limit: limit,
+        offset: offset,
+        time_range: timeRange
+      }
+    }).pipe(
       map(res => res.items)
     );
   }
 
-  public getTopSongs(time_range: string): Observable<TopTracks[]> {
-    return this.http.get<TopTracksPagingObject>(`${this.apiBaseUrl}/me/top/tracks`, { headers: this.headers }).pipe(
-     map(res => res.items)
+  public getTopSongs(limit = '20', offset = '0', timeRange = 'medium_term'): Observable<TopTracks[]> {
+    return this.http.get<TopTracksPagingObject>(`${this.apiBaseUrl}/me/top/tracks`, {
+      headers: this.headers,
+      params: {
+        limit: limit,
+        offset: offset,
+        time_range: timeRange
+      }
+    }).pipe(
+      map(res => res.items)
     );
   }
 
   public getPlaylists(): Observable<Item[]> {
-    return this.http.get<Playlist>(`${this.apiBaseUrl}/me/playlists`, {headers: this.headers}).pipe(
+    return this.http.get<Playlist>(`${this.apiBaseUrl}/me/playlists`, { headers: this.headers }).pipe(
       map(res => res.items)
     );
   }

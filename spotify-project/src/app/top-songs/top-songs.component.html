@@ -6,7 +6,7 @@
   </div>
   <div class="row pull-down no-border">
     <div class="col-md-4 pr-0 pl-0">
-      <div class="card no-border h-75">
+      <div class="card no-border">
         <div class="image-square">
           <img src="{{topSongs[2].album.images[0].url}}" alt="Album Art" class="card-img-top">
         </div>
@@ -28,7 +28,7 @@
       </div>
     </div>
     <div class="col-md-4 pr-0 pl-0">
-      <div class="card no-border h-50">
+      <div class="card no-border">
         <div class="image-square">
           <img src="{{topSongs[1].album.images[0].url}}" alt="Album Art" class="card-img-top">
         </div>
@@ -48,36 +48,14 @@
     </div>
   </div>
   <div class="row pull-down no-border">
-    <div class="col-sm-12">
+    <div class="col-sm-12" *ngFor="let track of topSongs; let i = index;">
       <div class="card no-border">
         <div class="image-square">
-          <img src="{{topSongs[0].album.images[0].url}}" alt="Album Art" class="card-img-top">
+          <img src="{{track.album.images[0].url}}" alt="Album Art" class="card-img-top">
         </div>
         <div class="card-body pb-0 pt-3">
-          <h5 class="text-center hide-overflow">{{topSongs[0].name}}</h5>
-          <p class="text-center">#1</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-12">
-      <div class="card no-border">
-        <div class="image-square">
-          <img src="{{topSongs[1].album.images[0].url}}" alt="Album Art" class="card-img-top">
-        </div>
-        <div class="card-body pb-0 pt-5">
-          <h5 class="text-center hide-overflow">{{topSongs[1].name}}</h5>
-          <p class="text-center">#2</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-12">
-      <div class="card no-border">
-        <div class="image-square">
-          <img src="{{topSongs[2].album.images[0].url}}" alt="Album Art" class="card-img-top">
-        </div>
-        <div class="card-body pb-0 pt-4">
-          <h5 class="text-center hide-overflow">{{topSongs[2].name}}</h5>
-          <p class="text-center">#3</p>
+          <h5 class="text-center hide-overflow">{{track.name}}</h5>
+          <p class="text-center">#{{i+1}}</p>
         </div>
       </div>
     </div>

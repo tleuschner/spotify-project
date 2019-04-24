@@ -15,7 +15,7 @@ export class TopArtistsComponent implements OnInit {
   constructor(private spotifyService: SpotifyService) { }
 
   ngOnInit() {
-    this.spotifyService.getTopArtists('').subscribe(res => {
+    this.spotifyService.getTopArtists('3', undefined, 'long_term').subscribe(res => {
       this.topArtists = res;
     })
   }
