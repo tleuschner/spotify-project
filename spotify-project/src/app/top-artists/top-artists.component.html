@@ -1,8 +1,124 @@
-<h1>Top Künstler</h1>
+<!-- <div *ngIf="topArtists">
+  <div class="row">
+    <div class="col-md-12">
+      <h1 class="text-center">Top Künstler</h1>
+    </div>
+  </div>
+  <div class="row pull-down no-border">
+    <div class="col-md-4 pr-0 pl-0">
+      <div class="card no-border">
+        <img src="{{topArtists[0].images[0].url}}" alt="Album Art" class="card-img-top">
+        <div class="card-body pb-0 pt-3">
+          <h5>{{topArtists[0].name}}.</h5>
+          <p class="text-center">Nummero Drei</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 pr-0 pl-0">
+      <div class="card no-border">
+        <img src="{{topArtists[1].images[1].url}}" alt="Album Art" class="card-img-top">
+        <div class="card-body pb-0 pt-5">
+          <h5>{{topArtists[1].name}}.</h5>
+          <p class="text-center">Nummero Uno</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 pr-0 pl-0">
+      <div class="card no-border">
+        <img src="{{topArtists[2].images[0].url}}" alt="Album Art" class="card-img-top">
+        <div class="card-body pb-0 pt-4">
+          <h5 class="text-center">{{topArtists[2].name}}</h5>
+          <p class="text-center">Nummero Dos</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
 
-<div *ngFor=" let artist of topArtists">
-  <p>{{artist.name}}</p>
-  <p>{{artist.popularity}}</p>
-  <p>{{artist.genres}}</p>
-  <hr style="border: 5px solid black">
-</div>
+
+
+<div *ngIf="topArtists && !isMobile" id="topKuenstler">
+    <div class="row">
+      <div class="col-md-12">
+        <h1 class="text-center">Top Künstler</h1>
+      </div>
+    </div>
+    <div class="row pull-down no-border">
+      <div class="col-md-4 pr-0 pl-0">
+        <div class="card no-border">
+            <div class="image-square">
+                <img src="{{topArtists[2].images[0].url}}" alt="Album Art" class="card-img-top">
+            </div>
+          <div class="card-body pb-0 pt-3">
+            <h5 class="text-center hide-overflow">{{topArtists[2].name}}</h5>
+            <p class="text-center">#3</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 pr-0 pl-0">
+        <div class="card no-border">
+            <div class="image-square">
+                <img src="{{topArtists[0].images[0].url}}" alt="Album Art" class="card-img-top">
+            </div>
+          <div class="card-body pb-0 pt-5">
+            <h5 class="text-center hide-overflow">{{topArtists[0].name}}</h5>
+            <p class="text-center">#1</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 pr-0 pl-0">
+        <div class="card no-border">
+            <div class="image-square">
+                <img src="{{topArtists[1].images[0].url}}" alt="Album Art" class="card-img-top">
+            </div>
+          <div class="card-body pb-0 pt-4">
+            <h5 class="text-center hide-overflow">{{topArtists[1].name}}</h5>
+            <p class="text-center">#2</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div *ngIf="topArtists && isMobile" id="topKuenstler">
+      <div class="row">
+        <div class="col-sm-12">
+          <h1 class="text-center">Top Künstler</h1>
+        </div>
+      </div>
+      <div class="row pull-down no-border">
+        <div class="col-sm-12">
+          <div class="card no-border">
+              <div class="image-square">
+                  <img src="{{topArtists[0].images[0].url}}" alt="Album Art" class="card-img-top">
+              </div>
+            <div class="card-body pb-0 pt-3">
+              <h5 class="text-center hide-overflow">{{topArtists[0].name}}</h5>
+              <p class="text-center">#1</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12">
+          <div class="card no-border">
+              <div class="image-square">
+                  <img src="{{topArtists[1].images[0].url}}" alt="Album Art" class="card-img-top">
+              </div>
+            <div class="card-body pb-0 pt-5">
+              <h5 class="text-center hide-overflow">{{topArtists[1].name}}</h5>
+              <p class="text-center">#2</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12">
+          <div class="card no-border">
+              <div class="image-square">
+                  <img src="{{topArtists[2].images[0].url}}" alt="Album Art" class="card-img-top">
+              </div>
+            <div class="card-body pb-0 pt-4">
+              <h5 class="text-center hide-overflow">{{topArtists[2].name}}</h5>
+              <p class="text-center">#3</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

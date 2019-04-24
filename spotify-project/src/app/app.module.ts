@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { LayoutModule } from '@angular/cdk/layout';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -35,6 +36,7 @@ import {TopPlaylistsComponent} from "./top-playlists/top-playlists.component";
           sendAccessToken: true
       }
   }),
+  LayoutModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

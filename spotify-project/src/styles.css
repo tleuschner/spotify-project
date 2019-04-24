@@ -3,4 +3,30 @@
 @import '../node_modules/@fortawesome/fontawesome-free/css/all.css';
 body{
   background-color: lightgrey;
+  /* padding-top: 50px; */
+}
+
+.pull-down {
+  flex-direction: row;
+  align-items: flex-end;
+}
+
+.no-border {
+  border: none!important;
+  border-radius: 0px;
+}
+
+.hide-overflow {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.image-square{
+  position:relative;
+  overflow:hidden;
+  padding-bottom:100%;
+}
+.image-square img{
+  position:absolute;
 }

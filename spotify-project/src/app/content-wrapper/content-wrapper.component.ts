@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+
 import { SpotifyService } from '../services/spotify.service';
 
 @Component({
@@ -7,13 +9,22 @@ import { SpotifyService } from '../services/spotify.service';
   styleUrls: ['./content-wrapper.component.css']
 })
 export class ContentWrapperComponent implements OnInit {
-  
+  private isMobile = false;
 
   constructor(
-    private spotifyService: SpotifyService
+    private spotifyService: SpotifyService,
+    private breakpointObserver: BreakpointObserver
   ) { }
 
   ngOnInit() {
+    // Wahrscheinlich auch über CSS lösbar aber klappt ;)
+    this.breakpointObserver.observe(['(min-width: 768px)']).subscribe(result => {
+      if(result.matches) {
+        this.isMobile = false;
+      } else {
+        this.isMobile = true;
+      }
+    });
   }
 
 }

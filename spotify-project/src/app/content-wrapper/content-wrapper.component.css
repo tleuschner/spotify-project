@@ -3,11 +3,17 @@
 }
 
 .content {
-    max-height: 500px;
-    background-color: green;
-    border: 1px solid black;
-    overflow-y: scroll;
     margin-top: 50px;
+}
+
+.pull-down {
+    flex-direction: row;
+    align-items: flex-end;
+}
+
+.no-border {
+    border: none!important;
+    border-radius: 0px;
 }
 
 @media screen and (max-width:575px) {

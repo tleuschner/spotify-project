@@ -1,14 +1,7 @@
-<div class="container top-margin">
-  <div class="content">
-    <app-top-songs></app-top-songs>
-  </div>
-
-  <div class="content">
-    <app-top-artists></app-top-artists>
-  </div>
-
-  <div class="content">
-  <app-top-playlists></app-top-playlists>
-    <!--<p id="test"></p>-->
+<div class="container-fluid top-margin">
+  <div class="container">
+    <app-top-songs [isMobile]="isMobile"></app-top-songs>
+    <app-top-artists [isMobile]="isMobile"></app-top-artists>
+    <app-top-playlists></app-top-playlists>
   </div>
 </div>

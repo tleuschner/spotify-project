@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { TopArtists } from '../models/TopArtists';
 import { SpotifyService } from '../services/spotify.service';
 
@@ -8,6 +8,7 @@ import { SpotifyService } from '../services/spotify.service';
   styleUrls: ['./top-artists.component.css']
 })
 export class TopArtistsComponent implements OnInit {
+  @Input() isMobile: Boolean;
 
   private topArtists: TopArtists[];
 
