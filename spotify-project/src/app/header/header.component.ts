@@ -24,12 +24,6 @@ export class HeaderComponent implements OnInit {
     private spotifyService: SpotifyService) { }
 
   ngOnInit() {
-    this.authService.isAuthenticatedObs().subscribe(isAuthenticated => {
-      this.isAuthenticated = isAuthenticated;
-      if(!isAuthenticated) {
-        this.logout();
-      }
-    });
   }
 
   toggleNavBar() {
