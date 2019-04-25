@@ -19,6 +19,7 @@ export class RecentlyPlayedComponent implements OnInit {
     //Get data from spotify
       this.spotifyService.getRecentlyPlayed(50).subscribe(res => {
         this.recentlyPlayed = res;
+        document.getElementById('test').innerHTML = JSON.stringify(res);
       });
   }
 }
