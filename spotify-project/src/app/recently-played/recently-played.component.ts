@@ -10,6 +10,7 @@ export class RecentlyPlayedComponent implements OnInit {
   @Input() isMobile: Boolean;
 
   private recentlyPlayed: any;
+  private playedAt: Date;
 
   constructor(
     private spotifyService: SpotifyService,
@@ -19,7 +20,12 @@ export class RecentlyPlayedComponent implements OnInit {
     //Get data from spotify
       this.spotifyService.getRecentlyPlayed(50).subscribe(res => {
         this.recentlyPlayed = res;
-        document.getElementById('test').innerHTML = JSON.stringify(res);
       });
+  }
+
+  private getDate(dateOld: string) {
+    //newDate: Date = dateOld.toLocaleString('de-DE', { timeZone: 'UTC' });
+    var newDate = new Date(dateOld).toLocaleString();
+    return newDate.replace(","," -").substring(0,newDate.length-2)
   }
 }

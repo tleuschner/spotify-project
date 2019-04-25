@@ -13,9 +13,45 @@
     
   </div>
 
-  <div class="row" *ngIf="recentlyPlayed">
+  <div class="row pull-down shadow-bottom" *ngIf="recentlyPlayed">
+    <div class="col-md-4 pr-0 pl-0">
+      <div class="no-border">
+        <div class="image-square">
+          <img src="{{recentlyPlayed.items[1].track.album.images[0].url}}" alt="Album Art" class="card-img-top">
+        </div>
+        <div class="card card-body pb-4 pt-4">
+          <h5 class="text-center hide-overflow">{{recentlyPlayed.items[1].track.name}}</h5>
+          <p class="text-center">{{getDate(recentlyPlayed.items[1].played_at)}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 pr-0 pl-0">
+      <div class=" no-border">
+        <div class="image-square">
+          <img src="{{recentlyPlayed.items[0].track.album.images[0].url}}" alt="Album Art" class="card-img-top">
+        </div>
+        <div class="card card-body pt-5 pb-5">
+          <h5 class="text-center hide-overflow">{{recentlyPlayed.items[0].track.name}}</h5>
+          <p class="text-center">{{getDate(recentlyPlayed.items[0].played_at)}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 pr-0 pl-0">
+      <div class=" no-border">
+        <div class="image-square">
+          <img src="{{recentlyPlayed.items[2].track.album.images[0].url}}" alt="Album Art" class="card-img-top">
+        </div>
+        <div class="card card-body pt-1 pb-1">
+          <h5 class="text-center hide-overflow">{{recentlyPlayed.items[2].track.name}}</h5>
+          <p class="text-center">{{getDate(recentlyPlayed.items[2].played_at)}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--<div class="row" *ngIf="recentlyPlayed">
     <div class="col-md-3" *ngFor="let recent of recentlyPlayed.items">
       {{recent.track.name}}
     </div>
-  </div>
+  </div>-->
 </div>
