@@ -27,3 +27,7 @@
         max-height: calc(100vh - 52px);
     }    
 }
+
+.spacer {
+    margin-top: 10rem;
+}
