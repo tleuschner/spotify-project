@@ -1,7 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
+
 @import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 @import '../node_modules/@fortawesome/fontawesome-free/css/all.css';
-body{
+body {
   background-color: lightgrey;
   /* padding-top: 50px; */
 }
@@ -11,22 +12,35 @@ body{
   align-items: flex-end;
 }
 
-.no-border {
-  border: none!important;
-  border-radius: 0px;
-}
-
 .hide-overflow {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
 }
 
-.image-square{
-  position:relative;
-  overflow:hidden;
-  padding-bottom:100%;
+.image-square {
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 100%;
 }
-.image-square img{
-  position:absolute;
+
+.image-square img {
+  position: absolute;
+  height: 90%;
+  width: 90%;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 15px 20px rgba(0, 0, 0, 0.7);
+}
+
+.shadow-bottom-left {
+  box-shadow: -10px 10px 2px -2px rgba(0, 0, 0, 0.5);
+}
+
+.shadow-bottom {
+  box-shadow: 0 10px 2px -2px rgba(0, 0, 0, 0.5);
+}
+
+.shadow-right {
+  box-shadow: 10px 0 5px -2px rgba(0, 0, 0, 0.5);
 }

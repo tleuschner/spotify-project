@@ -57,8 +57,10 @@ export class SpotifyService {
   }
 
   public getRecentlyPlayed(count: number): Observable<any> {
-    return this.http.get<any>(`${this.apiBaseUrl}/me/player/recently-played`, {headers: this.headers});
+    return this.http.get<any>(`${this.apiBaseUrl}/me/player/recently-played`, { headers: this.headers });
   }
+
+
 
 
 
