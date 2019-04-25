@@ -15,9 +15,11 @@ export class TopArtistsComponent implements OnInit {
   constructor(private spotifyService: SpotifyService) { }
 
   ngOnInit() {
-    this.spotifyService.getTopArtists('3', undefined, 'long_term').subscribe(res => {
-      this.topArtists = res;
-    })
+    this.spotifyService.timeRange.subscribe(time => {
+      this.spotifyService.getTopArtists('3', undefined, time).subscribe(res => {
+        this.topArtists = res;
+      });
+    });
   }
 
 }

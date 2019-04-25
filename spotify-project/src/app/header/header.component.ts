@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/co
 import { OAuthService } from 'angular-oauth2-oidc';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { SpotifyService } from '../services/spotify.service';
 
 @Component({
   selector: 'app-header',
@@ -10,14 +11,25 @@ import { AuthService } from '../services/auth.service';
 })
 export class HeaderComponent implements OnInit {
   @ViewChild('navContainer', { read: ElementRef }) navBar: ElementRef;
-  isOpen: boolean = false;
+  @ViewChild('navbarDropdown', {read: ElementRef}) navDrop: ElementRef;
+  private isOpen: boolean = false;
+  private timeRange: string;
+  private dropdownCaption = 'Zeitraum auswählen';
+  private isAuthenticated: boolean;
 
   constructor(private oauthService: OAuthService,
     private router: Router,
     private authService: AuthService,
-    private renderer: Renderer2) { }
+    private renderer: Renderer2,
+    private spotifyService: SpotifyService) { }
 
   ngOnInit() {
+    this.authService.isAuthenticatedObs().subscribe(isAuthenticated => {
+      this.isAuthenticated = isAuthenticated;
+      if(!isAuthenticated) {
+        this.logout();
+      }
+    });
   }
 
   toggleNavBar() {
@@ -32,6 +44,30 @@ export class HeaderComponent implements OnInit {
   logout() {
     this.oauthService.logOut();
     this.router.navigate(['login']);
+  }
+
+  changeTimeRange(range: Number) {
+    switch (range) {
+      case 0:
+        this.timeRange = 'short_term';
+        this.dropdownCaption = '4 Wochen';
+        break;
+      case 1:
+        this.timeRange = 'medium_term';
+        this.dropdownCaption = '6 Monate';
+        break;
+      case 2:
+        this.timeRange = 'long_term';
+        this.dropdownCaption = 'Aller Zeiten';
+        break;
+
+      default:
+        this.timeRange = 'medium_term';
+        this.dropdownCaption = 'Zeitraum auswählen';
+        break;
+    }
+    this.spotifyService.setTimeRange(this.timeRange);
+    this.navDrop.nativeElement.innerText = this.dropdownCaption;
   }
 
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http'
-import { Observable } from 'rxjs';
+import { Observable, of, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { TopArtists, TopArtistsPagingObject } from '../models/TopArtists';
@@ -12,12 +12,13 @@ import { Playlist, Item } from '../models/TopPlaylists';
 })
 export class SpotifyService {
 
+  private timeRangeSub = new BehaviorSubject<string>('medium_term');
+  private readonly apiBaseUrl = 'https://api.spotify.com/v1';
+
   constructor(
     private http: HttpClient,
     private oauthService: OAuthService
   ) { }
-
-  private readonly apiBaseUrl = 'https://api.spotify.com/v1';
 
   private headers = new HttpHeaders({
     "Authorization": "Bearer " + this.oauthService.getAccessToken()
@@ -53,5 +54,15 @@ export class SpotifyService {
     return this.http.get<Playlist>(`${this.apiBaseUrl}/me/playlists`, { headers: this.headers }).pipe(
       map(res => res.items)
     );
+  }
+
+
+
+  public setTimeRange(range: string) {
+    this.timeRangeSub.next(range);
+  }
+
+  public get timeRange(): Observable<string> {
+    return this.timeRangeSub.asObservable();
   }
 }

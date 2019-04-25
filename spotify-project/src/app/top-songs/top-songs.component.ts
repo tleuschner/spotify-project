@@ -19,10 +19,10 @@ export class TopSongsComponent implements OnInit {
 
   ngOnInit() {
     //Get data from spotify
-    this.spotifyService.getTopSongs('3', undefined, 'long_term').subscribe(res => {
-      this.topSongs = res;
+    this.spotifyService.timeRange.subscribe(time => {
+      this.spotifyService.getTopSongs('3', undefined, time).subscribe(res => {
+        this.topSongs = res;
+      });
     });
   }
-
-
 }
