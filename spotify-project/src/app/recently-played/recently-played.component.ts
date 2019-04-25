@@ -9,6 +9,7 @@ import { SpotifyService } from '../services/spotify.service';
 export class RecentlyPlayedComponent implements OnInit {
   @Input() isMobile: Boolean;
 
+  private recentlyPlayed: any;
 
   constructor(
     private spotifyService: SpotifyService,
@@ -16,6 +17,8 @@ export class RecentlyPlayedComponent implements OnInit {
 
   ngOnInit() {
     //Get data from spotify
-
+      this.spotifyService.getRecentlyPlayed(50).subscribe(res => {
+        this.recentlyPlayed = res;
+      });
   }
 }

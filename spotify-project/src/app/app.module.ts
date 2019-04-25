@@ -13,6 +13,7 @@ import { ContentWrapperComponent } from './content-wrapper/content-wrapper.compo
 import { TopArtistsComponent } from './top-artists/top-artists.component';
 import { TopSongsComponent } from './top-songs/top-songs.component';
 import {TopPlaylistsComponent} from "./top-playlists/top-playlists.component";
+import {RecentlyPlayedComponent} from "./recently-played/recently-played.component";
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import {TopPlaylistsComponent} from "./top-playlists/top-playlists.component";
     ContentWrapperComponent,
     TopArtistsComponent,
     TopSongsComponent,
-    TopPlaylistsComponent
+    TopPlaylistsComponent,
+    RecentlyPlayedComponent
   ],
   imports: [
     BrowserModule,

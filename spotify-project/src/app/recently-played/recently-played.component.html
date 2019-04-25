@@ -2,14 +2,16 @@
   <br>
   <br>
 </div>
-<div *ngIf="topSongs && !isMobile">
+<div>
   <div class="row">
     <div class="col-md-12">
       <h1 class="text-center">Recently Played</h1>
     </div>
   </div>
 
-<div id="recentlyPlayed">
-  <br>
-  <br>
+  <div class="row" *ngIf="recentlyPlayed">
+    <div class="col-md-3" *ngFor="let recent of recentlyPlayed.items">
+      {{recent.track.name}}
+    </div>
+  </div>
 </div>
