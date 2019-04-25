@@ -1,4 +1,8 @@
-<div *ngIf="topArtists && !isMobile" id="topKuenstler">
+<div id="topKuenstler">
+  <br>
+  <br>
+</div>
+<div *ngIf="topArtists && !isMobile">
     <div class="row">
       <div class="col-md-12">
         <h1 class="text-center">Top Künstler</h1>
@@ -40,8 +44,12 @@
       </div>
     </div>
   </div>
-  
-  <div *ngIf="topArtists && isMobile" id="topKuenstler">
+
+  <div id="topKuenstler">
+    <br>
+    <br>
+  </div>
+  <div *ngIf="topArtists && isMobile">
       <div class="row">
         <div class="col-sm-12">
           <h1 class="text-center">Top Künstler</h1>
