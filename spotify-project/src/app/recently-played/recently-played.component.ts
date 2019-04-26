@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
 import { SpotifyService } from '../services/spotify.service';
 
 @Component({
@@ -6,7 +6,7 @@ import { SpotifyService } from '../services/spotify.service';
   templateUrl: './recently-played.component.html',
   styleUrls: ['./recently-played.component.css']
 })
-export class RecentlyPlayedComponent implements OnInit {
+export class RecentlyPlayedComponent implements OnInit, AfterViewInit {
   @Input() isMobile: Boolean;
 
   private recentlyPlayed: any;
@@ -26,6 +26,15 @@ export class RecentlyPlayedComponent implements OnInit {
   private getDate(dateOld: string) {
     //newDate: Date = dateOld.toLocaleString('de-DE', { timeZone: 'UTC' });
     var newDate = new Date(dateOld).toLocaleString();
-    return newDate.replace(","," -").substring(0,newDate.length-2)
+    return newDate.replace(","," -").substring(0,newDate.length-2);
+  }
+
+  ngAfterViewInit() {
+    console.log('afterviewinit')
+    let removeMyCommas = document.querySelectorAll('#removeComma');
+    removeMyCommas.forEach(element => {
+      console.log(element.textContent);
+      element.textContent = element.textContent.replace(/,(?=[^,]*$)/, '');
+    })
   }
 }

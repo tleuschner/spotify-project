@@ -16,6 +16,7 @@
         </div>
         <div class="card card-body pb-4 pt-4">
           <h5 class="text-center hide-overflow">{{topSongs[1].name}}</h5>
+          <h6 class="text-center hide-overflow"><span id="removeComma" *ngFor="let artist of topSongs[1].artists">{{artist.name}}, </span></h6>
           <p class="text-center">#2</p>
         </div>
       </div>
@@ -27,6 +28,7 @@
         </div>
         <div class="card card-body pt-5 pb-5">
           <h5 class="text-center hide-overflow">{{topSongs[0].name}}</h5>
+          <h6 class="text-center hide-overflow"><span id="removeComma" *ngFor="let artist of topSongs[0].artists">{{artist.name}}, </span></h6>
           <p class="text-center">#1</p>
         </div>
       </div>
@@ -38,6 +40,7 @@
         </div>
         <div class="card card-body pt-1 pb-1">
           <h5 class="text-center hide-overflow">{{topSongs[2].name}}</h5>
+          <h6 class="text-center hide-overflow"><span id="removeComma" *ngFor="let artist of topSongs[2].artists">{{artist.name}}, </span></h6>
           <p class="text-center">#3</p>
         </div>
       </div>
@@ -63,6 +66,7 @@
         </div>
         <div class="card-body pb-0 pt-3">
           <h5 class="text-center hide-overflow">{{track.name}}</h5>
+          <h6 class="text-center hide-overflow"><span *ngFor="let artist of track.artists">artist.name, </span></h6>
           <p class="text-center">#{{i+1}}</p>
         </div>
       </div>
