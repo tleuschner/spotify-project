@@ -14,6 +14,8 @@ import { TopArtistsComponent } from './top-artists/top-artists.component';
 import { TopSongsComponent } from './top-songs/top-songs.component';
 import {TopPlaylistsComponent} from "./top-playlists/top-playlists.component";
 import {RecentlyPlayedComponent} from "./recently-played/recently-played.component";
+import { TrackAnalysisComponent } from './track-analysis/track-analysis.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import {RecentlyPlayedComponent} from "./recently-played/recently-played.compone
     TopArtistsComponent,
     TopSongsComponent,
     TopPlaylistsComponent,
-    RecentlyPlayedComponent
+    RecentlyPlayedComponent,
+    TrackAnalysisComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,

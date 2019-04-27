@@ -61,6 +61,19 @@ export class SpotifyService {
     return this.http.get<any>(`${this.apiBaseUrl}/me/player/recently-played?limit=50`, { headers: this.headers });
   }
 
+  public getAudioFeatures(ids: string[]) {
+    if(ids !== undefined && ids.length < 100) {
+      return this.http.get<any>(`${this.apiBaseUrl}/audio-features`, {headers: this.headers, params: {
+        ids: ids.join(',')
+      }})
+    } else {
+      
+    }
+  }
+
+
+
+
   public async getRecentlyPlayedAllOfThem() {
     let allItems = [];
     let next = await this.http.get<RecentlyPlayed>(`${this.apiBaseUrl}/me/player/recently-played?limit=40`, { headers: this.headers }).toPromise();

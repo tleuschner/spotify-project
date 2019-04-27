@@ -6,11 +6,14 @@ import { AuthGuard } from './auth/auth.guard';
 import { LoginComponent } from './login/login.component';
 import { AppComponent } from './app.component';
 import { ContentWrapperComponent } from './content-wrapper/content-wrapper.component';
+import { TrackAnalysisComponent } from './track-analysis/track-analysis.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 const routes: Routes = [
-  { path: 'login', component: LoginComponent,  },
-  { path: '**', component: ContentWrapperComponent, canActivate: [AuthGuard] },
-  { path: '', component: ContentWrapperComponent, canActivate: [AuthGuard]}
+  { path: 'login', component: LoginComponent },
+  { path: '', component: ContentWrapperComponent, canActivate: [AuthGuard] },
+  { path: 'track-analysis/:type', component: TrackAnalysisComponent, canActivate: [AuthGuard] },
+  { path: '**', component: NotFoundComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({

@@ -3,50 +3,55 @@
   <br>
 </div>
 <div *ngIf="topSongs && !isMobile">
-  <div class="row" data-aos="fade-up">
-    <div class="col-md-12">
-      <h1 class="text-center">Top Tracks</h1>
-      <br>
+  <!-- <a [routerLink]="['/track-analysis', 'topTracks']"> -->
+    <div class="row" data-aos="fade-up">
+      <div class="col-md-12">
+        <h1 class="text-center">Top Tracks</h1>
+        <br>
+      </div>
     </div>
-  </div>
-  <div class="row pull-down shadow-bottom">
-    <div class="col-md-4 pr-0 pl-0">
-      <div class="no-border">
-        <div class="image-square">
-          <img src="{{topSongs[1].album.images[0].url}}" alt="Album Art" class="card-img-top">
+    <div class="row pull-down shadow-bottom">
+      <div class="col-md-4 pr-0 pl-0">
+        <div class="no-border">
+          <div class="image-square">
+            <img src="{{topSongs[1].album.images[0].url}}" alt="Album Art" class="card-img-top">
+          </div>
+          <div class="card card-body pb-4 pt-4">
+            <h5 class="text-center hide-overflow">{{topSongs[1].name}}</h5>
+            <h6 class="text-center hide-overflow"><span id="removeComma"
+                *ngFor="let artist of topSongs[1].artists">{{artist.name}}, </span></h6>
+            <p class="text-center">#2</p>
+          </div>
         </div>
-        <div class="card card-body pb-4 pt-4">
-          <h5 class="text-center hide-overflow">{{topSongs[1].name}}</h5>
-          <h6 class="text-center hide-overflow"><span id="removeComma" *ngFor="let artist of topSongs[1].artists">{{artist.name}}, </span></h6>
-          <p class="text-center">#2</p>
+      </div>
+      <div class="col-md-4 pr-0 pl-0">
+        <div class=" no-border">
+          <div class="image-square">
+            <img src="{{topSongs[0].album.images[0].url}}" alt="Album Art" class="card-img-top">
+          </div>
+          <div class="card card-body pt-5 pb-5">
+            <h5 class="text-center hide-overflow">{{topSongs[0].name}}</h5>
+            <h6 class="text-center hide-overflow"><span id="removeComma"
+                *ngFor="let artist of topSongs[0].artists">{{artist.name}}, </span></h6>
+            <p class="text-center">#1</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 pr-0 pl-0">
+        <div class=" no-border">
+          <div class="image-square">
+            <img src="{{topSongs[2].album.images[0].url}}" alt="Album Art" class="card-img-top">
+          </div>
+          <div class="card card-body pt-1 pb-1">
+            <h5 class="text-center hide-overflow">{{topSongs[2].name}}</h5>
+            <h6 class="text-center hide-overflow"><span id="removeComma"
+                *ngFor="let artist of topSongs[2].artists">{{artist.name}}, </span></h6>
+            <p class="text-center">#3</p>
+          </div>
         </div>
       </div>
     </div>
-    <div class="col-md-4 pr-0 pl-0">
-      <div class=" no-border">
-        <div class="image-square">
-          <img src="{{topSongs[0].album.images[0].url}}" alt="Album Art" class="card-img-top">
-        </div>
-        <div class="card card-body pt-5 pb-5">
-          <h5 class="text-center hide-overflow">{{topSongs[0].name}}</h5>
-          <h6 class="text-center hide-overflow"><span id="removeComma" *ngFor="let artist of topSongs[0].artists">{{artist.name}}, </span></h6>
-          <p class="text-center">#1</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4 pr-0 pl-0">
-      <div class=" no-border">
-        <div class="image-square">
-          <img src="{{topSongs[2].album.images[0].url}}" alt="Album Art" class="card-img-top">
-        </div>
-        <div class="card card-body pt-1 pb-1">
-          <h5 class="text-center hide-overflow">{{topSongs[2].name}}</h5>
-          <h6 class="text-center hide-overflow"><span id="removeComma" *ngFor="let artist of topSongs[2].artists">{{artist.name}}, </span></h6>
-          <p class="text-center">#3</p>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- </a> -->
 </div>
 
 <div id="topTracks">
