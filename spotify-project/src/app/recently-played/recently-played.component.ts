@@ -18,23 +18,24 @@ export class RecentlyPlayedComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     //Get data from spotify
-      this.spotifyService.getRecentlyPlayed(50).subscribe(res => {
-        this.recentlyPlayed = res;
-      });
+    this.spotifyService.getRecentlyPlayed(50).subscribe(res => {
+      this.recentlyPlayed = res;
+    });
+
+    console.log(this.spotifyService.getRecentlyPlayedAllOfThem());
   }
 
   private getDate(dateOld: string) {
     //newDate: Date = dateOld.toLocaleString('de-DE', { timeZone: 'UTC' });
     var newDate = new Date(dateOld).toLocaleString();
-    return newDate.replace(","," -").substring(0,newDate.length-2);
+    return newDate.replace(",", " -").substring(0, newDate.length - 2);
   }
 
   ngAfterViewInit() {
-    console.log('afterviewinit')
-    let removeMyCommas = document.querySelectorAll('#removeComma');
-    removeMyCommas.forEach(element => {
-      console.log(element.textContent);
-      element.textContent = element.textContent.replace(/,(?=[^,]*$)/, '');
+    document.querySelectorAll('#removeComma').forEach(e => {
+      console.log(e.textContent);
+      e.textContent = e.textContent.replace(/,(?=[^,]*$)/, '');
     })
   }
+
 }

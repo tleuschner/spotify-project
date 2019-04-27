@@ -6,6 +6,7 @@ import { OAuthService } from 'angular-oauth2-oidc';
 import { TopArtists, TopArtistsPagingObject } from '../models/TopArtists';
 import { TopTracks, TopTracksPagingObject } from '../models/TopTracks';
 import { Playlist, Item } from '../models/TopPlaylists';
+import { RecentlyPlayed } from '../models/RecentlyPlayed';
 
 @Injectable({
   providedIn: 'root'
@@ -57,10 +58,25 @@ export class SpotifyService {
   }
 
   public getRecentlyPlayed(count: number): Observable<any> {
-    return this.http.get<any>(`${this.apiBaseUrl}/me/player/recently-played`, { headers: this.headers });
+    return this.http.get<any>(`${this.apiBaseUrl}/me/player/recently-played?limit=50`, { headers: this.headers });
   }
 
-
+  public async getRecentlyPlayedAllOfThem() {
+    let allItems = [];
+    let next = await this.http.get<RecentlyPlayed>(`${this.apiBaseUrl}/me/player/recently-played?limit=40`, { headers: this.headers }).toPromise();
+    let totalItems = 200;
+    allItems.push(next.items);
+    while(totalItems > 0 && next.next != null) {
+      let url = next.next;
+      totalItems -= next.limit;
+      let anotherItem = await this.http.get<RecentlyPlayed>(url, { headers: this.headers }).toPromise();
+      allItems.push(anotherItem.items);
+      console.log('another Item');
+      console.log(anotherItem);
+      next = anotherItem;
+    }
+    return allItems;
+  }
 
 
 

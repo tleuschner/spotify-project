@@ -1,19 +1,24 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthConfig } from 'angular-oauth2-oidc';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { JwksValidationHandler } from 'angular-oauth2-oidc';
+
+import * as AOS from 'aos';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
   constructor(private oauthService: OAuthService) {
     this.configureWithNewConfigApi();
   }
 
+  ngOnInit() {
+    AOS.init();
+  }
   private configureWithNewConfigApi() {
     this.oauthService.setStorage(localStorage);
     this.oauthService.configure(authConfig);
