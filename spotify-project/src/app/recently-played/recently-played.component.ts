@@ -21,8 +21,6 @@ export class RecentlyPlayedComponent implements OnInit, AfterViewInit {
     this.spotifyService.getRecentlyPlayed(50).subscribe(res => {
       this.recentlyPlayed = res;
     });
-
-    console.log(this.spotifyService.getRecentlyPlayedAllOfThem());
   }
 
   private getDate(dateOld: string) {
@@ -32,10 +30,6 @@ export class RecentlyPlayedComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    document.querySelectorAll('#removeComma').forEach(e => {
-      console.log(e.textContent);
-      e.textContent = e.textContent.replace(/,(?=[^,]*$)/, '');
-    })
   }
 
 }

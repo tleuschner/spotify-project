@@ -11,8 +11,8 @@ import { NotFoundComponent } from './not-found/not-found.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: '', component: ContentWrapperComponent, canActivate: [AuthGuard] },
-  { path: 'track-analysis/:type', component: TrackAnalysisComponent, canActivate: [AuthGuard] },
+  { path: '', component: ContentWrapperComponent, canActivate: [AuthGuard], data: {animation: 'Dashboard'} },
+  { path: 'track-analysis/:type', component: TrackAnalysisComponent, canActivate: [AuthGuard], data: {animation: 'Analysis'} },
   { path: '**', component: NotFoundComponent, canActivate: [AuthGuard] },
 ];
 

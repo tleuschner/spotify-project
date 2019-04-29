@@ -25,10 +25,6 @@ export class ContentWrapperComponent implements OnInit {
         this.isMobile = true;
       }
     });
-
-    this.spotifyService.getRecentlyPlayed(0).subscribe(res => {
-      console.log(res);
-    });
   }
 
 }

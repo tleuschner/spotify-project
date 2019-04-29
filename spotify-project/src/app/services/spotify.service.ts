@@ -7,6 +7,7 @@ import { TopArtists, TopArtistsPagingObject } from '../models/TopArtists';
 import { TopTracks, TopTracksPagingObject } from '../models/TopTracks';
 import { Playlist, Item } from '../models/TopPlaylists';
 import { RecentlyPlayed } from '../models/RecentlyPlayed';
+import { AudioFeatures, AudioFeaturesWrapper } from '../models/AudioFeatures';
 
 @Injectable({
   providedIn: 'root'
@@ -61,11 +62,12 @@ export class SpotifyService {
     return this.http.get<any>(`${this.apiBaseUrl}/me/player/recently-played?limit=50`, { headers: this.headers });
   }
 
-  public getAudioFeatures(ids: string[]) {
+  public getAudioFeatures(ids: string[]): Observable<AudioFeatures[]> {
     if(ids !== undefined && ids.length < 100) {
-      return this.http.get<any>(`${this.apiBaseUrl}/audio-features`, {headers: this.headers, params: {
+      return this.http.get<AudioFeatures[]>(`${this.apiBaseUrl}/audio-features`, {headers: this.headers, params: {
         ids: ids.join(',')
-      }})
+      }});
+      //TODO: do this
     } else {
       
     }
