@@ -68,7 +68,6 @@ export class TrackAnalysisComponent implements OnInit {
           ids.push(e.track.id)
         }
       });
-      console.log(ids);
       this.spotifyService.getAudioFeatures(ids).subscribe(featureResponse => {
         this.audioFeatures = featureResponse;
         this.populateRadarChart(this.audioFeatures);
@@ -81,7 +80,7 @@ export class TrackAnalysisComponent implements OnInit {
     let data = {
       labels: ['Tanzbarkeit', 'Energie', 'Lautstärke', 'Speechiness', 'Akkustik', 'Instrumental', 'Lebhaftigkeit', 'Stimmung'],
       datasets: [{
-        label: "nicer dicer",
+        label: '',
         data: this.calculateAverages(features),
         fill: false,
         backgroundColor: 'transparent',
@@ -95,6 +94,12 @@ export class TrackAnalysisComponent implements OnInit {
     let radarChar = new Chart(ctx, {
       type: 'radar',
       data: data,
+      options: {
+        scale: {
+          responsive: true,
+          maintainAspectRatio: true,
+        }
+      }
     });
   }
 
@@ -119,6 +124,7 @@ export class TrackAnalysisComponent implements OnInit {
     for (const feature of temp) {
       result.push(feature / length);
     }
+    //Lautstärke besser anzeigen
     result[2] = 1 - result[2];
     return result;
   }

@@ -13,7 +13,7 @@ export class ContentWrapperComponent implements OnInit {
 
   constructor(
     private spotifyService: SpotifyService,
-    private breakpointObserver: BreakpointObserver
+    private breakpointObserver: BreakpointObserver,
   ) { }
 
   ngOnInit() {
