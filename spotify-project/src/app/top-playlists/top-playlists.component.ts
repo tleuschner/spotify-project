@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SpotifyService } from '../services/spotify.service';
-import {Item} from "../models/TopPlaylists";
+import {Playlist} from "../models/TopPlaylists";
 
 @Component({
   selector: 'app-top-playlists',
@@ -9,7 +9,7 @@ import {Item} from "../models/TopPlaylists";
 })
 export class TopPlaylistsComponent implements OnInit {
 
-  private item: Item[];
+  private item: Playlist[];
 
   constructor(private spotifyService: SpotifyService) { }
 

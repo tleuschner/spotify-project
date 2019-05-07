@@ -5,9 +5,10 @@ import { map } from 'rxjs/operators';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { TopArtists, TopArtistsPagingObject } from '../models/TopArtists';
 import { TopTracks, TopTracksPagingObject } from '../models/TopTracks';
-import { Playlist, Item } from '../models/TopPlaylists';
+import { Playlist, PlaylistPagingObject } from '../models/TopPlaylists';
 import { RecentlyPlayed } from '../models/RecentlyPlayed';
 import { AudioFeatures, AudioFeaturesWrapper } from '../models/AudioFeatures';
+import { Track, PlaylistTrack, PlaylistTracksPagingObject } from '../models/PlaylistTracks';
 
 @Injectable({
   providedIn: 'root'
@@ -52,8 +53,8 @@ export class SpotifyService {
     );
   }
 
-  public getPlaylists(): Observable<Item[]> {
-    return this.http.get<Playlist>(`${this.apiBaseUrl}/me/playlists`, { headers: this.headers }).pipe(
+  public getPlaylists(): Observable<Playlist[]> {
+    return this.http.get<PlaylistPagingObject>(`${this.apiBaseUrl}/me/playlists`, { headers: this.headers }).pipe(
       map(res => res.items)
     );
   }
@@ -63,14 +64,22 @@ export class SpotifyService {
   }
 
   public getAudioFeatures(ids: string[]): Observable<AudioFeatures[]> {
-    if(ids !== undefined && ids.length < 100) {
-      return this.http.get<AudioFeatures[]>(`${this.apiBaseUrl}/audio-features`, {headers: this.headers, params: {
-        ids: ids.join(',')
-      }});
+    if (ids !== undefined && ids.length < 100) {
+      return this.http.get<AudioFeatures[]>(`${this.apiBaseUrl}/audio-features`, {
+        headers: this.headers, params: {
+          ids: ids.join(',')
+        }
+      });
       //TODO: do this
     } else {
-      
+
     }
+  }
+
+  public getPlaylistTracks(playlistId: string): Observable<PlaylistTrack[]> {
+    return this.http.get<PlaylistTracksPagingObject>(`${this.apiBaseUrl}/playlists/${playlistId}/tracks`, { headers: this.headers }).pipe(
+      map(res => res.items)
+    )
   }
 
 
@@ -81,7 +90,7 @@ export class SpotifyService {
     let next = await this.http.get<RecentlyPlayed>(`${this.apiBaseUrl}/me/player/recently-played?limit=40`, { headers: this.headers }).toPromise();
     let totalItems = 200;
     allItems.push(next.items);
-    while(totalItems > 0 && next.next != null) {
+    while (totalItems > 0 && next.next != null) {
       let url = next.next;
       totalItems -= next.limit;
       let anotherItem = await this.http.get<RecentlyPlayed>(url, { headers: this.headers }).toPromise();

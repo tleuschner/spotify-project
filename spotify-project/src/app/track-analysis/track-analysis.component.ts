@@ -4,7 +4,7 @@ import { SpotifyService } from '../services/spotify.service';
 import { TopTracks } from '../models/TopTracks';
 import { AudioFeatures } from '../models/AudioFeatures';
 import { Chart } from 'chart.js/dist/Chart.js'
-import { Render3DebugRendererFactory2 } from '@angular/core/src/render3/debug';
+import { Playlist } from '../models/TopPlaylists';
 
 
 @Component({
@@ -14,10 +14,12 @@ import { Render3DebugRendererFactory2 } from '@angular/core/src/render3/debug';
 })
 export class TrackAnalysisComponent implements OnInit {
   @ViewChild('radarChart', { read: ElementRef }) radarChartCanvas: ElementRef;
+  @ViewChild('playlistDropdown', { read: ElementRef }) playlistDropdown: ElementRef;
   private type: string;
   private tracks: TopTracks[];
   private trackIds: string[];
   private audioFeatures: AudioFeatures[];
+  private playlists: Playlist[];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -39,7 +41,13 @@ export class TrackAnalysisComponent implements OnInit {
             })
           });
         });
-      } //end if needs more
+      } else if (this.type === 'playlist') {
+        this.spotifyService.getPlaylists().subscribe(res => {
+          this.playlists = res;
+          console.log(this.playlists)
+        })
+      }
+      //end if needs more
     });
 
   }
@@ -49,6 +57,23 @@ export class TrackAnalysisComponent implements OnInit {
     for (const track of tracks) {
       this.trackIds.push(track.id);
     }
+  }
+
+  analysePlaylist(playlist: Playlist) {
+    this.playlistDropdown.nativeElement.innerText = playlist.name;
+    this.spotifyService.getPlaylistTracks(playlist.id).subscribe(res => {
+      let ids = [];
+      res.forEach(e => {
+        if (e.track) {
+          ids.push(e.track.id)
+        }
+      });
+      console.log(ids);
+      this.spotifyService.getAudioFeatures(ids).subscribe(featureResponse => {
+        this.audioFeatures = featureResponse;
+        this.populateRadarChart(this.audioFeatures);
+      })
+    })
   }
 
   private populateRadarChart(features: AudioFeatures[]) {
@@ -94,7 +119,7 @@ export class TrackAnalysisComponent implements OnInit {
     for (const feature of temp) {
       result.push(feature / length);
     }
-    console.log(result);
+    result[2] = 1 - result[2];
     return result;
   }
 

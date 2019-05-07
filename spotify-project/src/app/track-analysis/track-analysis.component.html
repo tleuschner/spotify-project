@@ -1,17 +1,34 @@
-<br>
-<br>
-<div class="row">
-  <div class="col-md-12">
-    <h1 class="text-center">Analysierung deiner Tracks</h1>
-    <br>
-  </div>
-</div>
-<div class="container-fluid top-margin">
-  <div class="container">
-
-    <div class="row">
-
+<div class="container top-margin">
+  <div class="row" *ngIf="type==='topTracks'">
+    <div class="col-md-12">
+      <h1 class="text-center">Analysierung deiner Tracks</h1>
+      <br>
     </div>
-        <canvas id="radarChart" width="200" height="420" #radarChart></canvas>
   </div>
+  <div class="row" *ngIf="type==='playlist'">
+    <div class="col-md-8">
+      <h1>Wähle eine Playlist aus!</h1>
+    </div>
+    <div class="col-md-4">
+      <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false" #playlistDropdown>
+          Drop me down!
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <div *ngFor="let playlist of playlists" (click)="analysePlaylist(playlist)" class="dropdown-item">
+            {{playlist.name}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+      <canvas id="radarChart" width="200" height="420" #radarChart></canvas>
+    </div>
+    <div class="col-md-2"></div>
+  </div>
+
+
 </div>
