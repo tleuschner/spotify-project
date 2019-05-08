@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { SpotifyService } from '../services/spotify.service';
-import { TopTracks } from '../models/TopTracks';
+import { TopTracks } from '../models/SpotifyObjects';
 
 @Component({
   selector: 'app-top-songs',

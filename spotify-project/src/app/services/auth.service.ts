@@ -7,7 +7,9 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class AuthService {
 
-  constructor(private oauthService: OAuthService) { }
+  constructor(
+    private oauthService: OAuthService
+    ) { }
 
   private _isAuthenticatedSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   

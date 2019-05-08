@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SpotifyService } from '../services/spotify.service';
-import {Playlist} from "../models/TopPlaylists";
+import { Playlist } from '../models/SpotifyObjects';
 
 @Component({
   selector: 'app-top-playlists',
@@ -15,7 +15,6 @@ export class TopPlaylistsComponent implements OnInit {
 
   ngOnInit() {
     this.spotifyService.getPlaylists().subscribe(res => {
-      //document.getElementById('test').innerText = JSON.stringify(res);
       this.item = res;
     });
   }

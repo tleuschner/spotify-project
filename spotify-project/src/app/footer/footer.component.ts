@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import {Location} from '@angular/common';
+import { VisitorsService } from '../services/visitors.service';
+import { Observable } from 'rxjs';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-footer',
@@ -8,10 +11,24 @@ import {Location} from '@angular/common';
 })
 export class FooterComponent implements OnInit {
 
-  constructor(private _location: Location) { }
+  private visitors$: Observable<number>;
 
+  constructor(
+    private _location: Location,
+    private visitorsService: VisitorsService,
+    private authService: AuthService
+    ) { }
+
+    //TODO fix number after first login. wenn das erste mal eingeloggt zählt das noch nicht in besucher rein...
+    //Dirty aber klappt
   ngOnInit() {
+    this.visitors$ = this.visitorsService.getVisitors();
+    setTimeout( () => {
+      console.log('called')
+      this.visitors$ = this.visitorsService.getVisitors();
+    }, 500);
   }
+
 
   goBack() {
     this._location.back();

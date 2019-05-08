@@ -1,1 +1,4 @@
-<div class="btn btn-primary spotify-btn" (click)="goBack()">Zurück</div>
+<div *ngIf="this.authService.isAuthenticatedObs() | async">
+    <div class="btn btn-primary spotify-btn fixed-left" (click)="goBack()">Zurück</div>
+    <div class="fixed-right">Besucher: {{visitors$ | async}}</div>
+</div>

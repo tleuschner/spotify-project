@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { SpotifyService } from '../services/spotify.service';
-import { TopTracks } from '../models/TopTracks';
-import { AudioFeatures } from '../models/AudioFeatures';
 import { Chart } from 'chart.js/dist/Chart.js'
-import { Playlist } from '../models/TopPlaylists';
+import { TopTracks, AudioFeatures, Playlist } from '../models/SpotifyObjects';
+//@ts-ignore
+import _ from "lodash";
 
 
 @Component({
@@ -44,8 +44,7 @@ export class TrackAnalysisComponent implements OnInit {
       } else if (this.type === 'playlist') {
         this.spotifyService.getPlaylists().subscribe(res => {
           this.playlists = res;
-          console.log(this.playlists)
-        })
+        });
       }
       //end if needs more
     });
@@ -59,23 +58,38 @@ export class TrackAnalysisComponent implements OnInit {
     }
   }
 
-  analysePlaylist(playlist: Playlist) {
+  //TODO: refactor this
+  async analysePlaylist(playlist: Playlist) {
+    this.audioFeatures = [];
     this.playlistDropdown.nativeElement.innerText = playlist.name;
-    this.spotifyService.getPlaylistTracks(playlist.id).subscribe(res => {
-      let ids = [];
-      res.forEach(e => {
-        if (e.track) {
-          ids.push(e.track.id)
+    this.spotifyService.getPlaylistTracksTest(playlist.id).then(async values => {
+      for (let i = 0; i < values.length; i++) {
+        let idChunk = values[i];
+        let singleIds = [];
+        for (const element of idChunk) {
+          if (element.track) {
+            singleIds.push(element.track.id);
+          }
         }
-      });
-      this.spotifyService.getAudioFeatures(ids).subscribe(featureResponse => {
-        this.audioFeatures = featureResponse;
-        this.populateRadarChart(this.audioFeatures);
-      })
-    })
+
+        this.audioFeatures = this.audioFeatures.concat(await this.spotifyService.getAudioFeatures(singleIds).toPromise());
+
+      }
+      let temp: AudioFeatures[] = [];
+      for(let i = 0; i < this.audioFeatures.length; i++) {
+        //@ts-ignore
+        for (const feature of this.audioFeatures[i].audio_features) {
+          temp.push(feature);
+        }
+      }
+      this.audioFeatures = temp;
+
+      this.populateRadarChart(this.audioFeatures);
+    });
   }
 
   private populateRadarChart(features: AudioFeatures[]) {
+    console.log(features);
     let ctx = this.radarChartCanvas.nativeElement;
     let data = {
       labels: ['Tanzbarkeit', 'Energie', 'Lautstärke', 'Speechiness', 'Akkustik', 'Instrumental', 'Lebhaftigkeit', 'Stimmung'],
@@ -106,11 +120,11 @@ export class TrackAnalysisComponent implements OnInit {
   private calculateAverages(features: AudioFeatures[]) {
     let danceability = 0, energy = 0, loudness = 0, speechiness = 0, acousticness = 0, instrumentalness = 0, liveness = 0, valence = 0;
     // @ts-ignore
-    let length = features.audio_features.length;
+    let length = features.length;
     let result = [];
 
     // @ts-ignore
-    for (const feature of features.audio_features) {
+    for (const feature of features) {
       danceability += feature.danceability;
       energy += feature.energy;
       loudness += feature.loudness / -60;

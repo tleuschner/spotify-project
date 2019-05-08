@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { TopArtists } from '../models/TopArtists';
 import { SpotifyService } from '../services/spotify.service';
+import { Artist } from '../models/SpotifyObjects';
 
 @Component({
   selector: 'app-top-artists',
@@ -10,7 +10,7 @@ import { SpotifyService } from '../services/spotify.service';
 export class TopArtistsComponent implements OnInit {
   @Input() isMobile: Boolean;
 
-  private topArtists: TopArtists[];
+  private topArtists: Artist[];
 
   constructor(private spotifyService: SpotifyService) { }
 
