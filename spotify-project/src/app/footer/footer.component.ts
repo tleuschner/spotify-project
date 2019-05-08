@@ -23,10 +23,10 @@ export class FooterComponent implements OnInit {
     //Dirty aber klappt
   ngOnInit() {
     this.visitors$ = this.visitorsService.getVisitors();
-    setTimeout( () => {
+    setInterval( () => {
       console.log('called')
       this.visitors$ = this.visitorsService.getVisitors();
-    }, 500);
+    }, 60000);
   }
 
 
