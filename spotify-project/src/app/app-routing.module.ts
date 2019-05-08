@@ -8,11 +8,13 @@ import { AppComponent } from './app.component';
 import { ContentWrapperComponent } from './content-wrapper/content-wrapper.component';
 import { TrackAnalysisComponent } from './track-analysis/track-analysis.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import {DetailListComponent} from "./detail-list/detail-list.component";
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: '', component: ContentWrapperComponent, canActivate: [AuthGuard], data: {animation: 'Dashboard'} },
   { path: 'track-analysis/:type', component: TrackAnalysisComponent, canActivate: [AuthGuard], data: {animation: 'Analysis'} },
+  { path: 'artist-details', component: DetailListComponent, canActivate: [AuthGuard], data: {animation: 'Analysis'}},
   { path: '**', component: NotFoundComponent, canActivate: [AuthGuard] },
 ];
 
