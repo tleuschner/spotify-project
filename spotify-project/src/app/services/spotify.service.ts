@@ -35,6 +35,19 @@ export class SpotifyService {
     );
   }
 
+  public getArtists(ids: string[]): Observable<Artist[]> {
+    if (ids !== undefined && ids.length <= 100) {
+      return this.http.get<any>(`${this.apiBaseUrl}/artists`, {
+        headers: this.headers, params: {
+          ids: ids.join(',')
+        }
+      });
+      //TODO: do this
+    } else {
+
+    }
+  }
+
   public getTopSongs(limit = '20', offset = '0', timeRange = 'medium_term'): Observable<TopTracks[]> {
     return this.http.get<TopTracksPagingObject>(`${this.apiBaseUrl}/me/top/tracks`, {
       headers: this.headers,

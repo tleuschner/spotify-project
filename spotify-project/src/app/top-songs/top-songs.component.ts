@@ -21,7 +21,7 @@ export class TopSongsComponent implements OnInit {
     //Get data from spotify
     this.spotifyService.timeRange.subscribe(time => {
       this.spotifyService.getTopSongs('3', undefined, time).subscribe(res => {
-        this.topSongs = res;
+      this.topSongs = res;
       });
     });
   }
