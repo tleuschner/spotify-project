@@ -1,12 +1,7 @@
 <div *ngIf="detailObject">
   <div class="row">
-<<<<<<< Updated upstream
-    <div class="col-md-3" *ngFor="let detail of detailObject" data-aos="fade-up" data-aos-duration="1500" data-aos-offset="50">
-      <div class=" no-border">
-=======
-    <div class="col-md-3" *ngFor="let detail of detailObject">
+    <div class="col-md-3" *ngFor="let detail of detailObject" data-aos="fade-up" data-aos-duration="1500" data-aos-offset="100"  data-aos-once="true">
       <div class=" no-border" (click)="addDataset(detail)">
->>>>>>> Stashed changes
         <div class="image-square">
           <img src="{{detail.image}}" alt="Album Art" class="card-img-top">
         </div>

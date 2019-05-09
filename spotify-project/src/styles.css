@@ -60,3 +60,7 @@ body {
   text-transform: uppercase;
   white-space: normal;
 }
+
+.spacer {
+  margin-top: 10rem;
+}

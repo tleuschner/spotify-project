@@ -72,7 +72,7 @@ export class SpotifyService {
   }
 
   public getAudioFeature(id : string): Observable<AudioFeatures>{
-    return this.http.get<any>(`${this.apiBaseUrl}/v1/audio-features/{id}`, {headers: this.headers}).pipe(
+    return this.http.get<any>(`${this.apiBaseUrl}/audio-features/${id}`, {headers: this.headers}).pipe(
       
     )
   }

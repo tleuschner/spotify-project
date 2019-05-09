@@ -57,6 +57,7 @@ export class TrackAnalysisComponent implements OnInit {
   }
 
   private populateDetailObject(tracks: any[]) {
+    this.trackDetails = [];
     let i = 4;
     for (let track of tracks) {
 
@@ -75,6 +76,7 @@ export class TrackAnalysisComponent implements OnInit {
       i++;
     }
   }
+
   private extractIds(tracks: any[]) {
     this.trackIds = [];
     for (const track of tracks) {
