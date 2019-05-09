@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { SpotifyService } from '../services/spotify.service';
 import { Artist } from '../models/SpotifyObjects';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-top-artists',
@@ -11,8 +12,10 @@ export class TopArtistsComponent implements OnInit {
   @Input() isMobile: Boolean;
 
   private topArtists: Artist[];
+  private isDetail: boolean;
 
-  constructor(private spotifyService: SpotifyService) { }
+  constructor(private spotifyService: SpotifyService,
+              private router: Router) { }
 
   ngOnInit() {
     this.spotifyService.timeRange.subscribe(time => {
@@ -20,6 +23,18 @@ export class TopArtistsComponent implements OnInit {
           this.topArtists = res;
         });
     });
+
+    console.log(window.location.pathname);
+    if(window.location.pathname.includes("/artist-details")){
+      this.isDetail= true;
+    } else {
+      this.isDetail =false;
+    }
+  }
+
+  private navigate() {
+    console.log('called')
+    this.router.navigate(['/artist-details']);
   }
 
 }
