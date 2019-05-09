@@ -37,11 +37,11 @@ export class LoginComponent implements OnInit {
     skipDialog = !!localStorage.getItem('skipLoginForm');
 
 
-    if (!skipDialog) {
-      this.oauthService.customQueryParams = { 'show_dialog': true };
-    } else {
-      this.oauthService.customQueryParams = {};
-    }
+    // if (!skipDialog) {
+    //   this.oauthService.customQueryParams = { 'show_dialog': true };
+    // } else {
+    //   this.oauthService.customQueryParams = {};
+    // }
 
     this.oauthService.initImplicitFlow();
   }
