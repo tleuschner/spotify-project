@@ -17,6 +17,7 @@ export class TopGenresComponent implements OnInit {
   private genreMap: Map<string,number> = new Map<string,number>();
   private genre = [];
   private genreCounter = [];
+  private genreObject = [];
   private sumValues = 0;
 
   constructor(
@@ -84,12 +85,28 @@ export class TopGenresComponent implements OnInit {
   }
 
   private sortGenre(){
-    //var mapAsc = new Map([...this.genreMap.entries()].sort());
-    this.genreMap[Symbol.iterator] = function* () {
-      yield* [...this.entries()].sort((a, b) => a[1] - b[1]);
-    }
-
     this.genre = Array.from(this.genreMap.keys());
     this.genreCounter = Array.from(this.genreMap.values());
+
+    for(let i = 0; i < this.genre.length; i++){
+      var object = {name: this.genre[i],value: this.genreCounter[i]};
+      this.genreObject.push(object)
+    }
+
+    //this.logMapElements("test","test",null);
+
+    //this.genreMap.forEach(this.logMapElements);
+
+    this.genreObject.sort(function (a, b) {
+      return b.value - a.value;
+    });
+
+    console.log(this.genreObject);
+  }
+
+  private logMapElements(value, key, map) {
+    var object = {name: key,value: value};
+    console.log(object);
+    this.genreObject.push(object);
   }
 }

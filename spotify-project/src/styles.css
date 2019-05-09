@@ -20,7 +20,6 @@ body {
 
 .image-square {
   position: relative;
-  overflow: hidden;
   padding-bottom: 100%;
 }
 
