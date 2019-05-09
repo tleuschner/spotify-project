@@ -89,7 +89,7 @@ export class TopGenresComponent implements OnInit {
     this.genreCounter = Array.from(this.genreMap.values());
 
     for(let i = 0; i < this.genre.length; i++){
-      var object = {name: this.genre[i],value: this.genreCounter[i]};
+      var object = {name: this.genre[i],value: this.genreCounter[i], percent: Math.round((this.genreCounter[i]/this.sumValues*1000))/10};
       this.genreObject.push(object)
     }
 
