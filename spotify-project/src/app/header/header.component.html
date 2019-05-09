@@ -1,44 +1,45 @@
 <div *ngIf="this.authService.isAuthenticatedObs()|async">
-    <nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-dark flex-md-nowrap p-0 shadow img-fluid">
-        <div class="navbar-brand ml-3">
-            <i class="fas fa-bars fa-lg clickable navigation-icon" (click)="toggleNavBar()"></i>
-            <span class="clickable no-link">
+  <nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-dark flex-md-nowrap p-0 shadow img-fluid">
+    <div class="navbar-brand ml-3">
+      <i class="fas fa-bars fa-lg clickable navigation-icon" (click)="toggleNavBar()"></i>
+      <span class="clickable no-link">
               <a [routerLink]="['/']">
                 <img class="img-fluid" alt="SpotifyAnalyzer" src="../assets/SpotifyAnalyzerKlein.png"
-                    style="max-width: 75px;">
+                     style="max-width: 75px;">
               </a>
             </span>
-        </div>
-
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item dropdown">
-                <div class="nav-link dropdown-toggle clickable" id="navbarDropdown" role="button" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false" #navbarDropdown>
-                    Zeitraum auswählen (6 Monate)
-            </div>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <div class="dropdown-item clickable" (click)="changeTimeRange(0)">4 Wochen</div>
-                    <div class="dropdown-item clickable" (click)="changeTimeRange(1)">6 Monate</div>
-                    <div class="dropdown-item clickable" (click)="changeTimeRange(2)">Aller Zeiten</div>
-                </div>
-            </li>
-        </ul>
-
-        <ul class="navbar-nav px-3 ml-auto">
-            <li class="nav-item text-nowrap">
-                <span class="nav-link clickable" (click)="logout()">Ausloggen</span>
-            </li>
-        </ul>
-    </nav>
-
-
-    <div class="navigation-container col-sm-3 col-md-2 mr-0 " id="nav-container" #navContainer>
-        <span class="close clickable" (click)="toggleNavBar()"><i class="fas fa-times fa-lg"></i></span>
-        <a href="#topTracks">Top Tracks</a>
-        <a href="#topKuenstler">Top Künstler</a>
-      <a href="#recentlyPlayed">Zuletzt gehört</a>
-        <a href="#topPlaylists">Playlist Analyse</a>
-        <a href="#">Top Genres</a>
     </div>
+
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item dropdown">
+        <div class="nav-link dropdown-toggle clickable" id="navbarDropdown" role="button" data-toggle="dropdown"
+             aria-haspopup="true" aria-expanded="false" #navbarDropdown>
+          Zeitraum auswählen (6 Monate)
+        </div>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <div class="dropdown-item clickable" (click)="changeTimeRange(0)">4 Wochen</div>
+          <div class="dropdown-item clickable" (click)="changeTimeRange(1)">6 Monate</div>
+          <div class="dropdown-item clickable" (click)="changeTimeRange(2)">Aller Zeiten</div>
+        </div>
+      </li>
+    </ul>
+
+    <ul class="navbar-nav px-3 ml-auto">
+      <li class="nav-item text-nowrap">
+        <span class="nav-link clickable" (click)="logout()">Ausloggen</span>
+      </li>
+    </ul>
+  </nav>
+
+
+  <div class="navigation-container col-sm-3 col-md-2 mr-0 " id="nav-container" #navContainer>
+    <span class="close clickable" (click)="toggleNavBar()"><i class="fas fa-times fa-lg"></i></span>
+    <a href="#topTracks">Top Tracks</a>
+    <a href="#topKuenstler">Top Künstler</a>
+    <a href="#topGenre">Top Genres</a>
+    <a href="#recentlyPlayed">Zuletzt gehört</a>
+    <a href="#topPlaylists">Playlist Analyse</a>
+
+  </div>
 
 </div>

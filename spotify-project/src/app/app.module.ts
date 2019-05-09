@@ -19,6 +19,7 @@ import { TrackAnalysisComponent } from './track-analysis/track-analysis.componen
 import { NotFoundComponent } from './not-found/not-found.component';
 import { DetailListComponent } from './detail-list/detail-list.component';
 import { ArtistDetailsComponent } from './artist-details/artist-details.component';
+import { TopGenresComponent } from './top-genres/top-genres.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { ArtistDetailsComponent } from './artist-details/artist-details.componen
     TrackAnalysisComponent,
     NotFoundComponent,
     DetailListComponent,
-    ArtistDetailsComponent
+    ArtistDetailsComponent,
+    TopGenresComponent
   ],
   imports: [
     BrowserModule,
