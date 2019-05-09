@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {DetailObject} from "../models/DetailObject";
 
 @Component({
   selector: 'app-detail-list',
@@ -6,10 +7,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./detail-list.component.css']
 })
 export class DetailListComponent implements OnInit {
+@Input() detailObject: DetailObject;
 
   constructor() { }
 
   ngOnInit() {
+    console.log(this.detailObject);
   }
 
 }
