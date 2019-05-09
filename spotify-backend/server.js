@@ -11,8 +11,9 @@ let connection = mysql.createConnection({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME
+    database: process.env.DB_NAME,
 });
+
 connection.connect((err) => {
     if (err) {
         console.error('error connecting: ' + err.stack);
@@ -51,7 +52,10 @@ app.post('/user', (req, res) => {
         let country = req.body.country;
         let spotifyID = req.body.spotifyID;
         connection.query('INSERT IGNORE INTO users (SPOTIFY_ID, COUNTRY) VALUES (?, ?)', [spotifyID, country], (err) => {
-            if (err) throw err;
+            if (err) {
+                res.status(500).json(null);
+                throw err;
+            } 
         });
         res.status(200).json(null);
 

@@ -37,7 +37,8 @@ export class TrackAnalysisComponent implements OnInit {
             this.extractIds(this.tracks);
             this.spotifyService.getAudioFeatures(this.trackIds).subscribe(res => {
               this.audioFeatures = res;
-              this.populateRadarChart(this.audioFeatures);
+              //@ts-ignore
+              this.populateRadarChart(this.audioFeatures.audio_features, 'Top Tracks');
             })
           });
         });
@@ -84,24 +85,21 @@ export class TrackAnalysisComponent implements OnInit {
       }
       this.audioFeatures = temp;
 
-      this.populateRadarChart(this.audioFeatures);
+      this.populateRadarChart(this.audioFeatures, playlist.name);
     });
   }
 
-  private populateRadarChart(features: AudioFeatures[]) {
-    console.log(features);
+  private populateRadarChart(features: AudioFeatures[], label: string) {
     let ctx = this.radarChartCanvas.nativeElement;
     let data = {
       labels: ['Tanzbarkeit', 'Energie', 'Lautstärke', 'Speechiness', 'Akkustik', 'Instrumental', 'Lebhaftigkeit', 'Stimmung'],
       datasets: [{
-        label: '',
+        label: label,
         data: this.calculateAverages(features),
-        fill: false,
-        backgroundColor: 'transparent',
-        pointRadius: 6,
+        fill: true,
+        backgroundColor: '#1db95450',
         pointBackgroundColor: 'rgba(25, 20, 20, 1)',
         pointBorderColor: 'rgba(30, 215, 96, 0.3)',
-        pointBorderWidth: 5,
       }]
     }
 
@@ -110,8 +108,7 @@ export class TrackAnalysisComponent implements OnInit {
       data: data,
       options: {
         scale: {
-          responsive: true,
-          maintainAspectRatio: true,
+          // display: false
         }
       }
     });

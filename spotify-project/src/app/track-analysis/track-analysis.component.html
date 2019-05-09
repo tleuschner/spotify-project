@@ -1,10 +1,12 @@
 <div class="container top-margin">
+
   <div class="row" *ngIf="type==='topTracks'">
     <div class="col-md-12">
       <h1 class="text-center">Analysierung deiner Tracks</h1>
       <br>
     </div>
   </div>
+
   <div class="row" *ngIf="type==='playlist'">
     <div class="col-md-8">
       <h1>Wähle eine Playlist aus!</h1>
@@ -22,11 +24,16 @@
       </div>
     </div>
   </div>
+
   <div class="row">
     <div class="col-md-2"></div>
     <div class="col-md-8">
       <canvas id="radarChart" #radarChart></canvas>
     </div>
+    <div class="col-md-2"></div>
+  </div>
+
+  <div class="row" *ngIf="false">
     <div class="col-md-2"></div>
   </div>
 </div>

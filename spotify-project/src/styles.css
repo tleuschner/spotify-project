@@ -45,14 +45,14 @@ body {
   box-shadow: 10px 0 5px -2px rgba(0, 0, 0, 0.5);
 }
 
-.spotify-btn{
+.spotify-btn {
   color: #fff;
   background-color: #1db954;
   font-size: 18px;
   line-height: 1;
   border-radius: 500px;
   padding: 16px 48px 18px;
-  transition-property: background-color,border-color,color,box-shadow,filter;
+  transition-property: background-color, border-color, color, box-shadow, filter;
   transition-duration: .3s;
   border-width: 0;
   letter-spacing: 2px;

@@ -24,7 +24,6 @@ export class FooterComponent implements OnInit {
   ngOnInit() {
     this.visitors$ = this.visitorsService.getVisitors();
     setInterval( () => {
-      console.log('called')
       this.visitors$ = this.visitorsService.getVisitors();
     }, 60000);
   }
