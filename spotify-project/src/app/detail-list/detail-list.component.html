@@ -1,3 +1,17 @@
-<div class="col-md-3">
-  test
+<div *ngIf="detailObject">
+  <div class="row">
+    <div class="col-md-3" *ngFor="let detail of detailObject">
+      <div class=" no-border">
+        <div class="image-square">
+          <img src="{{detail.image}}" alt="Album Art" class="card-img-top">
+        </div>
+        <div class="card card-body pt-1 pb-1 shadow-bottom">
+          <h5 class="text-center hide-overflow">{{detail.firstLine}}</h5>
+          <h6 class="text-center hide-overflow text-center">{{detail.secondLine}}</h6>
+        </div>
+      </div>
+      <br>
+      <br>
+    </div>
+  </div>
 </div>

@@ -17,14 +17,15 @@ export class ArtistDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.spotifyService.timeRange.subscribe(time => {
-      this.spotifyService.getTopArtists('50', undefined, time).subscribe(res => {
+      this.spotifyService.getTopArtists('50', '3', time).subscribe(res => {
         this.topArtists = res;
+        this.artistDetails = [];
+        let i = 4;
         for(let artist of this.topArtists) {
-          let i = 1;
           this.artistDetails.push({
             image: artist.images[0].url,
             firstLine: artist.name,
-            secondLine: i.toString(),
+            secondLine: "#"+i.toString(),
             id: artist.id
           });
           i++;
