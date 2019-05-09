@@ -18,6 +18,7 @@ import {RecentlyPlayedComponent} from "./recently-played/recently-played.compone
 import { TrackAnalysisComponent } from './track-analysis/track-analysis.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { DetailListComponent } from './detail-list/detail-list.component';
+import { ArtistDetailsComponent } from './artist-details/artist-details.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { DetailListComponent } from './detail-list/detail-list.component';
     RecentlyPlayedComponent,
     TrackAnalysisComponent,
     NotFoundComponent,
-    DetailListComponent
+    DetailListComponent,
+    ArtistDetailsComponent
   ],
   imports: [
     BrowserModule,
