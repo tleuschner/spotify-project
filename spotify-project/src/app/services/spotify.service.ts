@@ -71,13 +71,19 @@ export class SpotifyService {
     }
   }
 
-  public getPlaylistTracks(playlistId: string): Observable<PlaylistTrack[]> {
-    return this.http.get<PlaylistTracksPagingObject>(`${this.apiBaseUrl}/playlists/${playlistId}/tracks`, { headers: this.headers }).pipe(
-      map(res => res.items)
-    );
+  public getAudioFeature(id : string): Observable<AudioFeatures>{
+    return this.http.get<any>(`${this.apiBaseUrl}/v1/audio-features/{id}`, {headers: this.headers}).pipe(
+      
+    )
   }
 
-  public async getPlaylistTracksTest(playlistId: string) {
+  // public getPlaylistTracks(playlistId: string): Observable<PlaylistTrack[]> {
+  //   return this.http.get<PlaylistTracksPagingObject>(`${this.apiBaseUrl}/playlists/${playlistId}/tracks`, { headers: this.headers }).pipe(
+  //     map(res => res.items)
+  //   );
+  // }
+
+  public async getPlaylistTracks(playlistId: string) {
     let allTracks = [];
     let next = await this.http.get<PlaylistTracksPagingObject>(`${this.apiBaseUrl}/playlists/${playlistId}/tracks`, { headers: this.headers }).toPromise();
     allTracks.push(next.items);
@@ -94,27 +100,6 @@ export class SpotifyService {
   public getUserInfo(): Observable<any> {
     return this.http.get<any>(`${this.apiBaseUrl}/me`, { headers: this.headers });
   }
-
-
-
-
-  public async getRecentlyPlayedAllOfThem() {
-    let allItems = [];
-    let next = await this.http.get<RecentlyPlayed>(`${this.apiBaseUrl}/me/player/recently-played?limit=40`, { headers: this.headers }).toPromise();
-    let totalItems = 200;
-    allItems.push(next.items);
-    while (totalItems > 0 && next.next != null) {
-      let url = next.next;
-      totalItems -= next.limit;
-      let anotherItem = await this.http.get<RecentlyPlayed>(url, { headers: this.headers }).toPromise();
-      allItems.push(anotherItem.items);
-      console.log('another Item');
-      console.log(anotherItem);
-      next = anotherItem;
-    }
-    return allItems;
-  }
-
 
 
   public setTimeRange(range: string) {

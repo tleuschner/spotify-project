@@ -33,7 +33,7 @@
     <div class="col-md-2"></div>
   </div>
 
-  <div class="row" *ngIf="false">
-    <div class="col-md-2"></div>
-  </div>
+  <button class="btn spotify-btn" (click)="addDataset(trackId)">Add Dataset</button>
+
+  <app-detail-list [detailObject]="trackDetails"></app-detail-list>
 </div>

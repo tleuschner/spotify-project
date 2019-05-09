@@ -181,7 +181,7 @@ export class ExternalUrls {
 
 export class Track {
     album:             Album;
-    artists:           AddedBy[];
+    artists:           Artist[];
     available_markets: string[];
     disc_number:       number;
     duration_ms:       number;

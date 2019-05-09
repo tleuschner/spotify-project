@@ -2,16 +2,16 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { SpotifyService } from '../services/spotify.service';
 import { Chart } from 'chart.js/dist/Chart.js'
-import { TopTracks, AudioFeatures, Playlist } from '../models/SpotifyObjects';
-//@ts-ignore
-import _ from "lodash";
-
+import { TopTracks, AudioFeatures, Playlist, Track } from '../models/SpotifyObjects';
+import { ChartService } from '../services/chart.service';
+import { DetailObject } from '../models/DetailObject';
 
 @Component({
   selector: 'app-track-analysis',
   templateUrl: './track-analysis.component.html',
   styleUrls: ['./track-analysis.component.css']
 })
+
 export class TrackAnalysisComponent implements OnInit {
   @ViewChild('radarChart', { read: ElementRef }) radarChartCanvas: ElementRef;
   @ViewChild('playlistDropdown', { read: ElementRef }) playlistDropdown: ElementRef;
@@ -20,10 +20,13 @@ export class TrackAnalysisComponent implements OnInit {
   private trackIds: string[];
   private audioFeatures: AudioFeatures[];
   private playlists: Playlist[];
+  private radarChart: Chart;
+  private trackDetails: DetailObject[] = [];
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private spotifyService: SpotifyService
+    private spotifyService: SpotifyService,
+    private chartService: ChartService
   ) { }
 
   ngOnInit() {
@@ -35,6 +38,7 @@ export class TrackAnalysisComponent implements OnInit {
           this.spotifyService.getTopSongs('50', undefined, time).subscribe(res => {
             this.tracks = res;
             this.extractIds(this.tracks);
+            this.populateDetailObject(this.tracks);
             this.spotifyService.getAudioFeatures(this.trackIds).subscribe(res => {
               this.audioFeatures = res;
               //@ts-ignore
@@ -52,6 +56,25 @@ export class TrackAnalysisComponent implements OnInit {
 
   }
 
+  private populateDetailObject(tracks: any[]) {
+    let i = 4;
+    for (let track of tracks) {
+
+      let artists = [];
+      for (const artist of track.artists) {
+        artists.push(artist.name);
+      }
+
+      this.trackDetails.push({
+        image: track.album.images[0].url,
+        firstLine: track.name,
+        secondLine: artists.join(', '),
+        thirdLine: "#" + i.toString(),
+        id: track.id
+      });
+      i++;
+    }
+  }
   private extractIds(tracks: any[]) {
     this.trackIds = [];
     for (const track of tracks) {
@@ -63,7 +86,8 @@ export class TrackAnalysisComponent implements OnInit {
   async analysePlaylist(playlist: Playlist) {
     this.audioFeatures = [];
     this.playlistDropdown.nativeElement.innerText = playlist.name;
-    this.spotifyService.getPlaylistTracksTest(playlist.id).then(async values => {
+
+    this.spotifyService.getPlaylistTracks(playlist.id).then(async values => {
       for (let i = 0; i < values.length; i++) {
         let idChunk = values[i];
         let singleIds = [];
@@ -77,7 +101,7 @@ export class TrackAnalysisComponent implements OnInit {
 
       }
       let temp: AudioFeatures[] = [];
-      for(let i = 0; i < this.audioFeatures.length; i++) {
+      for (let i = 0; i < this.audioFeatures.length; i++) {
         //@ts-ignore
         for (const feature of this.audioFeatures[i].audio_features) {
           temp.push(feature);
@@ -103,15 +127,11 @@ export class TrackAnalysisComponent implements OnInit {
       }]
     }
 
-    let radarChar = new Chart(ctx, {
+    this.radarChart = new Chart(ctx, {
       type: 'radar',
       data: data,
-      options: {
-        scale: {
-          // display: false
-        }
-      }
     });
+    this.chartService.setChart(this.radarChart);
   }
 
   private calculateAverages(features: AudioFeatures[]) {
