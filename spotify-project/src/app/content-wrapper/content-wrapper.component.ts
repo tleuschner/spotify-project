@@ -20,6 +20,7 @@ export class ContentWrapperComponent implements OnInit {
   ngOnInit() {
     // Wahrscheinlich auch über CSS lösbar aber klappt ;)
     this.breakpointObserver.observe(['(min-width: 768px)']).subscribe(result => {
+      // this.isMobile = !result.matches
       if (result.matches) {
         this.isMobile = false;
       } else {

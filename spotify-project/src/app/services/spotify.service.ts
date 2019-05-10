@@ -96,6 +96,12 @@ export class SpotifyService {
   //   );
   // }
 
+  public getTracksOfAPlaylist(href: string): Observable<any[]> {
+     return this.http.get<any>(href, { headers: this.headers }).pipe(
+       map(res => res.items)
+     );
+  }
+
   public async getPlaylistTracks(playlistId: string) {
     let allTracks = [];
     let next = await this.http.get<PlaylistTracksPagingObject>(`${this.apiBaseUrl}/playlists/${playlistId}/tracks`, { headers: this.headers }).toPromise();

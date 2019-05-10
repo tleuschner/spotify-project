@@ -17,11 +17,12 @@ export class TrackAnalysisComponent implements OnInit {
   @ViewChild('playlistDropdown', { read: ElementRef }) playlistDropdown: ElementRef;
   private type: string;
   private tracks: TopTracks[];
-  private trackIds: string[];
+  private ids: string[];
   private audioFeatures: AudioFeatures[];
   private playlists: Playlist[];
   private radarChart: Chart;
   private trackDetails: DetailObject[] = [];
+  private playlistDetails: DetailObject[] = [];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -39,7 +40,7 @@ export class TrackAnalysisComponent implements OnInit {
             this.tracks = res;
             this.extractIds(this.tracks);
             this.populateDetailObject(this.tracks);
-            this.spotifyService.getAudioFeatures(this.trackIds).subscribe(res => {
+            this.spotifyService.getAudioFeatures(this.ids).subscribe(res => {
               this.audioFeatures = res;
               //@ts-ignore
               this.populateRadarChart(this.audioFeatures.audio_features, 'Top Tracks');
@@ -57,30 +58,52 @@ export class TrackAnalysisComponent implements OnInit {
   }
 
   private populateDetailObject(tracks: any[]) {
-    this.trackDetails = [];
-    let i = 4;
-    for (let track of tracks) {
+    if (this.type === 'topTracks') {
+      this.trackDetails = [];
+      let i = 4;
+      for (let track of tracks) {
 
-      let artists = [];
-      for (const artist of track.artists) {
-        artists.push(artist.name);
+        let artists = [];
+        for (const artist of track.artists) {
+          artists.push(artist.name);
+        }
+
+        this.trackDetails.push({
+          image: track.album.images[0].url,
+          firstLine: track.name,
+          secondLine: artists.join(', '),
+          thirdLine: "#" + i.toString(),
+          id: track.id
+        });
+        i++;
       }
+    } else if (this.type === 'playlist') {
+      this.trackDetails = [];
+      let i = 4;
+      for(let trackList of tracks){
+          let track = trackList.track;
 
-      this.trackDetails.push({
-        image: track.album.images[0].url,
-        firstLine: track.name,
-        secondLine: artists.join(', '),
-        thirdLine: "#" + i.toString(),
-        id: track.id
-      });
-      i++;
+          let artists = [];
+          for (const artist of track.artists) {
+            artists.push(artist.name);
+          }
+
+          this.trackDetails.push({
+            image: track.album.images[0].url,
+            firstLine: track.name,
+            secondLine: artists.join(', '),
+            thirdLine: "#" + i.toString(),
+            id: track.id
+          });
+          i++;
+        }
     }
   }
 
   private extractIds(tracks: any[]) {
-    this.trackIds = [];
+    this.ids = [];
     for (const track of tracks) {
-      this.trackIds.push(track.id);
+      this.ids.push(track.id);
     }
   }
 
@@ -112,6 +135,12 @@ export class TrackAnalysisComponent implements OnInit {
       this.audioFeatures = temp;
 
       this.populateRadarChart(this.audioFeatures, playlist.name);
+
+      //Get Tracks of a selected Playlist
+      this.spotifyService.getTracksOfAPlaylist(playlist.tracks.href).subscribe(async value => {
+        this.extractIds(value);
+        this.populateDetailObject(value);
+      });
     });
   }
 

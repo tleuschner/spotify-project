@@ -9,13 +9,13 @@
 
   <div class="row" *ngIf="type==='playlist'">
     <div class="col-md-8">
-      <h1>Wähle eine Playlist aus!</h1>
+      <h1>Playlist Analyse</h1>
     </div>
     <div class="col-md-4">
       <div class="dropdown">
         <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
           aria-expanded="false" #playlistDropdown>
-          Drop me down!
+          Wähle eine Playlist aus!
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
           <div *ngFor="let playlist of playlists" (click)="analysePlaylist(playlist)" class="dropdown-item">
