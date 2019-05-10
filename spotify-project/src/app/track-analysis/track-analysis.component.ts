@@ -60,7 +60,7 @@ export class TrackAnalysisComponent implements OnInit {
   private populateDetailObject(tracks: any[]) {
     if (this.type === 'topTracks') {
       this.trackDetails = [];
-      let i = 4;
+      let i = 1;
       for (let track of tracks) {
 
         let artists = [];
@@ -79,7 +79,7 @@ export class TrackAnalysisComponent implements OnInit {
       }
     } else if (this.type === 'playlist') {
       this.trackDetails = [];
-      let i = 4;
+      let i = 1;
       for(let trackList of tracks){
           let track = trackList.track;
 
