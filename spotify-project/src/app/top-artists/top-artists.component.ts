@@ -24,7 +24,6 @@ export class TopArtistsComponent implements OnInit {
         });
     });
 
-    console.log(window.location.pathname);
     if(window.location.pathname.includes("/artist-details")){
       this.isDetail= true;
     } else {
@@ -33,7 +32,6 @@ export class TopArtistsComponent implements OnInit {
   }
 
   private navigate() {
-    console.log('called')
     this.router.navigate(['/artist-details']);
   }
 

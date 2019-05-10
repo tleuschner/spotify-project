@@ -33,5 +33,4 @@ export class ArtistDetailsComponent implements OnInit {
       });
     });
   }
-
 }

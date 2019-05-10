@@ -20,6 +20,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { DetailListComponent } from './detail-list/detail-list.component';
 import { ArtistDetailsComponent } from './artist-details/artist-details.component';
 import { TopGenresComponent } from './top-genres/top-genres.component';
+import { RecentlyDetailsComponent } from './recently-details/recently-details.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { TopGenresComponent } from './top-genres/top-genres.component';
     NotFoundComponent,
     DetailListComponent,
     ArtistDetailsComponent,
-    TopGenresComponent
+    TopGenresComponent,
+    RecentlyDetailsComponent
   ],
   imports: [
     BrowserModule,

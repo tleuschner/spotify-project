@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { SpotifyService } from '../services/spotify.service';
-import { TopTracks } from '../models/SpotifyObjects';
+import {TopTracks, Track} from '../models/SpotifyObjects';
 
 @Component({
   selector: 'app-top-songs',
@@ -11,6 +11,8 @@ export class TopSongsComponent implements OnInit {
   @Input() isMobile: Boolean;
 
   private topSongs: TopTracks[];
+  private track: Track;
+  private artists: string[] = [];
 
   constructor(
     private spotifyService: SpotifyService,
@@ -21,7 +23,15 @@ export class TopSongsComponent implements OnInit {
     //Get data from spotify
     this.spotifyService.timeRange.subscribe(time => {
       this.spotifyService.getTopSongs('3', undefined, time).subscribe(res => {
-      this.topSongs = res;
+        this.topSongs = res;
+        /*for(this.track of res){
+          let newArtists = [];
+          console.log("TEEEEST: ",topSong.items)
+          for(topSong.artists){
+            newArtists.push(artist.name);
+          }
+          this.artists.push(newArtists.join(','));
+        }*/
       });
     });
   }
