@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { SpotifyService } from '../services/spotify.service';
 import { Chart } from 'chart.js/dist/Chart.js'
@@ -12,7 +12,7 @@ import { DetailObject } from '../models/DetailObject';
   styleUrls: ['./track-analysis.component.css']
 })
 
-export class TrackAnalysisComponent implements OnInit {
+export class TrackAnalysisComponent implements OnInit, OnDestroy {
   @ViewChild('radarChart', { read: ElementRef }) radarChartCanvas: ElementRef;
   @ViewChild('playlistDropdown', { read: ElementRef }) playlistDropdown: ElementRef;
   private type: string;
@@ -31,6 +31,7 @@ export class TrackAnalysisComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    window.addEventListener('scroll', this.scroll, true);
     this.activatedRoute.paramMap.subscribe((params: ParamMap) => {
       this.type = params.get('type');
 
@@ -56,6 +57,14 @@ export class TrackAnalysisComponent implements OnInit {
     });
 
   }
+
+  ngOnDestroy() {
+    window.removeEventListener('scroll', this.scroll, true); //third parameter
+  }
+
+  scroll = (event: any): void => {
+    //console.log(event.srcElement);
+  };
 
   private populateDetailObject(tracks: any[]) {
     if (this.type === 'topTracks') {
@@ -113,6 +122,7 @@ export class TrackAnalysisComponent implements OnInit {
     this.playlistDropdown.nativeElement.innerText = playlist.name;
 
     this.spotifyService.getPlaylistTracks(playlist.id).then(async values => {
+      console.log([].concat.apply([],values));
       for (let i = 0; i < values.length; i++) {
         let idChunk = values[i];
         let singleIds = [];
@@ -135,12 +145,13 @@ export class TrackAnalysisComponent implements OnInit {
       this.audioFeatures = temp;
 
       this.populateRadarChart(this.audioFeatures, playlist.name);
-
+      this.populateDetailObject([].concat.apply([], values));
       //Get Tracks of a selected Playlist
-      this.spotifyService.getTracksOfAPlaylist(playlist.tracks.href).subscribe(async value => {
-        this.extractIds(value);
-        this.populateDetailObject(value);
-      });
+      // this.spotifyService.getTracksOfAPlaylist(playlist.tracks.href).subscribe(async value => {
+      //   console.log(value);
+      //   this.extractIds(value);
+      //   this.populateDetailObject(value);
+      // });
     });
   }
 
