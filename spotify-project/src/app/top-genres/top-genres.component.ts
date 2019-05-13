@@ -19,6 +19,7 @@ export class TopGenresComponent implements OnInit {
   private genreCounter = [];
   private genreObject = [];
   private sumValues = 0;
+  private genresErmittelt: boolean = false;
 
   constructor(
     private spotifyService: SpotifyService,
@@ -34,23 +35,19 @@ export class TopGenresComponent implements OnInit {
         this.topSongs.forEach(element => {
           //@ts-ignore
           for(let artist of element.artists){
-            ids.push(artist.id)
+            ids.push(artist.id);
             countId++;
             if(countId == 50){
               this.spotifyService.getArtists(ids).subscribe(res => {
-                console.log(res);
                 this.artists = this.artists.concat(res);
-                console.log(this.artists);
-              })
+              });
               countId = 0;
               ids = [];
             }
           }
           });
         this.spotifyService.getArtists(ids).subscribe(res => {
-          console.log(res);
           this.artists = this.artists.concat(res);
-          console.log(this.artists);
           this.getGenres();
         })
       })
@@ -59,9 +56,7 @@ export class TopGenresComponent implements OnInit {
 
   private getGenres(){
     //Get from each Artist the Genre and count it in a array
-    console.log("TEST TEST");
     for(let artists of this.artists){
-      console.log(artists);
       //@ts-ignore
       for(let artist of artists.artists){
         for(let genre of artist.genres){
@@ -89,24 +84,15 @@ export class TopGenresComponent implements OnInit {
     this.genreCounter = Array.from(this.genreMap.values());
 
     for(let i = 0; i < this.genre.length; i++){
-      var object = {name: this.genre[i],value: this.genreCounter[i], percent: Math.round((this.genreCounter[i]/this.sumValues*1000))/10};
+      let object = {name: this.genre[i],value: this.genreCounter[i], percent: Math.round((this.genreCounter[i]/this.sumValues*1000))/10};
       this.genreObject.push(object)
     }
-
-    //this.logMapElements("test","test",null);
-
-    //this.genreMap.forEach(this.logMapElements);
+    console.log("Genres: ",this.genreObject);
 
     this.genreObject.sort(function (a, b) {
       return b.value - a.value;
     });
 
-    console.log(this.genreObject);
-  }
-
-  private logMapElements(value, key, map) {
-    var object = {name: key,value: value};
-    console.log(object);
-    this.genreObject.push(object);
+    this.genresErmittelt = true;
   }
 }

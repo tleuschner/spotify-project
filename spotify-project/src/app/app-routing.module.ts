@@ -18,7 +18,7 @@ const routes: Routes = [
   { path: 'track-analysis/:type', component: TrackAnalysisComponent, canActivate: [AuthGuard], data: {animation: 'Analysis'} },
   { path: 'artist-details', component: ArtistDetailsComponent, canActivate: [AuthGuard], data: {animation: 'Analysis'}},
   { path: 'recently-details', component: RecentlyDetailsComponent, canActivate: [AuthGuard], data: {animation: 'Analysis'}},
-  { path: '**', component: NotFoundComponent, canActivate: [AuthGuard] },
+  { path: '**', component: NotFoundComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({

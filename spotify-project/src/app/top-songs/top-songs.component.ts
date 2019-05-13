@@ -32,7 +32,6 @@ export class TopSongsComponent implements OnInit {
             newArtists.push(artist.name);
           }
           this.artists.push(newArtists.join(','));
-          console.log("TEEEST: ",this.artists);
         }
       });
     });
