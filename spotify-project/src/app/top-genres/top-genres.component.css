@@ -6,3 +6,8 @@
   -webkit-border-radius: 70px;
   border-radius: 70px;
 }
+
+.deleteLinkUnderline {
+  text-decoration:none;
+  color:#191414;
+}

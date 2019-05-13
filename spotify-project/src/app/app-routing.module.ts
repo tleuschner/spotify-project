@@ -11,6 +11,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import {DetailListComponent} from "./detail-list/detail-list.component";
 import {ArtistDetailsComponent} from "./artist-details/artist-details.component";
 import {RecentlyDetailsComponent} from "./recently-details/recently-details.component";
+import {GenreDetailsComponent} from "./genre-details/genre-details.component";
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'track-analysis/:type', component: TrackAnalysisComponent, canActivate: [AuthGuard], data: {animation: 'Analysis'} },
   { path: 'artist-details', component: ArtistDetailsComponent, canActivate: [AuthGuard], data: {animation: 'Analysis'}},
   { path: 'recently-details', component: RecentlyDetailsComponent, canActivate: [AuthGuard], data: {animation: 'Analysis'}},
+  { path: 'genre-details', component: GenreDetailsComponent, canActivate: [AuthGuard], data: {animation: 'Analysis'}},
   { path: '**', component: NotFoundComponent, canActivate: [AuthGuard] }
 ];
 

@@ -1,8 +1,8 @@
 <div *ngIf="this.authService.isAuthenticatedObs()|async">
   <nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-dark flex-md-nowrap p-0 shadow img-fluid">
     <div class="navbar-brand ml-3">
-      <i class="fas fa-bars fa-lg clickable navigation-icon" (click)="toggleNavBar()"></i>
-      <span class="clickable no-link">
+      <i class="fas fa-bars fa-lg pointer navigation-icon" (click)="toggleNavBar()"></i>
+      <span class="pointer no-link">
               <a [routerLink]="['/']">
                 <img class="img-fluid" alt="SpotifyAnalyzer" src="../assets/SpotifyAnalyzerKlein.png"
                      style="max-width: 75px;">
@@ -17,23 +17,23 @@
           Zeitraum auswählen (6 Monate)
         </div>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <div class="dropdown-item clickable" (click)="changeTimeRange(0)">4 Wochen</div>
-          <div class="dropdown-item clickable" (click)="changeTimeRange(1)">6 Monate</div>
-          <div class="dropdown-item clickable" (click)="changeTimeRange(2)">Aller Zeiten</div>
+          <div class="dropdown-item pointer" (click)="changeTimeRange(0)">4 Wochen</div>
+          <div class="dropdown-item pointer" (click)="changeTimeRange(1)">6 Monate</div>
+          <div class="dropdown-item pointer" (click)="changeTimeRange(2)">Aller Zeiten</div>
         </div>
       </li>
     </ul>
 
     <ul class="navbar-nav px-3 ml-auto">
       <li class="nav-item text-nowrap">
-        <span class="nav-link clickable" (click)="logout()">Ausloggen</span>
+        <span class="nav-link pointer" (click)="logout()">Ausloggen</span>
       </li>
     </ul>
   </nav>
 
 
   <div class="navigation-container col-sm-3 col-md-2 mr-0 " id="nav-container" #navContainer>
-    <span class="close clickable" (click)="toggleNavBar()"><i class="fas fa-times fa-lg"></i></span>
+    <span class="close pointer" (click)="toggleNavBar()"><i class="fas fa-times fa-lg"></i></span>
     <a href="#topTracks">Top Tracks</a>
     <a href="#topKuenstler">Top Künstler</a>
     <a href="#topGenre">Top Genres</a>
