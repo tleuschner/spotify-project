@@ -10,8 +10,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  @ViewChild('rememberMe', { read: ElementRef }) rememberMe: ElementRef;
+  //@ViewChild('rememberMe', { read: ElementRef }) rememberMe: ElementRef;
   seitenaufrufe = "Besucher insgesamt: 2";
+  private name : string;
 
   constructor(
     private oauthService: OAuthService,
@@ -22,26 +23,42 @@ export class LoginComponent implements OnInit {
     if (this.oauthService.hasValidAccessToken()) {
       this.router.navigate(['']);
     }
+    this.name = localStorage.getItem("Person").toString();
   }
 
   login(): void {
-    let rememberCheck = this.rememberMe.nativeElement.checked;
+    //let rememberCheck = this.rememberMe.nativeElement.checked;
     let skipDialog: Boolean;
 
-    if (rememberCheck) {
+    /*if (rememberCheck) {
       localStorage.setItem('skipLoginForm', 'true');
     } else {
       localStorage.removeItem('skipLoginForm');
-    }
+    }*/
 
     skipDialog = !!localStorage.getItem('skipLoginForm');
 
 
-    // if (!skipDialog) {
-    //   this.oauthService.customQueryParams = { 'show_dialog': true };
-    // } else {
-    //   this.oauthService.customQueryParams = {};
-    // }
+    /*if (!skipDialog) {
+       this.oauthService.customQueryParams = { 'show_dialog': true };
+    } else {
+       this.oauthService.customQueryParams = {};
+    }*/
+
+    this.oauthService.initImplicitFlow();
+  }
+
+  loginWithDialog(): void {
+    let skipDialog: Boolean;
+
+    skipDialog = !!localStorage.getItem('skipLoginForm');
+
+
+    if (!skipDialog) {
+      this.oauthService.customQueryParams = { 'show_dialog': true };
+    } else {
+      this.oauthService.customQueryParams = {};
+    }
 
     this.oauthService.initImplicitFlow();
   }

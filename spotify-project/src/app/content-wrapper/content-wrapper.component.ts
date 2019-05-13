@@ -27,6 +27,11 @@ export class ContentWrapperComponent implements OnInit {
         this.isMobile = true;
       }
     });
+    this.spotifyService.getUserInfo().subscribe(res => {
+      console.log("USER INFO: ",res);
+      localStorage.setItem("Person",res.display_name);
+    });
+    //localStorage.setItem("Person","Dennis Willers");
   }
   
 }
