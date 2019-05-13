@@ -13,6 +13,7 @@ export class LoginComponent implements OnInit {
   //@ViewChild('rememberMe', { read: ElementRef }) rememberMe: ElementRef;
   seitenaufrufe = "Besucher insgesamt: 2";
   private name : string;
+  private wasloggedIn: boolean;
 
   constructor(
     private oauthService: OAuthService,
@@ -20,10 +21,18 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log("Test");
     if (this.oauthService.hasValidAccessToken()) {
       this.router.navigate(['']);
     }
-    this.name = localStorage.getItem("Person").toString();
+    this.name = localStorage.getItem("Person");
+    /*if(this.name.match("")){
+      console.log("false");
+      this.wasloggedIn = false;
+    } else {
+      console.log("true");
+      this.wasloggedIn = true;
+    }*/
   }
 
   login(): void {

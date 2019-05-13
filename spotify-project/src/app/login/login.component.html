@@ -11,7 +11,7 @@
     <button class="btn btn-primary spotify-btn" (click)="login()">Bei Spotify anmelden</button>
     <br>
     <br>
-    <button class="btn btn-primary spotify-btn" (click)="loginWithDialog()">Nicht {{name}}?</button>
+    <label class="pointer" *ngIf="name" (click)="loginWithDialog()">Nicht <u>{{name}}</u>?</label>
     <div class="form-check">
 
     </div>
