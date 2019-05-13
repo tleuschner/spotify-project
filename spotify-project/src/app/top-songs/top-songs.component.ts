@@ -22,16 +22,18 @@ export class TopSongsComponent implements OnInit {
   ngOnInit() {
     //Get data from spotify
     this.spotifyService.timeRange.subscribe(time => {
+      console.log("Top Songs");
       this.spotifyService.getTopSongs('3', undefined, time).subscribe(res => {
         this.topSongs = res;
-        /*for(this.track of res){
+        for(let topSong of res){
           let newArtists = [];
-          console.log("TEEEEST: ",topSong.items)
-          for(topSong.artists){
+          //@ts-ignore
+          for(let artist of topSong.artists){
             newArtists.push(artist.name);
           }
           this.artists.push(newArtists.join(','));
-        }*/
+          console.log("TEEEST: ",this.artists);
+        }
       });
     });
   }
