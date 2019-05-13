@@ -26,6 +26,7 @@ export class TopGenresComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.genreObject = [];
     //Get data from spotify
     this.spotifyService.timeRange.subscribe(time => {
       this.spotifyService.getTopSongs('50', undefined, time).subscribe(res => {
@@ -94,5 +95,9 @@ export class TopGenresComponent implements OnInit {
     });
 
     this.genresErmittelt = true;
+  }
+
+  private clear(){
+
   }
 }

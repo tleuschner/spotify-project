@@ -22,7 +22,6 @@ export class TopSongsComponent implements OnInit {
   ngOnInit() {
     //Get data from spotify
     this.spotifyService.timeRange.subscribe(time => {
-      console.log("Top Songs");
       this.spotifyService.getTopSongs('3', undefined, time).subscribe(res => {
         this.topSongs = res;
         for(let topSong of res){
