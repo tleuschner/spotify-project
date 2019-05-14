@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http'
 import { Observable, of, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { Artist, TopArtistsPagingObject, TopTracksPagingObject, Track, TopTracks, Playlist, PlaylistPagingObject, AudioFeatures, PlaylistTrack, PlaylistTracksPagingObject, RecentlyPlayed } from '../models/SpotifyObjects';
+import { Artist, TopArtistsPagingObject, TopTracksPagingObject, Track, Playlist, PlaylistPagingObject, AudioFeatures, PlaylistTrack, PlaylistTracksPagingObject, RecentlyPlayed, PlayHistoryObject } from '../models/SpotifyObjects';
 
 @Injectable({
   providedIn: 'root'
@@ -41,14 +41,14 @@ export class SpotifyService {
         headers: this.headers, params: {
           ids: ids.join(',')
         }
-      });
+      }).pipe(map(res => res.artists));
       //TODO: do this
     } else {
 
     }
   }
 
-  public getTopSongs(limit = '20', offset = '0', timeRange = 'medium_term'): Observable<TopTracks[]> {
+  public getTopSongs(limit = '20', offset = '0', timeRange = 'medium_term'): Observable<Track[]> {
     return this.http.get<TopTracksPagingObject>(`${this.apiBaseUrl}/me/top/tracks`, {
       headers: this.headers,
       params: {
@@ -67,8 +67,10 @@ export class SpotifyService {
     );
   }
 
-  public getRecentlyPlayed(count: number): Observable<any> {
-    return this.http.get<any>(`${this.apiBaseUrl}/me/player/recently-played?limit=50`, { headers: this.headers});
+  public getRecentlyPlayed(count: number): Observable<PlayHistoryObject[]> {
+    return this.http.get<any>(`${this.apiBaseUrl}/me/player/recently-played?limit=${count}`, { headers: this.headers}).pipe(
+      map(res => res.items)
+    );
   }
 
   public getAudioFeatures(ids: string[]): Observable<AudioFeatures[]> {

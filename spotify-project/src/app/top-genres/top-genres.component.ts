@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {SpotifyService} from "../services/spotify.service";
-import {Artist, TopTracks} from "../models/SpotifyObjects";
+import {Artist, Track } from "../models/SpotifyObjects";
 import {forEach} from "@angular/router/src/utils/collection";
 import {generateErrorMessage} from "codelyzer/angular/styles/cssLexer";
 
@@ -12,7 +12,7 @@ import {generateErrorMessage} from "codelyzer/angular/styles/cssLexer";
 export class TopGenresComponent implements OnInit {
   @Input() isMobile: Boolean;
 
-  private topSongs: TopTracks[];
+  private topSongs: Track[];
   private artists: Artist[] = [];
   private genreMap: Map<string,number> = new Map<string,number>();
   private genre = [];
@@ -58,8 +58,7 @@ export class TopGenresComponent implements OnInit {
   private getGenres(){
     //Get from each Artist the Genre and count it in a array
     for(let artists of this.artists){
-      //@ts-ignore
-      for(let artist of artists.artists){
+      for(let artist of this.artists){
         for(let genre of artist.genres){
           //console.log("Test: "+genre);
           this.addAndCountGenre(genre);

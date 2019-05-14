@@ -22,6 +22,7 @@ import { ArtistDetailsComponent } from './artist-details/artist-details.componen
 import { TopGenresComponent } from './top-genres/top-genres.component';
 import { RecentlyDetailsComponent } from './recently-details/recently-details.component';
 import { GenreDetailsComponent } from './genre-details/genre-details.component';
+import { TopDisplayComponent } from './top-display/top-display.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { GenreDetailsComponent } from './genre-details/genre-details.component';
     ArtistDetailsComponent,
     TopGenresComponent,
     RecentlyDetailsComponent,
-    GenreDetailsComponent
+    GenreDetailsComponent,
+    TopDisplayComponent
   ],
   imports: [
     BrowserModule,

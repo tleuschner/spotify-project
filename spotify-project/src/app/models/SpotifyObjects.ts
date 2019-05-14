@@ -24,7 +24,7 @@ export class TopArtistsPagingObject {
 
 export class TopTracksPagingObject {
     href: string;
-    items: TopTracks[];
+    items: Track[];
     limit: number;
     next: string;
     offset: number;
@@ -79,19 +79,6 @@ export class Tracks {
 export enum ItemType {
     Playlist = "playlist",
 }
-
-
-export class TopTracks {
-    items:    Track[];
-    total:    number;
-    limit:    number;
-    offset:   number;
-    previous: null;
-    href:     string;
-    next:     string;
-}
-
-
 
 export enum AlbumType {
     Album = "ALBUM",
@@ -223,6 +210,19 @@ export class Album {
     total_tracks:           number;
     type:                   AlbumTypeEnum;
     uri:                    string;
+}
+
+export class PlayHistoryObject {
+    track: Track;
+    played_at: string;
+    context: ContextObject;
+}
+
+export class ContextObject {
+    type: string;
+    href: string;
+    external_urls: ExternalUrls;
+    uri: string;
 }
 
 export class Artist {
