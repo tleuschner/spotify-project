@@ -4,11 +4,9 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from './auth/auth.guard';
 
 import { LoginComponent } from './login/login.component';
-import { AppComponent } from './app.component';
 import { ContentWrapperComponent } from './content-wrapper/content-wrapper.component';
 import { TrackAnalysisComponent } from './track-analysis/track-analysis.component';
 import { NotFoundComponent } from './not-found/not-found.component';
-import {DetailListComponent} from "./detail-list/detail-list.component";
 import {ArtistDetailsComponent} from "./artist-details/artist-details.component";
 import {RecentlyDetailsComponent} from "./recently-details/recently-details.component";
 import {GenreDetailsComponent} from "./genre-details/genre-details.component";
