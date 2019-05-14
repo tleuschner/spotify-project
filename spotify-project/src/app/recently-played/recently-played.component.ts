@@ -20,7 +20,7 @@ export class RecentlyPlayedComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     //Get data from spotify
-    this.spotifyService.getRecentlyPlayed(50,'3').subscribe(res => {
+    this.spotifyService.getRecentlyPlayed(50).subscribe(res => {
       this.recentlyPlayed = res;
       for(let i = 0; i<3; i++){
         let newArtists = [];

@@ -16,7 +16,7 @@ export class RecentlyDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.spotifyService.timeRange.subscribe(time => {
-      this.spotifyService.getRecentlyPlayed(50,'3').subscribe(res => {
+      this.spotifyService.getRecentlyPlayed(50).subscribe(res => {
         console.log(res);
         this.recently = res.items;
         this.recentlyDetails = [];
@@ -35,6 +35,7 @@ export class RecentlyDetailsComponent implements OnInit {
           });
           i++;
         }
+        this.recentlyDetails = this.recentlyDetails.slice(3,this.recentlyDetails.length);
       });
     });
   }

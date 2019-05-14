@@ -67,9 +67,8 @@ export class SpotifyService {
     );
   }
 
-  public getRecentlyPlayed(count: number,offset = '3'): Observable<any> {
-    return this.http.get<any>(`${this.apiBaseUrl}/me/player/recently-played?limit=50`, { headers: this.headers,  params: {
-        offset: offset}});
+  public getRecentlyPlayed(count: number): Observable<any> {
+    return this.http.get<any>(`${this.apiBaseUrl}/me/player/recently-played?limit=50`, { headers: this.headers});
   }
 
   public getAudioFeatures(ids: string[]): Observable<AudioFeatures[]> {
