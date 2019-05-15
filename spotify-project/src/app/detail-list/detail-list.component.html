@@ -1,11 +1,11 @@
 <div *ngIf="detailObject">
   <div class="row">
-    <div class="col-md-3" *ngFor="let detail of detailObject" data-aos="fade-up" data-aos-duration="1500" data-aos-offset="100"  data-aos-once="true">
+    <div class="col-md-3" *ngFor="let detail of detailObject; let i = index" data-aos="fade-up" data-aos-duration="1500" data-aos-offset="100"  data-aos-once="true">
       <div class=" no-border" (click)="addDataset(detail)">
         <div class="image-square">
           <img src="{{detail.image}}" alt="Album Art" class="card-img-top">
         </div>
-        <div class="card card-body pt-1 pb-1 shadow-bottom">
+        <div class="card card-body pt-4 pb-4 shadow-bottom">
           <h4 class="text-center hide-overflow">{{detail.firstLine}}</h4>
           <h5 class="text-center hide-overflow text-center">{{detail.secondLine}}</h5>
           <h6 class="text-center hide-overflow" *ngIf="detail.thirdLine">{{detail.thirdLine}}</h6>

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { PodiumObject } from '../models/TopObject';
+import { PodiumObject } from '../models/PodiumObject';
 
 @Component({
   selector: 'app-top-display',
@@ -9,6 +9,10 @@ import { PodiumObject } from '../models/TopObject';
 export class TopDisplayComponent implements OnInit {
   @Input() isMobile: Boolean;
   @Input() podiumObject: PodiumObject;
+  @Input() routing: string;
+  @Input() title: string;
+  @Input() isDetail?: boolean;
+
   constructor() { }
 
   ngOnInit() {

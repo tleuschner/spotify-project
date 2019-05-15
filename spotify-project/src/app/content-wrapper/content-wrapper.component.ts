@@ -3,8 +3,9 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 import { SpotifyService } from '../services/spotify.service';
 import { VisitorsService } from '../services/visitors.service';
-import { Artist, Track } from '../models/SpotifyObjects';
-import { PodiumObject } from '../models/TopObject';
+import { Artist, Track, PlayHistoryObject } from '../models/SpotifyObjects';
+import { PodiumObject } from '../models/PodiumObject';
+import { DataService } from '../data.service';
 
 @Component({
   selector: 'app-content-wrapper',
@@ -13,6 +14,8 @@ import { PodiumObject } from '../models/TopObject';
 })
 export class ContentWrapperComponent implements OnInit {
   private isMobile = false;
+  private titles = ['Top Tracks', 'Top Künstler', 'Top Genres', 'Zuletzt gehört'];
+  private routing = ['?', '?', '', ''];
 
   // Track, Artist, Genre, Recents
   private podiumInfo: [PodiumObject[], PodiumObject[], PodiumObject[], PodiumObject[]] = [[], [], [], []];
@@ -20,6 +23,7 @@ export class ContentWrapperComponent implements OnInit {
   constructor(
     private spotifyService: SpotifyService,
     private breakpointObserver: BreakpointObserver,
+    private dataService: DataService,
   ) { }
 
   ngOnInit() {
@@ -36,16 +40,16 @@ export class ContentWrapperComponent implements OnInit {
       localStorage.setItem("Person", res.display_name);
     });
 
+
     this.spotifyService.timeRange.subscribe(time => {
-      // clear old data
+      //update data each time change
+      this.dataService.updateData(time);
 
-      //Get TopTracks and TopGeneres
-      this.spotifyService.getTopSongs('50', undefined, time).subscribe((tracks: Track[]) => {
+      //Get TopTracks
+      this.dataService.topTracks.subscribe((tracks: Track[]) => {
         let topTracks: PodiumObject[] = [];
-        let topGenres: PodiumObject[] = [];
-
-        //Populate with top 3 Tracks
         let topThree = tracks.splice(0, 3);
+
         topThree.forEach((track, index) => {
           let artists = [];
           track.artists.forEach(artist => { artists.push(artist.name) });
@@ -58,31 +62,76 @@ export class ContentWrapperComponent implements OnInit {
           }
           topTracks.push(singleTrack);
         });
+
         this.podiumInfo[0] = topTracks;
+      });
 
-        //Calculate top three Genres
-        let artistIds = this.extractArtistIds(tracks);
-        this.spotifyService.getArtists(artistIds).subscribe((artists: Artist[]) => {
-          let genreCountMap = this.countGenres(artists);
-          let sortedGenres = this.sortGenres(genreCountMap);
-          //@ts-ignore
-          let allGenresCount = <number>Object.values(genreCountMap).reduce((a, b) => (a + b));
-
-          for (let i = 0; i < 3; i++) {
-            let topGenre: PodiumObject = {
-              image: undefined,
-              title: sortedGenres[i][0],
-              subtitle: `${sortedGenres[i][1] / allGenresCount}`
-            }
-            topGenres.push(topGenre);
+      //Get TopGenres
+      this.dataService.topGeneres.subscribe((genres: [[string, number]]) => {
+        let topGenres: PodiumObject[] = [];
+        let allGenresCount = 0;
+        for(let genre of genres) {
+          allGenresCount += genre[1];
+        }
+      
+        for (let i = 0; i < 3; i++) {
+          let topGenre: PodiumObject = {
+            image: undefined,
+            title: genres[i][0],
+            subtitle: `${Math.round(genres[i][1] / allGenresCount * 1000) / 10} %`
           }
-          this.podiumInfo[2] = topGenres;
-        });
+          topGenres.push(topGenre);
+        }
+
+        this.podiumInfo[2] = topGenres;
       });
 
 
-      //Get TopArtists
-      this.spotifyService.getTopArtists('3', undefined, time).subscribe((artists: Artist[]) => {
+
+      // clear old data
+
+      // //Get TopTracks and TopGeneres
+      // this.spotifyService.getTopSongs('50', undefined, time).subscribe((tracks: Track[]) => {
+      //   let topTracks: PodiumObject[] = [];
+      //   let topGenres: PodiumObject[] = [];
+
+      //   //Populate with top 3 Tracks
+      //   let topThree = tracks.splice(0, 3);
+      //   topThree.forEach((track, index) => {
+      //     let artists = [];
+      //     track.artists.forEach(artist => { artists.push(artist.name) });
+
+      //     let singleTrack: PodiumObject = {
+      //       image: track.album.images[0].url,
+      //       title: track.name,
+      //       subtitle: artists.join(', '),
+      //       ranking: `#${index + 1}`,
+      //     }
+      //     topTracks.push(singleTrack);
+      //   });
+      //   this.podiumInfo[0] = topTracks;
+
+      //   //Calculate top three Genres
+      //   let artistIds = this.extractArtistIds(tracks);
+      //   this.spotifyService.getArtists(artistIds).subscribe((artists: Artist[]) => {
+      //     let genreCountMap = this.countGenres(artists);
+      //     let sortedGenres = this.sortGenres(genreCountMap);
+      //     //@ts-ignore
+      //     let allGenresCount = <number>Object.values(genreCountMap).reduce((a, b) => (a + b));
+
+      //     for (let i = 0; i < 3; i++) {
+      //       let topGenre: PodiumObject = {
+      //         image: undefined,
+      //         title: sortedGenres[i][0],
+      //         subtitle: `${Math.round(sortedGenres[i][1] / allGenresCount * 1000) / 10} %`
+      //       }
+      //       topGenres.push(topGenre);
+      //     }
+      //     this.podiumInfo[2] = topGenres;
+      //   });
+      // });
+
+      this.dataService.topArtists.subscribe((artists: Artist[]) => {
         let topArtists: PodiumObject[] = [];
 
         artists.forEach((artist, index) => {
@@ -96,10 +145,11 @@ export class ContentWrapperComponent implements OnInit {
         this.podiumInfo[1] = topArtists;
       });
 
-      //Get Genres
+
 
       //Get recents
-      this.spotifyService.getRecentlyPlayed(3).subscribe(recentlyPlayed => {
+      this.dataService.recentlyPlayed.subscribe((recentlyPlayed: PlayHistoryObject[]) => {
+        recentlyPlayed = recentlyPlayed.splice(0, 3);
         let recentTracks: PodiumObject[] = [];
 
         recentlyPlayed.forEach((recentObject) => {
@@ -112,67 +162,32 @@ export class ContentWrapperComponent implements OnInit {
             subtitle: artists.join(', '),
             additionalInfo: new Date(recentObject.played_at).toLocaleString().replace('-', '.')
           }
-         recentTracks.push(singleTrack);
+          recentTracks.push(singleTrack);
         });
         this.podiumInfo[3] = recentTracks;
+
       });
+
+      // this.spotifyService.getRecentlyPlayed(3).subscribe(recentlyPlayed => {
+      //   let recentTracks: PodiumObject[] = [];
+
+      //   recentlyPlayed.forEach((recentObject) => {
+      //     let artists = [];
+      //     recentObject.track.artists.forEach(artist => { artists.push(artist.name) });
+
+      //     let singleTrack: PodiumObject = {
+      //       image: recentObject.track.album.images[0].url,
+      //       title: recentObject.track.name,
+      //       subtitle: artists.join(', '),
+      //       additionalInfo: new Date(recentObject.played_at).toLocaleString().replace('-', '.')
+      //     }
+      //     recentTracks.push(singleTrack);
+      //   });
+      //   this.podiumInfo[3] = recentTracks;
+      // });
     });
 
-
-
-    // this.spotifyService.timeRange.subscribe(time => {
-    //   this.artists = [];
-    //   this.spotifyService.getTopSongs('3', undefined, time).subscribe(res => {
-    //     this.topSongs = res;
-    //     for(let topSong of res){
-    //       let newArtists = [];
-    //       //@ts-ignore
-    //       for(let artist of topSong.artists){
-    //         newArtists.push(artist.name);
-    //       }
-    //       this.artists.push(newArtists.join(','));
-    //     }
-    //   });
-    // });
-
   }
 
-
-  private extractArtistIds(tracks: Track[]): string[] {
-    let artistIds: string[] = [];
-    for (let track of tracks) {
-      for (let artist of track.artists) {
-        artistIds.push(artist.id);
-      }
-    }
-    return artistIds;
-    // return Array.from(new Set(artistIds));
-  }
-
-  private countGenres(artists: Artist[]) {
-    let genreMap = {};
-
-    for (let artist of artists) {
-      for (let genre of artist.genres) {
-        if (!genreMap[genre]) {
-          genreMap[genre] = 1;
-        } else {
-          genreMap[genre]++;
-        }
-      }
-    }
-    return genreMap;
-  }
-
-  private sortGenres(genreMap) {
-    let sortable = [];
-    for (let genre in genreMap) {
-      sortable.push([genre, genreMap[genre]]);
-    }
-    sortable.sort((a, b) => {
-      return b[1] - a[1];
-    });
-    return sortable;
-  }
 
 }

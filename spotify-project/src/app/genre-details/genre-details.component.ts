@@ -1,7 +1,7 @@
 import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {Chart} from "chart.js/dist/Chart";
 import {ChartService} from "../services/chart.service";
-import {Artist, TopTracks} from "../models/SpotifyObjects";
+import {Artist, Track} from "../models/SpotifyObjects";
 import {SpotifyService} from "../services/spotify.service";
 
 @Component({
@@ -13,7 +13,7 @@ export class GenreDetailsComponent implements OnInit {
   @ViewChild('test', { read: ElementRef }) radarChartCanvas: ElementRef;
 
 
-  private topSongs: TopTracks[];
+  private topSongs: Track[];
   private artists: Artist[] = [];
   private genreMap: Map<string,number> = new Map<string,number>();
   private genre = [];

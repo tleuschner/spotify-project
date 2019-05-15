@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/co
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { SpotifyService } from '../services/spotify.service';
 import { Chart } from 'chart.js/dist/Chart.js'
-import { TopTracks, AudioFeatures, Playlist, Track } from '../models/SpotifyObjects';
+import { AudioFeatures, Playlist, Track } from '../models/SpotifyObjects';
 import { ChartService } from '../services/chart.service';
 import { DetailObject } from '../models/DetailObject';
 
@@ -16,7 +16,7 @@ export class TrackAnalysisComponent implements OnInit, OnDestroy {
   @ViewChild('radarChart', { read: ElementRef }) radarChartCanvas: ElementRef;
   @ViewChild('playlistDropdown', { read: ElementRef }) playlistDropdown: ElementRef;
   private type: string;
-  private tracks: TopTracks[];
+  private tracks: Track[];
   private ids: string[];
   private audioFeatures: AudioFeatures[];
   private playlists: Playlist[];

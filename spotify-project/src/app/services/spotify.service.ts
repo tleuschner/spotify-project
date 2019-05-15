@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http'
-import { Observable, of, BehaviorSubject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of, BehaviorSubject, concat, zip, forkJoin } from 'rxjs';
+import { map, merge } from 'rxjs/operators';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { Artist, TopArtistsPagingObject, TopTracksPagingObject, Track, Playlist, PlaylistPagingObject, AudioFeatures, PlaylistTrack, PlaylistTracksPagingObject, RecentlyPlayed, PlayHistoryObject } from '../models/SpotifyObjects';
 
@@ -36,7 +36,8 @@ export class SpotifyService {
   }
 
   public getArtists(ids: string[]): Observable<Artist[]> {
-    if (ids !== undefined && ids.length <= 100) {
+    console.log(ids.length);
+    if (ids !== undefined && ids.length <= 50) {
       return this.http.get<any>(`${this.apiBaseUrl}/artists`, {
         headers: this.headers, params: {
           ids: ids.join(',')
@@ -61,6 +62,46 @@ export class SpotifyService {
     );
   }
 
+  public getTopSongsNew(timeRange = 'medium_term'): Observable<[Track[], Track[]]> {
+    return zip(this.http.get<TopTracksPagingObject>(`${this.apiBaseUrl}/me/top/tracks`, {
+      headers: this.headers,
+      params: {
+        limit: '49',
+        offset: '0',
+        time_range: timeRange
+      }
+    }).pipe(map(res => res.items)),
+      this.http.get<TopTracksPagingObject>(`${this.apiBaseUrl}/me/top/tracks`, {
+        headers: this.headers,
+        params: {
+          limit: '50',
+          offset: '49',
+          time_range: timeRange
+        }
+      }).pipe(map(res => res.items)));
+  }
+
+  public getTopArtistsNew(timeRange = 'medium_term'): Observable<[Artist[], Artist[]]> {
+    return zip(
+      this.http.get<TopArtistsPagingObject>(`${this.apiBaseUrl}/me/top/artists`, {
+        headers: this.headers,
+        params: {
+          limit: '49',
+          offset: '0',
+          time_range: timeRange
+        }
+      }).pipe(map(res => res.items)),
+      this.http.get<TopArtistsPagingObject>(`${this.apiBaseUrl}/me/top/artists`, {
+        headers: this.headers,
+        params: {
+          limit: '50',
+          offset: '49',
+          time_range: timeRange
+        }
+      }).pipe(map(res => res.items)));
+
+  }
+
   public getPlaylists(): Observable<Playlist[]> {
     return this.http.get<PlaylistPagingObject>(`${this.apiBaseUrl}/me/playlists`, { headers: this.headers }).pipe(
       map(res => res.items)
@@ -68,7 +109,7 @@ export class SpotifyService {
   }
 
   public getRecentlyPlayed(count: number): Observable<PlayHistoryObject[]> {
-    return this.http.get<any>(`${this.apiBaseUrl}/me/player/recently-played?limit=${count}`, { headers: this.headers}).pipe(
+    return this.http.get<any>(`${this.apiBaseUrl}/me/player/recently-played?limit=${count}`, { headers: this.headers }).pipe(
       map(res => res.items)
     );
   }
@@ -86,9 +127,9 @@ export class SpotifyService {
     }
   }
 
-  public getAudioFeature(id : string): Observable<AudioFeatures>{
-    return this.http.get<any>(`${this.apiBaseUrl}/audio-features/${id}`, {headers: this.headers}).pipe(
-      
+  public getAudioFeature(id: string): Observable<AudioFeatures> {
+    return this.http.get<any>(`${this.apiBaseUrl}/audio-features/${id}`, { headers: this.headers }).pipe(
+
     )
   }
 
@@ -99,9 +140,9 @@ export class SpotifyService {
   // }
 
   public getTracksOfAPlaylist(href: string): Observable<any[]> {
-     return this.http.get<any>(href, { headers: this.headers }).pipe(
-       map(res => res.items)
-     );
+    return this.http.get<any>(href, { headers: this.headers }).pipe(
+      map(res => res.items)
+    );
   }
 
   public async getPlaylistTracks(playlistId: string) {
@@ -110,7 +151,7 @@ export class SpotifyService {
     allTracks.push(next.items);
     while (next.next != null) {
       let nextUrl = next.next;
-      let nextTracks = await this.http.get<PlaylistTracksPagingObject>(nextUrl, { headers: this.headers }).toPromise(); 
+      let nextTracks = await this.http.get<PlaylistTracksPagingObject>(nextUrl, { headers: this.headers }).toPromise();
       allTracks.push(nextTracks.items);
       next = nextTracks;
     }
