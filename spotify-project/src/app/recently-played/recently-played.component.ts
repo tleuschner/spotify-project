@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
 import { SpotifyService } from '../services/spotify.service';
-import {Router} from "@angular/router";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-recently-played',
@@ -22,19 +22,19 @@ export class RecentlyPlayedComponent implements OnInit, AfterViewInit {
     //Get data from spotify
     this.spotifyService.getRecentlyPlayed(50).subscribe(res => {
       this.recentlyPlayed = res;
-      for(let i = 0; i<3; i++){
+      for (let i = 0; i < 3; i++) {
         let newArtists = [];
-        for(const artist of res.items[i].track.artists){
+        for (const artist of res[i].track.artists) {
           newArtists.push(artist.name);
         }
         this.artists.push(newArtists.join(','));
       }
     });
 
-    if(window.location.pathname.includes("/recently-details")){
-      this.isDetail= true;
+    if (window.location.pathname.includes("/recently-details")) {
+      this.isDetail = true;
     } else {
-      this.isDetail =false;
+      this.isDetail = false;
     }
   }
 

@@ -18,7 +18,7 @@ export class RecentlyDetailsComponent implements OnInit {
     this.spotifyService.timeRange.subscribe(time => {
       this.spotifyService.getRecentlyPlayed(50).subscribe(res => {
         console.log(res);
-        this.recently = res.items;
+        this.recently = res;
         this.recentlyDetails = [];
         let i = 4;
         for(let recent of this.recently) {
