@@ -3,6 +3,7 @@ import {Chart} from "chart.js/dist/Chart";
 import {ChartService} from "../services/chart.service";
 import {Artist, Track} from "../models/SpotifyObjects";
 import {SpotifyService} from "../services/spotify.service";
+import {DataService} from "../data.service";
 
 @Component({
   selector: 'app-genre-details',
@@ -24,44 +25,24 @@ export class GenreDetailsComponent implements OnInit {
 
   private radarChart: Chart;
   private backgroundColours = [];
+  private hoverBackgroundColor = [];
 
   private distinctPercent = [];
   private distinctName = [];
 
   constructor(
     private spotifyService: SpotifyService,
-    private chartService: ChartService
+    private chartService: ChartService,
+    private dataService: DataService
   ) { }
 
   ngOnInit() {
-    this.spotifyService.timeRange.subscribe(time => {
-      this.clear();
-      this.spotifyService.getTopSongs('50', undefined, time).subscribe(res => {
-        this.topSongs = res;
-        let ids = [];
-        let countId = 0;
-        this.topSongs.forEach(element => {
-          //@ts-ignore
-          for(let artist of element.artists){
-            ids.push(artist.id);
-            countId++;
-            if(countId == 50){
-              this.spotifyService.getArtists(ids).subscribe(res => {
-                this.artists = this.artists.concat(res);
-              });
-              countId = 0;
-              ids = [];
-            }
-          }
-        });
-        this.spotifyService.getArtists(ids).subscribe(res => {
-          this.artists = this.artists.concat(res);
-          console.log("Length: ",this.artists)
-          this.getGenres();
-          //Generate Chart
-          this.populateRadarChart();
-        })
-      })
+    this.spotifyService.timeRange.subscribe((time: string) => {
+      this.dataService.updateData(time);
+    })
+    this.dataService.topGeneres.subscribe(res => {
+      this.genreObject = res;
+      this.populateRadarChart();
     });
   }
 
@@ -74,15 +55,15 @@ export class GenreDetailsComponent implements OnInit {
     let isSameValue = -1;
     let newName = "";
     for(let object of this.genreObject){
-      if(object.percent != isSameValue){
-        this.distinctPercent.push(object.percent);
+      if(object[1] != isSameValue){
+        this.distinctPercent.push(object[1]);
         if(isSameValue != -1){
           this.distinctName.push(newName);
         }
-        isSameValue = object.percent;
-        newName = object.name;
+        isSameValue = object[1];
+        newName = object[0];
       } else {
-        newName = newName+", "+object.name;
+        newName = newName+", "+object[0];
       }
     }
     this.distinctName.push(newName);
@@ -94,7 +75,8 @@ export class GenreDetailsComponent implements OnInit {
     let data = {
       datasets: [{
         data: this.distinctPercent,
-        backgroundColor: this.backgroundColours
+        backgroundColor: this.backgroundColours,
+        hoverBackgroundColor: this.hoverBackgroundColor
       }],
 
       // These labels appear in the legend and in the tooltips when hovering different arcs
@@ -103,8 +85,19 @@ export class GenreDetailsComponent implements OnInit {
 
     this.radarChart = new Chart(ctx, {
       data: data,
-      type: 'polarArea'
+      type: 'polarArea',
+      /*options: {
+        // This chart will not respond to mousemove, etc
+        events: ['click']
+      }*/
     });
+    /*this.radarChart.onClick = function(evt){
+      console.log("KLAPPT!");
+      var activePoints = myLineChart.getElementsAtEvent(evt);
+      // => activePoints is an array of points on the canvas that are at the same position as the click event.
+      console.log(activePoints);
+    };*/
+
     this.chartService.setChart(this.radarChart);
   }
 
@@ -114,66 +107,14 @@ export class GenreDetailsComponent implements OnInit {
       let zufallsZahl1 = Math.random()*255;
       let zufallsZahl2 = Math.random()*255;
       let zufallsZahl3 = Math.random()*255;
-      let zufallsZahl4 = Math.random()*255;
-      let rgba = 'rgba('+zufallsZahl1+', '+zufallsZahl2+', '+zufallsZahl3+', '+zufallsZahl4;
+      let rgba = 'rgba('+zufallsZahl1+', '+zufallsZahl2+', '+zufallsZahl3+', 0.5)';
       this.backgroundColours.push(rgba);
+      let rgbaHover = 'rgba('+zufallsZahl1+', '+zufallsZahl2+', '+zufallsZahl3+', 1)';
+      this.hoverBackgroundColor.push(rgbaHover);
     }
-  }
-
-  private getGenres(){
-    //Get from each Artist the Genre and count it in a array
-    for(let artists of this.artists){
-      //@ts-ignore
-      for(let genre of artists.genres){
-        //console.log("Test: "+genre);
-        this.addAndCountGenre(genre);
-      }
-    }
-    this.sortGenre();
-  }
-
-  private addAndCountGenre(genre: string){
-    this.sumValues++;
-    if(this.genreMap.has(genre)){
-      let value = this.genreMap.get(genre);
-      value++;
-      this.genreMap.set(genre,value);
-    } else {
-      this.genreMap.set(genre,1);
-    }
-  }
-
-  private sortGenre(){
-    this.genre = Array.from(this.genreMap.keys());
-    this.genreCounter = Array.from(this.genreMap.values());
-
-    for(let i = 0; i < this.genre.length; i++){
-      let object = {name: this.genre[i],value: this.genreCounter[i], percent: Math.round((this.genreCounter[i]/this.sumValues*1000))/10};
-      this.genreObject.push(object)
-    }
-    console.log("Genres: ",this.genreObject);
-
-    this.genreObject.sort(function (a, b) {
-      return b.value - a.value;
-    });
-
-    this.genresErmittelt = true;
-  }
-
-  private clear(){
-    this.topSongs = [];
-    this.artists = [];
-    this.genreMap = new Map<string,number>();
-    this.genre = [];
-    this.genreCounter = [];
-    this.genreObject = [];
-    this.sumValues = 0;
-    this.genresErmittelt = false;
-    this.backgroundColours = [];
   }
 
   private shuffle() {
-    let zufall = Math.random()*255
     var j, x, i;
     for (i = this.distinctName.length - 1; i > 0; i--) {
       j = Math.floor(Math.random() * (i + 1));
