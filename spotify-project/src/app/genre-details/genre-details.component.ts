@@ -56,6 +56,7 @@ export class GenreDetailsComponent implements OnInit {
         });
         this.spotifyService.getArtists(ids).subscribe(res => {
           this.artists = this.artists.concat(res);
+          console.log("Length: ",this.artists)
           this.getGenres();
           //Generate Chart
           this.populateRadarChart();
@@ -123,11 +124,9 @@ export class GenreDetailsComponent implements OnInit {
     //Get from each Artist the Genre and count it in a array
     for(let artists of this.artists){
       //@ts-ignore
-      for(let artist of artists.artists){
-        for(let genre of artist.genres){
-          //console.log("Test: "+genre);
-          this.addAndCountGenre(genre);
-        }
+      for(let genre of artists.genres){
+        //console.log("Test: "+genre);
+        this.addAndCountGenre(genre);
       }
     }
     this.sortGenre();
