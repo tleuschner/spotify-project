@@ -42,149 +42,87 @@ export class ContentWrapperComponent implements OnInit {
 
 
     this.spotifyService.timeRange.subscribe(time => {
+      console.log(time);
       //update data each time change
-      this.dataService.updateData(time);
+      this.dataService.updateData(time);     
 
-      //Get TopTracks
-      this.dataService.topTracks.subscribe((tracks: Track[]) => {
-        let topTracks: PodiumObject[] = [];
-        let topThree = tracks.splice(0, 3);
+    });
 
-        topThree.forEach((track, index) => {
-          let artists = [];
-          track.artists.forEach(artist => { artists.push(artist.name) });
+    this.dataService.topTracks.subscribe((tracks: Track[]) => {
+      console.log(tracks);
+      let topTracks: PodiumObject[] = [];
+      let topThree = tracks.splice(0, 3);
 
-          let singleTrack: PodiumObject = {
-            image: track.album.images[0].url,
-            title: track.name,
-            subtitle: artists.join(', '),
-            ranking: `#${index + 1}`,
-          }
-          topTracks.push(singleTrack);
-        });
+      topThree.forEach((track, index) => {
+        let artists = [];
+        track.artists.forEach(artist => { artists.push(artist.name) });
 
-        this.podiumInfo[0] = topTracks;
-      });
-
-      //Get TopGenres
-      this.dataService.topGeneres.subscribe((genres: [[string, number]]) => {
-        let topGenres: PodiumObject[] = [];
-        let allGenresCount = 0;
-        for(let genre of genres) {
-          allGenresCount += genre[1];
+        let singleTrack: PodiumObject = {
+          image: track.album.images[0].url,
+          title: track.name,
+          subtitle: artists.join(', '),
+          ranking: `#${index + 1}`,
         }
-      
-        for (let i = 0; i < 3; i++) {
-          let topGenre: PodiumObject = {
-            image: undefined,
-            title: genres[i][0],
-            subtitle: `${Math.round(genres[i][1] / allGenresCount * 1000) / 10} %`
-          }
-          topGenres.push(topGenre);
+        topTracks.push(singleTrack);
+      });
+
+      this.podiumInfo[0] = topTracks;
+    });
+
+    //Get TopGenres
+    this.dataService.topGeneres.subscribe((genres: [[string, number]]) => {
+      let topGenres: PodiumObject[] = [];
+      let allGenresCount = 0;
+      for(let genre of genres) {
+        allGenresCount += genre[1];
+      }
+    
+      for (let i = 0; i < 3; i++) {
+        let topGenre: PodiumObject = {
+          image: undefined,
+          title: genres[i][0],
+          subtitle: `${Math.round(genres[i][1] / allGenresCount * 1000) / 10} %`
         }
+        topGenres.push(topGenre);
+      }
 
-        this.podiumInfo[2] = topGenres;
+      this.podiumInfo[2] = topGenres;
+    });
+
+    this.dataService.topArtists.subscribe((artists: Artist[]) => {
+      let topArtists: PodiumObject[] = [];
+
+      artists.forEach((artist, index) => {
+        let singleArtist: PodiumObject = {
+          image: artist.images[0].url,
+          title: artist.name,
+          ranking: `#${index + 1}`,
+        }
+        topArtists.push(singleArtist);
       });
+      this.podiumInfo[1] = topArtists;
+    });
 
 
 
-      // clear old data
+    //Get recents
+    this.dataService.recentlyPlayed.subscribe((recentlyPlayed: PlayHistoryObject[]) => {
+      recentlyPlayed = recentlyPlayed.splice(0, 3);
+      let recentTracks: PodiumObject[] = [];
 
-      // //Get TopTracks and TopGeneres
-      // this.spotifyService.getTopSongs('50', undefined, time).subscribe((tracks: Track[]) => {
-      //   let topTracks: PodiumObject[] = [];
-      //   let topGenres: PodiumObject[] = [];
+      recentlyPlayed.forEach((recentObject) => {
+        let artists = [];
+        recentObject.track.artists.forEach(artist => { artists.push(artist.name) });
 
-      //   //Populate with top 3 Tracks
-      //   let topThree = tracks.splice(0, 3);
-      //   topThree.forEach((track, index) => {
-      //     let artists = [];
-      //     track.artists.forEach(artist => { artists.push(artist.name) });
-
-      //     let singleTrack: PodiumObject = {
-      //       image: track.album.images[0].url,
-      //       title: track.name,
-      //       subtitle: artists.join(', '),
-      //       ranking: `#${index + 1}`,
-      //     }
-      //     topTracks.push(singleTrack);
-      //   });
-      //   this.podiumInfo[0] = topTracks;
-
-      //   //Calculate top three Genres
-      //   let artistIds = this.extractArtistIds(tracks);
-      //   this.spotifyService.getArtists(artistIds).subscribe((artists: Artist[]) => {
-      //     let genreCountMap = this.countGenres(artists);
-      //     let sortedGenres = this.sortGenres(genreCountMap);
-      //     //@ts-ignore
-      //     let allGenresCount = <number>Object.values(genreCountMap).reduce((a, b) => (a + b));
-
-      //     for (let i = 0; i < 3; i++) {
-      //       let topGenre: PodiumObject = {
-      //         image: undefined,
-      //         title: sortedGenres[i][0],
-      //         subtitle: `${Math.round(sortedGenres[i][1] / allGenresCount * 1000) / 10} %`
-      //       }
-      //       topGenres.push(topGenre);
-      //     }
-      //     this.podiumInfo[2] = topGenres;
-      //   });
-      // });
-
-      this.dataService.topArtists.subscribe((artists: Artist[]) => {
-        let topArtists: PodiumObject[] = [];
-
-        artists.forEach((artist, index) => {
-          let singleArtist: PodiumObject = {
-            image: artist.images[0].url,
-            title: artist.name,
-            ranking: `#${index + 1}`,
-          }
-          topArtists.push(singleArtist);
-        });
-        this.podiumInfo[1] = topArtists;
+        let singleTrack: PodiumObject = {
+          image: recentObject.track.album.images[0].url,
+          title: recentObject.track.name,
+          subtitle: artists.join(', '),
+          additionalInfo: new Date(recentObject.played_at).toLocaleString().replace('-', '.')
+        }
+        recentTracks.push(singleTrack);
       });
-
-
-
-      //Get recents
-      this.dataService.recentlyPlayed.subscribe((recentlyPlayed: PlayHistoryObject[]) => {
-        recentlyPlayed = recentlyPlayed.splice(0, 3);
-        let recentTracks: PodiumObject[] = [];
-
-        recentlyPlayed.forEach((recentObject) => {
-          let artists = [];
-          recentObject.track.artists.forEach(artist => { artists.push(artist.name) });
-
-          let singleTrack: PodiumObject = {
-            image: recentObject.track.album.images[0].url,
-            title: recentObject.track.name,
-            subtitle: artists.join(', '),
-            additionalInfo: new Date(recentObject.played_at).toLocaleString().replace('-', '.')
-          }
-          recentTracks.push(singleTrack);
-        });
-        this.podiumInfo[3] = recentTracks;
-
-      });
-
-      // this.spotifyService.getRecentlyPlayed(3).subscribe(recentlyPlayed => {
-      //   let recentTracks: PodiumObject[] = [];
-
-      //   recentlyPlayed.forEach((recentObject) => {
-      //     let artists = [];
-      //     recentObject.track.artists.forEach(artist => { artists.push(artist.name) });
-
-      //     let singleTrack: PodiumObject = {
-      //       image: recentObject.track.album.images[0].url,
-      //       title: recentObject.track.name,
-      //       subtitle: artists.join(', '),
-      //       additionalInfo: new Date(recentObject.played_at).toLocaleString().replace('-', '.')
-      //     }
-      //     recentTracks.push(singleTrack);
-      //   });
-      //   this.podiumInfo[3] = recentTracks;
-      // });
+      this.podiumInfo[3] = recentTracks;
     });
 
   }

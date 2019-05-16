@@ -36,7 +36,6 @@ export class SpotifyService {
   }
 
   public getArtists(ids: string[]): Observable<Artist[]> {
-    console.log(ids.length);
     if (ids !== undefined && ids.length <= 50) {
       return this.http.get<any>(`${this.apiBaseUrl}/artists`, {
         headers: this.headers, params: {

@@ -25,28 +25,30 @@ export class DataService {
   }
 
   public get topTracks(): Observable<Track[]> {
-    return this.topSpotifyTracks;
+    return this.topSpotifyTracks.asObservable();
   }
 
   public get recentlyPlayed(): Observable<PlayHistoryObject[]> {
-    return this.recentlyPlayedTracks;
+    return this.recentlyPlayedTracks.asObservable();
   }
 
   public get topArtists(): Observable<Artist[]> {
-    return this.topSpotifyArtists;
+    return this.topSpotifyArtists.asObservable();
   }
 
   public get topGeneres(): Observable<[[string, number]]> {
-    return this.topSpotifyGenres;
+    return this.topSpotifyGenres.asObservable();
   }
 
   private updateTopTracksAndGenres() {
     this.spotifyService.getTopSongsNew(this.timeRange).subscribe(async (tracks: [Track[], Track[]]) => {
       let flatTracks = this.flattenArray(tracks);
+      console.log(flatTracks);
       this.topSpotifyTracks.next(flatTracks);
 
       //Calculate geners
       let artistIds = this.extractArtistIds(flatTracks);
+
       //API call can only handle 50 ids at time
       if (artistIds.length > 50) {
         let artists = [];
@@ -61,6 +63,7 @@ export class DataService {
         let sortedGenres = this.sortGenres(genreCountMap);
         this.topSpotifyGenres.next(sortedGenres);
       } else {
+        
         this.spotifyService.getArtists(artistIds).subscribe((artists: Artist[]) => {
           let genreCountMap = this.countGenres(artists);
           let sortedGenres = this.sortGenres(genreCountMap);
