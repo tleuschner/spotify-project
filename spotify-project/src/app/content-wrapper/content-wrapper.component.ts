@@ -44,7 +44,7 @@ export class ContentWrapperComponent implements OnInit {
     this.spotifyService.timeRange.subscribe(time => {
       console.log(time);
       //update data each time change
-      this.dataService.updateData(time);     
+      this.dataService.updateData(time);
 
     });
 
@@ -73,10 +73,10 @@ export class ContentWrapperComponent implements OnInit {
     this.dataService.topGeneres.subscribe((genres: [[string, number]]) => {
       let topGenres: PodiumObject[] = [];
       let allGenresCount = 0;
-      for(let genre of genres) {
+      for (let genre of genres) {
         allGenresCount += genre[1];
       }
-    
+
       for (let i = 0; i < 3; i++) {
         let topGenre: PodiumObject = {
           image: undefined,
@@ -91,6 +91,7 @@ export class ContentWrapperComponent implements OnInit {
 
     this.dataService.topArtists.subscribe((artists: Artist[]) => {
       let topArtists: PodiumObject[] = [];
+      artists = artists.slice(0, 3);
 
       artists.forEach((artist, index) => {
         let singleArtist: PodiumObject = {
