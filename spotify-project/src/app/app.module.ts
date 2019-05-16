@@ -12,9 +12,8 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { ContentWrapperComponent } from './content-wrapper/content-wrapper.component';
 import { TopArtistsComponent } from './top-artists/top-artists.component';
-import { TopSongsComponent } from './top-songs/top-songs.component';
-import {TopPlaylistsComponent} from "./top-playlists/top-playlists.component";
-import {RecentlyPlayedComponent} from "./recently-played/recently-played.component";
+import { TopPlaylistsComponent } from "./top-playlists/top-playlists.component";
+import { RecentlyPlayedComponent } from "./recently-played/recently-played.component";
 import { TrackAnalysisComponent } from './track-analysis/track-analysis.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { DetailListComponent } from './detail-list/detail-list.component';
@@ -23,6 +22,7 @@ import { TopGenresComponent } from './top-genres/top-genres.component';
 import { RecentlyDetailsComponent } from './recently-details/recently-details.component';
 import { GenreDetailsComponent } from './genre-details/genre-details.component';
 import { TopDisplayComponent } from './top-display/top-display.component';
+import { DetailViewComponent } from './detail-view/detail-view.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +32,6 @@ import { TopDisplayComponent } from './top-display/top-display.component';
     FooterComponent,
     ContentWrapperComponent,
     TopArtistsComponent,
-    TopSongsComponent,
     TopPlaylistsComponent,
     RecentlyPlayedComponent,
     TrackAnalysisComponent,
@@ -42,7 +41,8 @@ import { TopDisplayComponent } from './top-display/top-display.component';
     TopGenresComponent,
     RecentlyDetailsComponent,
     GenreDetailsComponent,
-    TopDisplayComponent
+    TopDisplayComponent,
+    DetailViewComponent
   ],
   imports: [
     BrowserModule,
@@ -52,11 +52,11 @@ import { TopDisplayComponent } from './top-display/top-display.component';
     // automatically sends access token in header to spotify 
     OAuthModule.forRoot({
       resourceServer: {
-          allowedUrls: ['https://api.spotify.com/v1'],
-          sendAccessToken: true
+        allowedUrls: ['https://api.spotify.com/v1'],
+        sendAccessToken: true
       }
-  }),
-  LayoutModule,
+    }),
+    LayoutModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

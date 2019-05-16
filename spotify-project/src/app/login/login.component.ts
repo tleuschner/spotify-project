@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
   //@ViewChild('rememberMe', { read: ElementRef }) rememberMe: ElementRef;
   seitenaufrufe = "Besucher insgesamt: 2";
-  private name : string;
+  public name : string;
   private wasloggedIn: boolean;
 
   constructor(

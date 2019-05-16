@@ -10,7 +10,7 @@ import {DetailObject} from "../models/DetailObject";
 export class RecentlyDetailsComponent implements OnInit {
 
   private recently: any;
-  private recentlyDetails: DetailObject[] = [];
+  public recentlyDetails: DetailObject[] = [];
 
   constructor(private spotifyService: SpotifyService) { }
 

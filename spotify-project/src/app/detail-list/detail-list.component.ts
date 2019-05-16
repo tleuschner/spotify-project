@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { DetailObject } from "../models/DetailObject";
 import { SpotifyService } from '../services/spotify.service';
 import { ChartService } from '../services/chart.service';
@@ -6,7 +6,8 @@ import { ChartService } from '../services/chart.service';
 @Component({
   selector: 'app-detail-list',
   templateUrl: './detail-list.component.html',
-  styleUrls: ['./detail-list.component.css']
+  styleUrls: ['./detail-list.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DetailListComponent implements OnInit {
   @Input() detailObject: DetailObject;

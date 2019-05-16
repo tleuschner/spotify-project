@@ -15,14 +15,14 @@ import { DetailObject } from '../models/DetailObject';
 export class TrackAnalysisComponent implements OnInit, OnDestroy {
   @ViewChild('radarChart', { read: ElementRef }) radarChartCanvas: ElementRef;
   @ViewChild('playlistDropdown', { read: ElementRef }) playlistDropdown: ElementRef;
-  private type: string;
+  public type: string;
   private tracks: Track[];
   private ids: string[];
   private audioFeatures: AudioFeatures[];
   private playlists: Playlist[];
-  private radarChart: Chart;
-  private trackDetails: DetailObject[] = [];
-  private playlistDetails: DetailObject[] = [];
+  public radarChart: Chart;
+  public trackDetails: DetailObject[] = [];
+  public playlistDetails: DetailObject[] = [];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -31,7 +31,6 @@ export class TrackAnalysisComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    window.addEventListener('scroll', this.scroll, true);
     this.activatedRoute.paramMap.subscribe((params: ParamMap) => {
       this.type = params.get('type');
 
@@ -59,7 +58,6 @@ export class TrackAnalysisComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    window.removeEventListener('scroll', this.scroll, true); //third parameter
   }
 
   scroll = (event: any): void => {
@@ -122,7 +120,6 @@ export class TrackAnalysisComponent implements OnInit, OnDestroy {
     this.playlistDropdown.nativeElement.innerText = playlist.name;
 
     this.spotifyService.getPlaylistTracks(playlist.id).then(async values => {
-      console.log([].concat.apply([],values));
       for (let i = 0; i < values.length; i++) {
         let idChunk = values[i];
         let singleIds = [];

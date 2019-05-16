@@ -19,7 +19,7 @@ export class TopGenresComponent implements OnInit {
   private genreCounter = [];
   private genreObject = [];
   private sumValues = 0;
-  private genresErmittelt: boolean = false;
+  public genresErmittelt: boolean = false;
 
   constructor(
     private spotifyService: SpotifyService,

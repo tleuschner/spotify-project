@@ -22,7 +22,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(private oauthService: OAuthService,
     private router: Router,
-    private authService: AuthService,
+    public authService: AuthService,
     private renderer: Renderer2,
     private spotifyService: SpotifyService,
     private visitorsService: VisitorsService

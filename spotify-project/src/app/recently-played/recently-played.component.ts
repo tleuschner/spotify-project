@@ -10,8 +10,8 @@ import { Router } from "@angular/router";
 export class RecentlyPlayedComponent implements OnInit, AfterViewInit {
   @Input() isMobile: Boolean;
 
-  private recentlyPlayed: any;
-  private isDetail: boolean;
+  public recentlyPlayed: any;
+  public isDetail: boolean;
   private artists: string[] = [];
 
   constructor(

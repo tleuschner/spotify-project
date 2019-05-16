@@ -10,8 +10,8 @@ import {DetailObject} from "../models/DetailObject";
 })
 export class ArtistDetailsComponent implements OnInit {
 
-  private topArtists: Artist[];
-  private artistDetails: DetailObject[] = [];
+  public topArtists: Artist[];
+  public artistDetails: DetailObject[] = [];
 
   constructor(private spotifyService: SpotifyService) { }
 

@@ -11,8 +11,8 @@ import {Router} from "@angular/router";
 export class TopArtistsComponent implements OnInit {
   @Input() isMobile: Boolean;
 
-  private topArtists: Artist[];
-  private isDetail: boolean;
+  public topArtists: Artist[];
+  public isDetail: boolean;
 
   constructor(private spotifyService: SpotifyService,
               private router: Router) { }

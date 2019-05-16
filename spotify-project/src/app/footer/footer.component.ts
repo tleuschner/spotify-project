@@ -16,7 +16,7 @@ export class FooterComponent implements OnInit {
   constructor(
     private _location: Location,
     private visitorsService: VisitorsService,
-    private authService: AuthService
+    public authService: AuthService
     ) { }
 
     //TODO fix number after first login. wenn das erste mal eingeloggt zählt das noch nicht in besucher rein...

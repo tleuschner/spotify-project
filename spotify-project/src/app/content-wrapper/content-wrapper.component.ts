@@ -15,10 +15,10 @@ import { DataService } from '../data.service';
 export class ContentWrapperComponent implements OnInit {
   private isMobile = false;
   private titles = ['Top Tracks', 'Top Künstler', 'Top Genres', 'Zuletzt gehört'];
-  private routing = ['?', '?', '', ''];
+  private routing = ['tracks', 'artists', 'genres', 'recents'];
 
   // Track, Artist, Genre, Recents
-  private podiumInfo: [PodiumObject[], PodiumObject[], PodiumObject[], PodiumObject[]] = [[], [], [], []];
+  public podiumInfo: [PodiumObject[], PodiumObject[], PodiumObject[], PodiumObject[]] = [[], [], [], []];
 
   constructor(
     private spotifyService: SpotifyService,
@@ -49,7 +49,6 @@ export class ContentWrapperComponent implements OnInit {
     });
 
     this.dataService.topTracks.subscribe((tracks: Track[]) => {
-      console.log(tracks);
       let topTracks: PodiumObject[] = [];
       let topThree = tracks.splice(0, 3);
 

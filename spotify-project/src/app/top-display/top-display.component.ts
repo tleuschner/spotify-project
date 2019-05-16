@@ -8,7 +8,7 @@ import { PodiumObject } from '../models/PodiumObject';
 })
 export class TopDisplayComponent implements OnInit {
   @Input() isMobile: Boolean;
-  @Input() podiumObject: PodiumObject;
+  @Input() podiumObject: PodiumObject[];
   @Input() routing: string;
   @Input() title: string;
   @Input() isDetail?: boolean;
