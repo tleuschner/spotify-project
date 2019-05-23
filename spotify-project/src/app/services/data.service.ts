@@ -12,6 +12,7 @@ export class DataService {
   private recentlyPlayedTracks: Subject<PlayHistoryObject[]> = new Subject();
   private topSpotifyArtists: Subject<Artist[]> = new Subject();
   private topSpotifyGenres: Subject<[[string, number]]> = new Subject();
+  private artistsBehindGenres: Subject<[[string, string]]> = new Subject();
 
   constructor(
     private spotifyService: SpotifyService,
@@ -40,9 +41,9 @@ export class DataService {
     return this.topSpotifyGenres.asObservable();
   }
 
-  // public get audioFeatures(tracks: Track[]): Observable<AudioFeatures[]> {
-  //   return (a:AudioFeatures[]);
-  // }
+  public get topArtistsToGeneres(): Observable<[[string, string]]> {
+    return this.artistsBehindGenres.asObservable();
+  }
 
   private updateTopTracksAndGenres() {
     this.spotifyService.getTopSongs('49', '0', this.timeRange).subscribe((firstTracks: Track[]) => {
@@ -63,15 +64,23 @@ export class DataService {
           artists.push(chunkOfArtists);
         }
         let flattendArtists = this.flattenArray(artists);
-        let genreCountMap = this.countGenres(flattendArtists);
+        let responses = this.countGenres(flattendArtists);
+        let genreCountMap = responses[0];
+        let countArtistToGenre = responses[1];
         let sortedGenres = this.sortGenres(genreCountMap);
+        let sortedArtistToGenre = this.sortArtistsToGenres(countArtistToGenre);
         this.topSpotifyGenres.next(sortedGenres);
+        this.artistsBehindGenres.next(sortedArtistToGenre);
       } else {
         
         this.spotifyService.getArtists(artistIds).subscribe((artists: Artist[]) => {
-          let genreCountMap = this.countGenres(artists);
+          let responses = this.countGenres(artists);
+          let genreCountMap = responses[0];
+          let countArtistToGenre = responses[1];
           let sortedGenres = this.sortGenres(genreCountMap);
+          let sortedArtistToGenre = this.sortArtistsToGenres(countArtistToGenre);
           this.topSpotifyGenres.next(sortedGenres);
+          this.artistsBehindGenres.next(sortedArtistToGenre);
         });
       }
       });
@@ -111,17 +120,34 @@ export class DataService {
 
   private countGenres(artists: Artist[]) {
     let genreMap = {};
+    let genreArtistMap = {};
 
     for (let artist of artists) {
       for (let genre of artist.genres) {
         if (!genreMap[genre]) {
           genreMap[genre] = 1;
+          genreArtistMap[genre] = [artist.name,artist.images[0].url];
         } else {
           genreMap[genre]++;
+          genreArtistMap[genre] = this.proofExistenzOfArtist(genreArtistMap[genre],[artist.name,artist.images[0].url]);
         }
       }
     }
-    return genreMap;
+    console.log(genreArtistMap);
+    return [genreMap,genreArtistMap];
+  }
+
+  private proofExistenzOfArtist(names: string[], newName: string[]){
+    let artists = names[0].split(", ");
+    for(let artist of artists){
+      if(artist.match(newName[0])){
+        return names;
+      }
+    }
+    names[0] = names[0] + ", " + newName[0];
+    names[1] = names[1] + ", " + newName[1];
+
+    return names;
   }
 
   private sortGenres(genreMap): [[string, number]] {
@@ -136,4 +162,15 @@ export class DataService {
     return <[[string, number]]>sortable;
   }
 
+  private sortArtistsToGenres(genreMap): [[string, string]] {
+    let sortable = [];
+    for (let genre in genreMap) {
+      sortable.push([genre, genreMap[genre]]);
+    }
+    sortable.sort((a, b) => {
+      return b[1] - a[1];
+    });
+    //kinda dirty
+    return <[[string, string]]>sortable;
+  }
 }

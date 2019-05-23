@@ -14,4 +14,5 @@
   <div *ngIf="detailObject.length">
     <app-detail-list [detailObject]="detailObject"></app-detail-list>
   </div>
+    <app-genre-details *ngIf="type.match('genre')"></app-genre-details>
 </div>

@@ -4,6 +4,7 @@ import {ChartService} from "../services/chart.service";
 import {Artist, Track} from "../models/SpotifyObjects";
 import {SpotifyService} from "../services/spotify.service";
 import {DataService} from "../services/data.service";
+import {DetailObject} from "../models/DetailObject";
 
 @Component({
   selector: 'app-genre-details',
@@ -13,15 +14,10 @@ import {DataService} from "../services/data.service";
 export class GenreDetailsComponent implements OnInit {
   @ViewChild('test', { read: ElementRef }) radarChartCanvas: ElementRef;
 
-
-  private topSongs: Track[];
-  private artists: Artist[] = [];
-  private genreMap: Map<string,number> = new Map<string,number>();
-  private genre = [];
-  private genreCounter = [];
   private genreObject = [];
-  private sumValues = 0;
-  private genresErmittelt: boolean = false;
+  private sumCount;
+  private artistToGenre : string[][] = [];
+  private showArtistsOfAGenre = [];
 
   private radarChart: Chart;
   private backgroundColours = [];
@@ -29,6 +25,7 @@ export class GenreDetailsComponent implements OnInit {
 
   private distinctPercent = [];
   private distinctName = [];
+
 
   constructor(
     private spotifyService: SpotifyService,
@@ -39,10 +36,14 @@ export class GenreDetailsComponent implements OnInit {
   ngOnInit() {
     this.spotifyService.timeRange.subscribe((time: string) => {
       this.dataService.updateData(time);
-    })
+    });
     this.dataService.topGeneres.subscribe(res => {
       this.genreObject = res;
+      this.generateSumCount();
       this.populateRadarChart();
+    });
+    this.dataService.topArtistsToGeneres.subscribe(res => {
+      this.artistToGenre = res;
     });
   }
 
@@ -56,7 +57,7 @@ export class GenreDetailsComponent implements OnInit {
     let newName = "";
     for(let object of this.genreObject){
       if(object[1] != isSameValue){
-        this.distinctPercent.push(object[1]);
+        this.distinctPercent.push(Math.round((object[1]/this.sumCount*1000))/10);
         if(isSameValue != -1){
           this.distinctName.push(newName);
         }
@@ -86,19 +87,47 @@ export class GenreDetailsComponent implements OnInit {
     this.radarChart = new Chart(ctx, {
       data: data,
       type: 'polarArea',
-      /*options: {
-        // This chart will not respond to mousemove, etc
-        events: ['click']
-      }*/
+      options: {
+        onClick: (e) => {
+          var element = this.radarChart.getElementAtEvent(e);
+          if (element.length) {
+            let label = element[0]._view.label.toString();
+            this.zeigeGenreInfoAn(label)
+          }
+        }
+      }
     });
-    /*this.radarChart.onClick = function(evt){
-      console.log("KLAPPT!");
-      var activePoints = myLineChart.getElementsAtEvent(evt);
-      // => activePoints is an array of points on the canvas that are at the same position as the click event.
-      console.log(activePoints);
-    };*/
-
     this.chartService.setChart(this.radarChart);
+  }
+
+  private zeigeGenreInfoAn(label: string){
+    console.log(this.artistToGenre);
+    this.showArtistsOfAGenre = [];
+    console.log("ArtistToGenre: ",this.artistToGenre);
+    for(let proofGenre of label.split(", ")){
+      let i = 0;
+      for(let genre of this.artistToGenre){
+        if(genre[0] === proofGenre){
+          console.log(genre);
+          console.log("FirstLine: ",genre[0]);
+          let findImage = genre[1][1].split(", ");
+          console.log("FindImage: ",findImage);
+          console.log("I: ",i);
+          console.log("Image: ",findImage[i]);
+          console.log("Das ist ein",genre);
+          this.showArtistsOfAGenre.push(genre);
+
+          /*let details: DetailObject = {
+            image: genre[1][1],
+            firstLine: genre[0],
+            secondLine: null,
+            thirdLine: null,
+            id: track.id
+          }*/
+        }
+      }
+    }
+    //this.detailObject.push(detailTrack);
   }
 
   private setBackgroundColours(anzahl: any[]){
@@ -125,6 +154,13 @@ export class GenreDetailsComponent implements OnInit {
       this.distinctPercent[i] = this.distinctPercent[j];
       this.distinctPercent[j] = x;
     }
-    console.log("Percent: ",this.distinctPercent);
+  }
+
+  private generateSumCount(){
+    var counter = 0;
+    for(let object of this.genreObject){
+      counter += object[1];
+    }
+    this.sumCount = counter;
   }
 }
