@@ -1,8 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {SpotifyService} from "../services/spotify.service";
-import {Artist, Track } from "../models/SpotifyObjects";
-import {forEach} from "@angular/router/src/utils/collection";
-import {generateErrorMessage} from "codelyzer/angular/styles/cssLexer";
+import {Artist, Track} from "../models/SpotifyObjects";
 
 @Component({
   selector: 'app-top-genres',
@@ -19,7 +17,7 @@ export class TopGenresComponent implements OnInit {
   private genreCounter = [];
   private genreObject = [];
   private sumValues = 0;
-  public genresErmittelt: boolean = false;
+  private genresErmittelt: boolean = false;
 
   constructor(
     private spotifyService: SpotifyService,
@@ -58,7 +56,8 @@ export class TopGenresComponent implements OnInit {
   private getGenres(){
     //Get from each Artist the Genre and count it in a array
     for(let artists of this.artists){
-      for(let artist of this.artists){
+      //@ts-ignore
+      for(let artist of artists.artists){
         for(let genre of artist.genres){
           //console.log("Test: "+genre);
           this.addAndCountGenre(genre);

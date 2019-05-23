@@ -3,6 +3,13 @@
   <div *ngIf="podium">
     <app-top-display [isMobile]="false" [podiumObject]="podiumObject" [routing]="none" [title]=""></app-top-display>
   </div>
+  <div class="row" *ngIf="chart">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <canvas #displayChart></canvas>
+    </div>
+    <div class="col-md-2"></div>
+  </div>
   <div class="spacer"></div>
   <div *ngIf="detailObject.length">
     <app-detail-list [detailObject]="detailObject"></app-detail-list>

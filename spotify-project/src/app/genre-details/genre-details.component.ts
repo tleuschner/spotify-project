@@ -3,7 +3,7 @@ import {Chart} from "chart.js/dist/Chart";
 import {ChartService} from "../services/chart.service";
 import {Artist, Track} from "../models/SpotifyObjects";
 import {SpotifyService} from "../services/spotify.service";
-import {DataService} from "../data.service";
+import {DataService} from "../services/data.service";
 
 @Component({
   selector: 'app-genre-details',

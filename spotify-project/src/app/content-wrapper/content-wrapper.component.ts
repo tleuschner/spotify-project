@@ -1,21 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 import { SpotifyService } from '../services/spotify.service';
-import { VisitorsService } from '../services/visitors.service';
 import { Artist, Track, PlayHistoryObject } from '../models/SpotifyObjects';
 import { PodiumObject } from '../models/PodiumObject';
-import { DataService } from '../data.service';
+import { DataService } from '../services/data.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-content-wrapper',
   templateUrl: './content-wrapper.component.html',
   styleUrls: ['./content-wrapper.component.css']
 })
-export class ContentWrapperComponent implements OnInit {
+
+export class ContentWrapperComponent implements OnInit, OnDestroy {
   private isMobile = false;
   private titles = ['Top Tracks', 'Top Künstler', 'Top Genres', 'Zuletzt gehört'];
   private routing = ['tracks', 'artists', 'genres', 'recents'];
+  private unsubscribe$ = new Subject<void>();
 
   // Track, Artist, Genre, Recents
   public podiumInfo: [PodiumObject[], PodiumObject[], PodiumObject[], PodiumObject[]] = [[], [], [], []];
@@ -28,7 +31,7 @@ export class ContentWrapperComponent implements OnInit {
 
   ngOnInit() {
     // Wahrscheinlich auch über CSS lösbar aber klappt ;)
-    this.breakpointObserver.observe(['(min-width: 768px)']).subscribe(result => {
+    this.breakpointObserver.observe(['(min-width: 768px)']).pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
       // this.isMobile = !result.matches
       if (result.matches) {
         this.isMobile = false;
@@ -36,19 +39,19 @@ export class ContentWrapperComponent implements OnInit {
         this.isMobile = true;
       }
     });
-    this.spotifyService.getUserInfo().subscribe(res => {
+
+    //Get Current User
+    this.spotifyService.getUserInfo().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       localStorage.setItem("Person", res.display_name);
     });
 
-
-    this.spotifyService.timeRange.subscribe(time => {
-      console.log(time);
-      //update data each time change
+    //update data each time change
+    this.spotifyService.timeRange.pipe(takeUntil(this.unsubscribe$)).subscribe(time => {
       this.dataService.updateData(time);
 
     });
 
-    this.dataService.topTracks.subscribe((tracks: Track[]) => {
+    this.dataService.topTracks.pipe(takeUntil(this.unsubscribe$)).subscribe((tracks: Track[]) => {
       let topTracks: PodiumObject[] = [];
       let topThree = tracks.splice(0, 3);
 
@@ -69,7 +72,7 @@ export class ContentWrapperComponent implements OnInit {
     });
 
     //Get TopGenres
-    this.dataService.topGeneres.subscribe((genres: [[string, number]]) => {
+    this.dataService.topGeneres.pipe(takeUntil(this.unsubscribe$)).subscribe((genres: [[string, number]]) => {
       let topGenres: PodiumObject[] = [];
       let allGenresCount = 0;
       for (let genre of genres) {
@@ -88,7 +91,7 @@ export class ContentWrapperComponent implements OnInit {
       this.podiumInfo[2] = topGenres;
     });
 
-    this.dataService.topArtists.subscribe((artists: Artist[]) => {
+    this.dataService.topArtists.pipe(takeUntil(this.unsubscribe$)).subscribe((artists: Artist[]) => {
       let topArtists: PodiumObject[] = [];
       artists = artists.slice(0, 3);
 
@@ -106,7 +109,7 @@ export class ContentWrapperComponent implements OnInit {
 
 
     //Get recents
-    this.dataService.recentlyPlayed.subscribe((recentlyPlayed: PlayHistoryObject[]) => {
+    this.dataService.recentlyPlayed.pipe(takeUntil(this.unsubscribe$)).subscribe((recentlyPlayed: PlayHistoryObject[]) => {
       recentlyPlayed = recentlyPlayed.splice(0, 3);
       let recentTracks: PodiumObject[] = [];
 
@@ -125,6 +128,11 @@ export class ContentWrapperComponent implements OnInit {
       this.podiumInfo[3] = recentTracks;
     });
 
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { SpotifyService } from './services/spotify.service';
-import { Track, Artist, PlayHistoryObject } from './models/SpotifyObjects';
+import { SpotifyService } from './spotify.service';
+import { Track, Artist, PlayHistoryObject, AudioFeatures } from '../models/SpotifyObjects';
 import { Observable, of, Subject } from 'rxjs';
 
 @Injectable({
@@ -40,10 +40,14 @@ export class DataService {
     return this.topSpotifyGenres.asObservable();
   }
 
+  // public get audioFeatures(tracks: Track[]): Observable<AudioFeatures[]> {
+  //   return (a:AudioFeatures[]);
+  // }
+
   private updateTopTracksAndGenres() {
-    this.spotifyService.getTopSongsNew(this.timeRange).subscribe(async (tracks: [Track[], Track[]]) => {
-      let flatTracks = this.flattenArray(tracks);
-      console.log(flatTracks);
+    this.spotifyService.getTopSongs('49', '0', this.timeRange).subscribe((firstTracks: Track[]) => {
+      this.spotifyService.getTopSongs('50', '49', this.timeRange).subscribe(async (secondTracks: Track[]) => {
+        let flatTracks = this.flattenArray([firstTracks, secondTracks]);
       this.topSpotifyTracks.next(flatTracks);
 
       //Calculate geners
@@ -70,6 +74,7 @@ export class DataService {
           this.topSpotifyGenres.next(sortedGenres);
         });
       }
+      });
     });
   }
 

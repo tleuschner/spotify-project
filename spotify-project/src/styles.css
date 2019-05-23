@@ -7,6 +7,10 @@ body {
   /* padding-top: 50px; */
 }
 
+.top-margin {
+  margin-top: 70px;
+}
+
 .pull-down {
   flex-direction: row;
   align-items: flex-end;

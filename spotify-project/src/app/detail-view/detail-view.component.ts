@@ -1,25 +1,30 @@
-import { Component, OnInit } from '@angular/core';
-import { DataService } from '../data.service';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { DataService } from '../services/data.service';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { SpotifyService } from '../services/spotify.service';
-import { Track, Artist, PlayHistoryObject } from '../models/SpotifyObjects';
+import { Track, Artist, PlayHistoryObject, AudioFeatures } from '../models/SpotifyObjects';
 import { PodiumObject } from '../models/PodiumObject';
 import { DetailObject } from '../models/DetailObject';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-detail-view',
   templateUrl: './detail-view.component.html',
   styleUrls: ['./detail-view.component.css']
 })
-export class DetailViewComponent implements OnInit {
+export class DetailViewComponent implements OnInit, OnDestroy {
+  @ViewChild('displayChart', { read: ElementRef }) chartCanvas: ElementRef;
   private type: string;
   public false = false;
-  public title: string = 'asdf';
+  public title: string = '';
   public podium = false;
+  public chart = false;
   private topTracks: Track[];
   private topArtists: Artist[];
   public podiumObject: PodiumObject[] = [];
   public detailObject: DetailObject[] = [];
+  private unsubscribe$ = new Subject<void>();
 
 
   constructor(
@@ -30,18 +35,22 @@ export class DetailViewComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.activatedRoute.paramMap.subscribe((params: ParamMap) => {
+    this.activatedRoute.paramMap.pipe(takeUntil(this.unsubscribe$)).subscribe((params: ParamMap) => {
       this.type = params.get('id');
       if (this.type === 'tracks' || this.type === 'artists' || this.type === 'recents') {
         this.podium = true;
+
       } else {
         this.podium = false;
+        this.chart = false;
       }
 
       switch (this.type) {
         case 'tracks':
-          this.generateTopTrackData();
+          this.chart = true;
           this.title = "Top Tracks";
+          this.generateTopTrackData();
+          // this.generateChart();
           break;
         case 'artists':
           this.generateTopArtistsData();
@@ -49,32 +58,67 @@ export class DetailViewComponent implements OnInit {
           break;
         case 'recents':
           this.generateRecentlyListenedData();
+          this.chart = true;
           this.title = "Zuletzt gehört";
           break;
         case 'genres':
           console.log('nice');
           break;
         case 'playlist':
+          this.chart = true;
           console.log('nice');
         default:
-        this.router.navigate(['/404'])
+          this.router.navigate(['/404'])
           break;
       }
     });
 
-    this.spotifyService.timeRange.subscribe(time => {
-      console.log('called')
+    this.spotifyService.timeRange.pipe(takeUntil(this.unsubscribe$)).subscribe(time => {
       this.dataService.updateData(time);
     });
+  }
 
+  private generateChart(features: AudioFeatures[], label: string) {
+    let ctx = this.chartCanvas.nativeElement;
+    let data = {
+      labels: ['Tanzbarkeit', 'Energie', 'Lautstärke', 'Speechiness', 'Akkustik', 'Instrumental', 'Lebhaftigkeit', 'Stimmung'],
+      datasets: [{
+        label: label,
+        data: this.calculateAverages(features),
+        fill: true,
+        backgroundColor: '#1db95450',
+        pointBackgroundColor: 'rgba(25, 20, 20, 1)',
+        pointBorderColor: 'rgba(30, 215, 96, 0.3)',
+      }]
+    }
+  }
 
+  private calculateAverages(features: AudioFeatures[]) {
+    let danceability = 0, energy = 0, loudness = 0, speechiness = 0, acousticness = 0, instrumentalness = 0, liveness = 0, valence = 0;
+    let length = features.length;
+    let result = [];
 
+    for (const feature of features) {
+      danceability += feature.danceability;
+      energy += feature.energy;
+      loudness += feature.loudness / -60;
+      speechiness += feature.speechiness;
+      acousticness += feature.acousticness;
+      instrumentalness += feature.instrumentalness;
+      liveness += feature.liveness;
+      valence += feature.valence;
+    }
+    let temp = [danceability, energy, loudness, speechiness, acousticness, instrumentalness, liveness, valence];
+    for (const feature of temp) {
+      result.push(feature / length);
+    }
+    //Lautstärke besser anzeigen
+    result[2] = 1 - result[2];
+    return result;
   }
 
   private generateTopTrackData() {
-    
-    this.dataService.topTracks.subscribe((tracks: Track[]) => {
-      let startTime = performance.now();
+    this.dataService.topTracks.pipe(takeUntil(this.unsubscribe$)).subscribe((tracks: Track[]) => {
       this.podiumObject = [];
       this.detailObject = [];
       let podiumArtists = tracks.slice(0, 3);
@@ -106,12 +150,11 @@ export class DetailViewComponent implements OnInit {
         }
         this.detailObject.push(detailTrack);
       });
-      console.log('this took ' + (performance.now()-startTime) + ' ms');
     });
   }
 
   private generateTopArtistsData() {
-    this.dataService.topArtists.subscribe((artists: Artist[]) => {
+    this.dataService.topArtists.pipe(takeUntil(this.unsubscribe$)).subscribe((artists: Artist[]) => {
       this.podiumObject = [];
       this.detailObject = [];
       let podiumArtists = artists.slice(0, 3);
@@ -140,7 +183,7 @@ export class DetailViewComponent implements OnInit {
   }
 
   private generateRecentlyListenedData() {
-    this.dataService.recentlyPlayed.subscribe((recents: PlayHistoryObject[]) => {
+    this.dataService.recentlyPlayed.pipe(takeUntil(this.unsubscribe$)).subscribe((recents: PlayHistoryObject[]) => {
       this.podiumObject = [];
       let podiumRecents = recents.slice(0, 3);
       let detailRecents = recents.slice(3, recents.length);
@@ -182,6 +225,11 @@ export class DetailViewComponent implements OnInit {
       additionalInfo: additionalInfo,
       ranking: ranking
     }
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }
