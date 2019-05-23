@@ -26,6 +26,7 @@ export class GenreDetailsComponent implements OnInit {
   private distinctPercent = [];
   private distinctName = [];
 
+  private detailObject = [];
 
   constructor(
     private spotifyService: SpotifyService,
@@ -105,29 +106,34 @@ export class GenreDetailsComponent implements OnInit {
     this.showArtistsOfAGenre = [];
     console.log("ArtistToGenre: ",this.artistToGenre);
     for(let proofGenre of label.split(", ")){
-      let i = 0;
+      let neueDetailList = [];
       for(let genre of this.artistToGenre){
         if(genre[0] === proofGenre){
-          console.log(genre);
-          console.log("FirstLine: ",genre[0]);
-          let findImage = genre[1][1].split(", ");
-          console.log("FindImage: ",findImage);
-          console.log("I: ",i);
-          console.log("Image: ",findImage[i]);
-          console.log("Das ist ein",genre);
-          this.showArtistsOfAGenre.push(genre);
-
-          /*let details: DetailObject = {
-            image: genre[1][1],
-            firstLine: genre[0],
-            secondLine: null,
-            thirdLine: null,
-            id: track.id
-          }*/
+          console.log("GENRE: ",genre);
+          this.showArtistsOfAGenre.push([genre,this.fuegeArtistDerDetailListeHinzu(genre[1])]);
         }
       }
+      //this.showArtistsOfAGenre.push(neueDetailList);
     }
-    //this.detailObject.push(detailTrack);
+  }
+
+  private fuegeArtistDerDetailListeHinzu(genre: string){
+    let neueDetailList = [];
+    this.detailObject = [];
+    let artists = genre[0].split(", ");
+    let images = genre[1].split(", ");
+    for(let i = 0; i < artists.length; i++){
+      let details: DetailObject = {
+        image: images[i],
+        firstLine: artists[i],
+        secondLine: null,
+        thirdLine: null,
+        id: i.toString()
+      };
+      console.log("Details: ",details)
+      neueDetailList.push(details);
+    }
+    return neueDetailList;
   }
 
   private setBackgroundColours(anzahl: any[]){

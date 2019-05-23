@@ -13,11 +13,11 @@
   <br>
   <br>
   <div *ngFor="let genre of showArtistsOfAGenre">
-    <div *ngFor="let names of genre">
-      Test: {{names[0]}}
-    </div>
-    <!--{{genre[0]}}:<br>-->
-    <!--{{genre[1]}} <br><br><br>-->
+    <h1 class="text-center">{{genre[0][0]}}</h1>
+    <br>
+    <br>
+    <app-detail-list [detailObject]="genre[1]"></app-detail-list>
+    <br>
   </div>
   <br>
   <br>
