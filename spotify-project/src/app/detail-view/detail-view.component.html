@@ -1,19 +1,44 @@
 <div class="container top-margin">
+
   <h1 class="text-center">{{title}}</h1>
   <div *ngIf="podium">
-    <app-top-display [isMobile]="false" [podiumObject]="podiumObject" [routing]="none" [title]="" [isDetail]="chart"></app-top-display>
+    <app-top-display [isMobile]="false" [podiumObject]="podiumObject" [routing]="none" [title]="" [isDetail]="chart">
+    </app-top-display>
   </div>
+
+  <div class="row" *ngIf="playlist">
+    <div class="col-md-8">
+      <h1>Wähle eine Playlist aus!</h1>
+    </div>
+    <div class="col-md-4">
+      <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false" #playlistDropdown>
+          Playlists
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <div *ngFor="let playlist of playlists" (click)="analysePlaylist(playlist)" class="dropdown-item">
+            {{playlist.name}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="spacer" *ngIf="chart"></div>
+
   <div class="row" *ngIf="chart">
     <div class="col-md-2"></div>
     <div class="col-md-8">
-        <canvas #displayChart></canvas>
+      <canvas #displayChart></canvas>
     </div>
     <div class="col-md-2"></div>
   </div>
+
   <div class="spacer"></div>
+
   <div *ngIf="detailObject.length">
-    <app-detail-list [detailObject]="detailObject"></app-detail-list>
+    <app-detail-list [detailObject]="detailObject" [isDetail]="chart"></app-detail-list>
   </div>
-    <app-genre-details *ngIf="type.match('genre')"></app-genre-details>
+
+  <app-genre-details *ngIf="type.match('genre')"></app-genre-details>
 </div>

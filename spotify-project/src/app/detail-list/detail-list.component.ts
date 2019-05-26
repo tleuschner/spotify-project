@@ -11,6 +11,7 @@ import { ChartService } from '../services/chart.service';
 })
 export class DetailListComponent implements OnInit {
   @Input() detailObject: DetailObject;
+  @Input() isDetail?: boolean;
 
   constructor(
     private spotifyService: SpotifyService,

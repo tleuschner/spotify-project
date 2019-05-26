@@ -1,9 +1,9 @@
 <div *ngIf="detailObject">
   <div class="row">
     <div class="col-md-3" *ngFor="let detail of detailObject; let i = index" data-aos="fade-up" data-aos-duration="1500" data-aos-offset="100"  data-aos-once="true">
-      <div class=" no-border" (click)="addDataset(detail)">
+      <div class=" no-border" (click)="isDetail? addDataset(detail) : undefined">
         <div class="image-square">
-          <img src="{{detail.image}}" alt="Album Art" class="card-img-top">
+          <img src="{{detail.image}}" alt="Album Art" class="card-img-top" [class.pointer]="isDetail">
         </div>
         <div class="card card-body pt-4 pb-4 shadow-bottom">
           <h4 class="text-center hide-overflow">{{detail.firstLine}}</h4>

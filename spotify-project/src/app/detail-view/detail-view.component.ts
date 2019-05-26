@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/co
 import { DataService } from '../services/data.service';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { SpotifyService } from '../services/spotify.service';
-import { Track, Artist, PlayHistoryObject, AudioFeatures } from '../models/SpotifyObjects';
+import { Track, Artist, PlayHistoryObject, AudioFeatures, Playlist } from '../models/SpotifyObjects';
 import { PodiumObject } from '../models/PodiumObject';
 import { DetailObject } from '../models/DetailObject';
 import { Subject } from 'rxjs';
@@ -16,18 +16,20 @@ import { ChartService } from '../services/chart.service';
   styleUrls: ['./detail-view.component.css']
 })
 export class DetailViewComponent implements OnInit, OnDestroy {
-  @ViewChild('displayChart', { read: ElementRef }) chartCanvas: ElementRef;
+  @ViewChild('displayChart', { read: ElementRef }) chartCanvas?: ElementRef;
+  @ViewChild('playlistDropdown', { read: ElementRef }) playlistDropdown?: ElementRef;
   private type: string;
-  public false = false;
   public title: string = '';
   public podium = false;
   public chart = false;
+  public playlist = false;
   public radarChart: Chart;
   private topTracks: Track[];
   private topArtists: Artist[];
   public audioFeatures: AudioFeatures[];
   public podiumObject: PodiumObject[] = [];
   public detailObject: DetailObject[] = [];
+  public playlists: Playlist[] = [];
   private unsubscribe$ = new Subject<void>();
 
 
@@ -68,10 +70,12 @@ export class DetailViewComponent implements OnInit, OnDestroy {
           console.log('nice');
           break;
         case 'playlist':
-          this.chart = true;
-          console.log('nice');
+          this.title = 'Playlist Analyse'
+          this.chart = this.playlist = true;
+          this.getPlaylists();
+          break;
         default:
-          this.router.navigate(['/404'])
+          this.router.navigate([''])
           break;
       }
     });
@@ -79,6 +83,40 @@ export class DetailViewComponent implements OnInit, OnDestroy {
     this.spotifyService.timeRange.pipe(takeUntil(this.unsubscribe$)).subscribe(time => {
       this.dataService.updateData(time);
     });
+  }
+
+  public analysePlaylist(playlist: Playlist) {
+    this.playlistDropdown.nativeElement.innerText = playlist.name;
+    this.detailObject = [];
+
+    this.spotifyService.getPlaylistTracks(playlist.id).then((value: any[]) => {
+      let tracks: Track[] = [];
+      value = this.flattenArray(value);
+      value.forEach(item => { tracks.push(item.track) });
+      let ids = this.extractIds(tracks);
+
+      this.getAudioFeatures(ids).then(
+        (onFullfilled) => {
+          let audioFeatures = this.flattenArray(onFullfilled)[0].audio_features;
+          this.generateChart(audioFeatures, playlist.name);
+        }
+      );
+
+      tracks.forEach((track, index) => {
+        let artists = [];
+        track.artists.forEach(artist => { artists.push(artist.name) });
+
+        this.detailObject.push({
+          image: track.album.images[0].url,
+          firstLine: track.name,
+          secondLine: artists.join(', '),
+          id: track.id
+        });
+        
+      });
+
+
+    })
   }
 
   private generateTopTrackData() {
@@ -120,7 +158,6 @@ export class DetailViewComponent implements OnInit, OnDestroy {
       this.getAudioFeatures(ids).then(
         (onFullfilled) => {
           let audioFeatures = this.flattenArray(onFullfilled)[0].audio_features;
-          console.log(audioFeatures);
           this.generateChart(audioFeatures, 'Top Tracks');
         }
       );
@@ -192,9 +229,8 @@ export class DetailViewComponent implements OnInit, OnDestroy {
           thirdLine: new Date(recent.played_at).toLocaleString().replace('-', '.'),
           id: recent.track.id
         }
-        this.detailObject.push(recentDetail);    
-        
-        let audioFeatures = this.getAudioFeatures(ids);
+        this.detailObject.push(recentDetail);
+
         this.getAudioFeatures(ids).then(
           (onFullfilled) => {
             let audioFeatures = this.flattenArray(onFullfilled)[0].audio_features;
@@ -205,6 +241,14 @@ export class DetailViewComponent implements OnInit, OnDestroy {
       });
     });
   }
+
+  private getPlaylists() {
+    this.spotifyService.getPlaylists().pipe(takeUntil(this.unsubscribe$)).subscribe((playlist: Playlist[]) => {
+      this.playlists = playlist;
+    });
+  }
+
+  // private generate
 
   private extractIds(tracks: Track[]): string[] {
     let ids: string[] = [];
