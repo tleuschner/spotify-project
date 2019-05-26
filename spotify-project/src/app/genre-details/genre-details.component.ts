@@ -49,6 +49,9 @@ export class GenreDetailsComponent implements OnInit {
   }
 
   private populateRadarChart() {
+    if(this.radarChart) {
+      this.radarChart.destroy();
+    }
 
     let ctx = this.radarChartCanvas.nativeElement;
 
@@ -98,7 +101,6 @@ export class GenreDetailsComponent implements OnInit {
         }
       }
     });
-    this.chartService.setChart(this.radarChart);
   }
 
   private zeigeGenreInfoAn(label: string){
