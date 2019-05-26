@@ -4,4 +4,5 @@ export class PodiumObject {
     subtitle?: string;
     additionalInfo?: string;
     ranking?: string;
+    id?: string;
 }

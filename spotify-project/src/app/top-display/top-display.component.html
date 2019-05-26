@@ -3,7 +3,7 @@
     <br>
   </div>
   <div *ngIf="podiumObject && podiumObject.length && !isMobile" data-aos="fade-up" data-aos-duration="1500" data-aos-offset="100">
-    <a class="deleteLinkUnderline" [routerLink]="['/details', routing] ">
+    <a class="deleteLinkUnderline" [routerLink]="isDetail ? [] : ['/details', routing] ">
       <div class="row">
         <div class="col-md-12">
           <h1 class="text-center">{{title}}</h1>
@@ -11,7 +11,7 @@
         </div>
       </div>
       <div class="row pull-down shadow-bottom">
-        <div class="col-md-4 pr-0 pl-0">
+        <div class="col-md-4 pr-0 pl-0" (click)="isDetail ? addDataset(podiumObject[1]) : undefined">
           <div class="no-border">
             <div *ngIf="podiumObject[1].image" class="image-square">
               <img src="{{podiumObject[1].image}}" alt="Album Art" class="card-img-top">
@@ -24,7 +24,7 @@
             </div>
           </div>
         </div>
-        <div class="col-md-4 pr-0 pl-0">
+        <div class="col-md-4 pr-0 pl-0" (click)="isDetail ? addDataset(podiumObject[0]) : undefined">
           <div class=" no-border">
               <div *ngIf="podiumObject[0].image" class="image-square">
                   <img src="{{podiumObject[0].image}}" alt="Album Art" class="card-img-top">
@@ -37,7 +37,7 @@
                 </div>
           </div>
         </div>
-        <div class="col-md-4 pr-0 pl-0">
+        <div class="col-md-4 pr-0 pl-0" (click)="isDetail ? addDataset(podiumObject[2]) : undefined">
           <div class=" no-border">
               <div *ngIf="podiumObject[2].image" class="image-square">
                   <img src="{{podiumObject[2].image}}" alt="Album Art" class="card-img-top">

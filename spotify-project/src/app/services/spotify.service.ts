@@ -120,9 +120,7 @@ export class SpotifyService {
           ids: ids.join(',')
         }
       });
-      //TODO: do this
-    } else {
-
+    } else if (ids !== undefined && ids.length > 100) {
     }
   }
 

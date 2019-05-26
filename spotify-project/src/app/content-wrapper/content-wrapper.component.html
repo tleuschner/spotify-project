@@ -14,7 +14,7 @@
 
 
     <div *ngFor="let podiumObject of podiumInfo; let i = index">
-      <app-top-display [isMobile]="isMobile" [podiumObject]="podiumObject" [routing]="routing[i]" [title]="titles[i]"></app-top-display>
+      <app-top-display [isMobile]="isMobile" [podiumObject]="podiumObject" [routing]="routing[i]" [title]="titles[i]" [isDetail]="false"></app-top-display>
       <div class="spacer"></div>
     </div>
     <app-top-playlists></app-top-playlists>

@@ -7,6 +7,8 @@ import { PodiumObject } from '../models/PodiumObject';
 import { DetailObject } from '../models/DetailObject';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { Chart } from 'chart.js';
+import { ChartService } from '../services/chart.service';
 
 @Component({
   selector: 'app-detail-view',
@@ -20,8 +22,10 @@ export class DetailViewComponent implements OnInit, OnDestroy {
   public title: string = '';
   public podium = false;
   public chart = false;
+  public radarChart: Chart;
   private topTracks: Track[];
   private topArtists: Artist[];
+  public audioFeatures: AudioFeatures[];
   public podiumObject: PodiumObject[] = [];
   public detailObject: DetailObject[] = [];
   private unsubscribe$ = new Subject<void>();
@@ -31,6 +35,7 @@ export class DetailViewComponent implements OnInit, OnDestroy {
     private dataService: DataService,
     private activatedRoute: ActivatedRoute,
     private spotifyService: SpotifyService,
+    private chartService: ChartService,
     private router: Router
   ) { }
 
@@ -39,7 +44,6 @@ export class DetailViewComponent implements OnInit, OnDestroy {
       this.type = params.get('id');
       if (this.type === 'tracks' || this.type === 'artists' || this.type === 'recents') {
         this.podium = true;
-
       } else {
         this.podium = false;
         this.chart = false;
@@ -50,7 +54,6 @@ export class DetailViewComponent implements OnInit, OnDestroy {
           this.chart = true;
           this.title = "Top Tracks";
           this.generateTopTrackData();
-          // this.generateChart();
           break;
         case 'artists':
           this.generateTopArtistsData();
@@ -78,45 +81,6 @@ export class DetailViewComponent implements OnInit, OnDestroy {
     });
   }
 
-  private generateChart(features: AudioFeatures[], label: string) {
-    let ctx = this.chartCanvas.nativeElement;
-    let data = {
-      labels: ['Tanzbarkeit', 'Energie', 'Lautstärke', 'Speechiness', 'Akkustik', 'Instrumental', 'Lebhaftigkeit', 'Stimmung'],
-      datasets: [{
-        label: label,
-        data: this.calculateAverages(features),
-        fill: true,
-        backgroundColor: '#1db95450',
-        pointBackgroundColor: 'rgba(25, 20, 20, 1)',
-        pointBorderColor: 'rgba(30, 215, 96, 0.3)',
-      }]
-    }
-  }
-
-  private calculateAverages(features: AudioFeatures[]) {
-    let danceability = 0, energy = 0, loudness = 0, speechiness = 0, acousticness = 0, instrumentalness = 0, liveness = 0, valence = 0;
-    let length = features.length;
-    let result = [];
-
-    for (const feature of features) {
-      danceability += feature.danceability;
-      energy += feature.energy;
-      loudness += feature.loudness / -60;
-      speechiness += feature.speechiness;
-      acousticness += feature.acousticness;
-      instrumentalness += feature.instrumentalness;
-      liveness += feature.liveness;
-      valence += feature.valence;
-    }
-    let temp = [danceability, energy, loudness, speechiness, acousticness, instrumentalness, liveness, valence];
-    for (const feature of temp) {
-      result.push(feature / length);
-    }
-    //Lautstärke besser anzeigen
-    result[2] = 1 - result[2];
-    return result;
-  }
-
   private generateTopTrackData() {
     this.dataService.topTracks.pipe(takeUntil(this.unsubscribe$)).subscribe((tracks: Track[]) => {
       this.podiumObject = [];
@@ -133,6 +97,7 @@ export class DetailViewComponent implements OnInit, OnDestroy {
           title: track.name,
           subtitle: artists.join(', '),
           ranking: `#${index + 1}`,
+          id: track.id
         }
         this.podiumObject.push(singleTrack);
       });
@@ -150,6 +115,17 @@ export class DetailViewComponent implements OnInit, OnDestroy {
         }
         this.detailObject.push(detailTrack);
       });
+
+      let ids = this.extractIds(tracks);
+      this.getAudioFeatures(ids).then(
+        (onFullfilled) => {
+          let audioFeatures = this.flattenArray(onFullfilled)[0].audio_features;
+          console.log(audioFeatures);
+          this.generateChart(audioFeatures, 'Top Tracks');
+        }
+      );
+
+
     });
   }
 
@@ -185,23 +161,27 @@ export class DetailViewComponent implements OnInit, OnDestroy {
   private generateRecentlyListenedData() {
     this.dataService.recentlyPlayed.pipe(takeUntil(this.unsubscribe$)).subscribe((recents: PlayHistoryObject[]) => {
       this.podiumObject = [];
+      let ids: string[] = [];
       let podiumRecents = recents.slice(0, 3);
       let detailRecents = recents.slice(3, recents.length);
 
       podiumRecents.forEach((recent) => {
         let artists = [];
         recent.track.artists.forEach(artist => { artists.push(artist.name) });
+        ids.push(recent.track.id);
 
         let singleRecent: PodiumObject = {
           image: recent.track.album.images[0].url,
           title: recent.track.name,
           subtitle: artists.join(', '),
-          additionalInfo: new Date(recent.played_at).toLocaleString().replace('-', '.')
+          additionalInfo: new Date(recent.played_at).toLocaleString().replace('-', '.'),
+          id: recent.track.id
         }
         this.podiumObject.push(singleRecent);
       });
 
       detailRecents.forEach(recent => {
+        ids.push(recent.track.id);
         let artists = [];
         recent.track.artists.forEach(artist => { artists.push(artist.name) });
 
@@ -212,19 +192,94 @@ export class DetailViewComponent implements OnInit, OnDestroy {
           thirdLine: new Date(recent.played_at).toLocaleString().replace('-', '.'),
           id: recent.track.id
         }
-        this.detailObject.push(recentDetail);
+        this.detailObject.push(recentDetail);    
+        
+        let audioFeatures = this.getAudioFeatures(ids);
+        this.getAudioFeatures(ids).then(
+          (onFullfilled) => {
+            let audioFeatures = this.flattenArray(onFullfilled)[0].audio_features;
+            this.generateChart(audioFeatures, 'Zuletzt gehört');
+          }
+        );
+
       });
     });
   }
 
-  private generatePodium(image: string, title: string, subtitle?: string, additionalInfo?: string, ranking?: string): PodiumObject {
-    return {
-      image: image,
-      title: title,
-      subtitle: subtitle,
-      additionalInfo: additionalInfo,
-      ranking: ranking
+  private extractIds(tracks: Track[]): string[] {
+    let ids: string[] = [];
+    for (const track of tracks) {
+      ids.push(track.id);
     }
+    return ids;
+  }
+
+  private getAudioFeatures(trackIds: string[]): Promise<AudioFeatures[]> {
+    let i, j, k = 0;
+    let chunk = 100;
+    let promises = [];
+    for (i = 0, j = trackIds.length; i < j; i += chunk) {
+      let ids = trackIds.slice(i, i + chunk);
+      promises.push(new Promise((resolve, reject) => {
+        this.spotifyService.getAudioFeatures(ids).toPromise().then(
+          (onFullfilled) => {
+            resolve(onFullfilled);
+          }, (onReject) => {
+            console.error(onReject);
+          }
+        );
+      })
+      );
+    }
+    return Promise.all(promises);
+  }
+
+  private generateChart(features: AudioFeatures[], label: string) {
+    let ctx = this.chartCanvas.nativeElement;
+    let data = {
+      labels: ['Tanzbarkeit', 'Energie', 'Lautstärke', 'Speechiness', 'Akkustik', 'Instrumental', 'Lebhaftigkeit', 'Stimmung'],
+      datasets: [{
+        label: label,
+        data: this.calculateAverages(features),
+        fill: true,
+        backgroundColor: '#1db95450',
+        pointBackgroundColor: 'rgba(25, 20, 20, 1)',
+        pointBorderColor: 'rgba(30, 215, 96, 0.3)',
+      }],
+    }
+    this.radarChart = new Chart(ctx, {
+      type: 'radar',
+      data: data,
+    });
+    this.chartService.setChart(this.radarChart);
+  }
+
+  private calculateAverages(features: AudioFeatures[]) {
+    let danceability = 0, energy = 0, loudness = 0, speechiness = 0, acousticness = 0, instrumentalness = 0, liveness = 0, valence = 0;
+    let length = features.length;
+    let result = [];
+
+    for (const feature of features) {
+      danceability += feature.danceability;
+      energy += feature.energy;
+      loudness += feature.loudness / -60;
+      speechiness += feature.speechiness;
+      acousticness += feature.acousticness;
+      instrumentalness += feature.instrumentalness;
+      liveness += feature.liveness;
+      valence += feature.valence;
+    }
+    let temp = [danceability, energy, loudness, speechiness, acousticness, instrumentalness, liveness, valence];
+    for (const feature of temp) {
+      result.push(feature / length);
+    }
+    //Lautstärke besser anzeigen
+    result[2] = 1 - result[2];
+    return result;
+  }
+
+  private flattenArray(array): [any] {
+    return [].concat.apply([], array);
   }
 
   ngOnDestroy() {

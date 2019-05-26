@@ -1,8 +1,9 @@
 <div class="container top-margin">
   <h1 class="text-center">{{title}}</h1>
   <div *ngIf="podium">
-    <app-top-display [isMobile]="false" [podiumObject]="podiumObject" [routing]="none" [title]=""></app-top-display>
+    <app-top-display [isMobile]="false" [podiumObject]="podiumObject" [routing]="none" [title]="" [isDetail]="chart"></app-top-display>
   </div>
+  <div class="spacer" *ngIf="chart"></div>
   <div class="row" *ngIf="chart">
     <div class="col-md-2"></div>
     <div class="col-md-8">

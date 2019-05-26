@@ -7,15 +7,18 @@ import { Chart } from 'chart.js/dist/Chart.js'
 })
 export class ChartService {
 
-  private Chart: Chart;
+  private chart: Chart;
 
   constructor() { }
 
   public getChart() {
-    return this.Chart;
+    return this.chart;
   }
 
   public setChart(chart: Chart) {
-    this.Chart = chart;
+    if(this.chart) {
+      this.chart.destroy();
+    }
+    this.chart = chart;
   }
 }

@@ -22,7 +22,7 @@ export class DataService {
     this.timeRange = timeRange;
     this.updateTopTracksAndGenres();
     this.updateTopArtists();
-    this.updateRecentlyPlayed()
+    this.updateRecentlyPlayed();
   }
 
   public get topTracks(): Observable<Track[]> {
