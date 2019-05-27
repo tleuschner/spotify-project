@@ -29,7 +29,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     setTimeout(()=> {
       this.done = true;
-    }, 400)
+    }, 1000)
   }
 
   private configureWithNewConfigApi() {

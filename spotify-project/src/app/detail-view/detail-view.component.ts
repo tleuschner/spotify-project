@@ -31,7 +31,7 @@ export class DetailViewComponent implements OnInit, OnDestroy, AfterViewInit {
   public audioFeatures: AudioFeatures[];
   public podiumObject: PodiumObject[] = [];
   public detailObject: DetailObject[] = [];
-  public playlists: Playlist[] = [];
+  public playlists: Playlist[];
   private unsubscribe$ = new Subject<void>();
 
 
