@@ -10,3 +10,17 @@
   right: 10px;
   bottom: 10px;
 }
+
+.grey-background {
+  background-color: #343a40d0;
+  color: darkgrey;
+  text-align: center;
+}
+
+.nav h5:hover {
+  color: #fff !important;
+}
+
+.nav h6:hover {
+  color: #fff !important;
+}

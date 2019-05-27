@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import { AuthConfig } from 'angular-oauth2-oidc';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { JwksValidationHandler } from 'angular-oauth2-oidc';
@@ -15,7 +15,8 @@ import { slideInAnimation } from './animations';
     slideInAnimation
   ]
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
+  public done = false;
 
   constructor(private oauthService: OAuthService) {
     this.configureWithNewConfigApi();
@@ -24,6 +25,13 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     AOS.init();
   }
+
+  ngAfterViewInit(): void {
+    setTimeout(()=> {
+      this.done = true;
+    }, 400)
+  }
+
   private configureWithNewConfigApi() {
     this.oauthService.setStorage(localStorage);
     this.oauthService.configure(authConfig);

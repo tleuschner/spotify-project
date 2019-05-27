@@ -30,7 +30,6 @@ export class GenreDetailsComponent implements OnInit {
 
   constructor(
     private spotifyService: SpotifyService,
-    private chartService: ChartService,
     private dataService: DataService
   ) { }
 
@@ -108,7 +107,6 @@ export class GenreDetailsComponent implements OnInit {
     this.showArtistsOfAGenre = [];
     console.log("ArtistToGenre: ",this.artistToGenre);
     for(let proofGenre of label.split(", ")){
-      let neueDetailList = [];
       for(let genre of this.artistToGenre){
         if(genre[0] === proofGenre){
           console.log("GENRE: ",genre);
