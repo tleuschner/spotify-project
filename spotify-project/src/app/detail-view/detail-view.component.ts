@@ -24,6 +24,7 @@ export class DetailViewComponent implements OnInit, OnDestroy, AfterViewInit {
   public chart = false;
   public playlist = false;
   public sticky = false;
+  public done = false;
   private elementPos: any;
   public radarChart: Chart;
   private topTracks: Track[];
@@ -71,7 +72,6 @@ export class DetailViewComponent implements OnInit, OnDestroy, AfterViewInit {
           this.title = "Zuletzt gehört";
           break;
         case 'genres':
-          console.log('nice');
           break;
         case 'playlist':
           this.title = 'Playlist Analyse'
@@ -90,17 +90,16 @@ export class DetailViewComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    if(this.chartCanvas) {
-      console.log(this.chartCanvas.nativeElement);
-      console.log(this.chartCanvas.nativeElement.offsetTop)
-      this.elementPos = this.chartCanvas.nativeElement.offsetTop;
+    if (this.chartCanvas) {
+      let element: DOMRect = this.chartCanvas.nativeElement.getBoundingClientRect();
+      this.elementPos = element.y + 52 ;
     }
   }
 
   @HostListener('window:scroll', ['$event'])
   handleScroll() {
     const windowScroll = window.pageYOffset;
-    if(windowScroll >= this.elementPos) {
+    if (windowScroll >= this.elementPos) {
       this.sticky = true;
     } else {
       this.sticky = false;
@@ -269,8 +268,6 @@ export class DetailViewComponent implements OnInit, OnDestroy, AfterViewInit {
       this.playlists = playlist;
     });
   }
-
-  // private generate
 
   private extractIds(tracks: Track[]): string[] {
     let ids: string[] = [];

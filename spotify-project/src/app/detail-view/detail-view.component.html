@@ -16,7 +16,11 @@
           aria-expanded="false" #playlistDropdown>
           Playlists
         </button>
+<<<<<<< Updated upstream
         <div *ngIf="playlists.length" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+=======
+        <div *ngIf="playlists.length" class="dropdown-menu front" aria-labelledby="dropdownMenuButton">
+>>>>>>> Stashed changes
           <div *ngFor="let playlist of playlists" (click)="analysePlaylist(playlist)" class="dropdown-item">
             {{playlist.name}}</div>
         </div>

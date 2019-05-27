@@ -1,7 +1,11 @@
-.sticky{
-    position: fixed;
-    top: 56px;
-    overflow: hidden;
-    z-index: 10;
-    width: 100%;
-  }
+.sticky {
+  position: fixed;
+  top: 56px;
+  overflow: hidden;
+  z-index: 10;
+  width: 100%;
+}
+
+.front {
+  z-index: 1031;
+}
