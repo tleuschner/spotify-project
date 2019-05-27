@@ -1,3 +1,4 @@
+<app-genre-details *ngIf="type.match('genre')"></app-genre-details>
 <div class="container top-margin">
 
   <h1 class="text-center">{{title}}</h1>
@@ -40,5 +41,4 @@
     <app-detail-list [detailObject]="detailObject" [isDetail]="chart"></app-detail-list>
   </div>
 
-  <app-genre-details *ngIf="type.match('genre')"></app-genre-details>
 </div>
