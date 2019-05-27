@@ -17,7 +17,7 @@ export class GenreDetailsComponent implements OnInit {
   private genreObject = [];
   private sumCount;
   private artistToGenre : string[][] = [];
-  private showArtistsOfAGenre = [];
+  public showArtistsOfAGenre = [];
 
   private radarChart: Chart;
   private backgroundColours = [];

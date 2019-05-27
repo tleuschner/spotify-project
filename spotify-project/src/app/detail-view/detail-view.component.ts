@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewInit, HostListener } from '@angular/core';
 import { DataService } from '../services/data.service';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { SpotifyService } from '../services/spotify.service';
@@ -15,14 +15,16 @@ import { ChartService } from '../services/chart.service';
   templateUrl: './detail-view.component.html',
   styleUrls: ['./detail-view.component.css']
 })
-export class DetailViewComponent implements OnInit, OnDestroy {
+export class DetailViewComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('displayChart', { read: ElementRef }) chartCanvas?: ElementRef;
   @ViewChild('playlistDropdown', { read: ElementRef }) playlistDropdown?: ElementRef;
-  private type: string;
+  public type: string;
   public title: string = '';
   public podium = false;
   public chart = false;
   public playlist = false;
+  public sticky = false;
+  private elementPos: any;
   public radarChart: Chart;
   private topTracks: Track[];
   private topArtists: Artist[];
@@ -58,6 +60,8 @@ export class DetailViewComponent implements OnInit, OnDestroy {
           this.generateTopTrackData();
           break;
         case 'artists':
+          this.chart = false;
+          this.playlist = false;
           this.generateTopArtistsData();
           this.title = "Top Künstler";
           break;
@@ -83,6 +87,24 @@ export class DetailViewComponent implements OnInit, OnDestroy {
     this.spotifyService.timeRange.pipe(takeUntil(this.unsubscribe$)).subscribe(time => {
       this.dataService.updateData(time);
     });
+  }
+
+  ngAfterViewInit() {
+    if(this.chartCanvas) {
+      console.log(this.chartCanvas.nativeElement);
+      console.log(this.chartCanvas.nativeElement.offsetTop)
+      this.elementPos = this.chartCanvas.nativeElement.offsetTop;
+    }
+  }
+
+  @HostListener('window:scroll', ['$event'])
+  handleScroll() {
+    const windowScroll = window.pageYOffset;
+    if(windowScroll >= this.elementPos) {
+      this.sticky = true;
+    } else {
+      this.sticky = false;
+    }
   }
 
   public analysePlaylist(playlist: Playlist) {
@@ -112,7 +134,7 @@ export class DetailViewComponent implements OnInit, OnDestroy {
           secondLine: artists.join(', '),
           id: track.id
         });
-        
+
       });
 
 

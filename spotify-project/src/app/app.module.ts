@@ -11,15 +11,8 @@ import { OAuthModule } from 'angular-oauth2-oidc';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { ContentWrapperComponent } from './content-wrapper/content-wrapper.component';
-import { TopArtistsComponent } from './top-artists/top-artists.component';
-import { TopPlaylistsComponent } from "./top-playlists/top-playlists.component";
-import { RecentlyPlayedComponent } from "./recently-played/recently-played.component";
-import { TrackAnalysisComponent } from './track-analysis/track-analysis.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { DetailListComponent } from './detail-list/detail-list.component';
-import { ArtistDetailsComponent } from './artist-details/artist-details.component';
-import { TopGenresComponent } from './top-genres/top-genres.component';
-import { RecentlyDetailsComponent } from './recently-details/recently-details.component';
 import { GenreDetailsComponent } from './genre-details/genre-details.component';
 import { TopDisplayComponent } from './top-display/top-display.component';
 import { DetailViewComponent } from './detail-view/detail-view.component';
@@ -31,15 +24,8 @@ import { DetailViewComponent } from './detail-view/detail-view.component';
     HeaderComponent,
     FooterComponent,
     ContentWrapperComponent,
-    TopArtistsComponent,
-    TopPlaylistsComponent,
-    RecentlyPlayedComponent,
-    TrackAnalysisComponent,
     NotFoundComponent,
     DetailListComponent,
-    ArtistDetailsComponent,
-    TopGenresComponent,
-    RecentlyDetailsComponent,
     GenreDetailsComponent,
     TopDisplayComponent,
     DetailViewComponent

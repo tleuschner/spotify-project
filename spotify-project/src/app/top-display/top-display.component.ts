@@ -21,6 +21,7 @@ export class TopDisplayComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log(this.isDetail);
   }
 
   private addDataset(detail: PodiumObject) {

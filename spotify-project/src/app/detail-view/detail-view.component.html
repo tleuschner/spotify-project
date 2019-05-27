@@ -2,7 +2,7 @@
 
   <h1 class="text-center">{{title}}</h1>
   <div *ngIf="podium">
-    <app-top-display [isMobile]="false" [podiumObject]="podiumObject" [routing]="none" [title]="" [isDetail]="chart">
+    <app-top-display [isMobile]="false" [podiumObject]="podiumObject" [routing]="none" [title]="" [isDetail]="(chart || playlist)">
     </app-top-display>
   </div>
 
@@ -29,7 +29,7 @@
   <div class="row" *ngIf="chart">
     <div class="col-md-2"></div>
     <div class="col-md-8">
-      <canvas #displayChart></canvas>
+      <canvas #displayChart [class.sticky]="sticky"></canvas>
     </div>
     <div class="col-md-2"></div>
   </div>

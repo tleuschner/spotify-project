@@ -1,60 +1,62 @@
 <div id="topTracks">
-    <br>
-    <br>
-  </div>
-  <div *ngIf="podiumObject && podiumObject.length && !isMobile" data-aos="fade-up" data-aos-duration="1500" data-aos-offset="100">
-    <a class="deleteLinkUnderline" [routerLink]="isDetail ? [] : ['/details', routing] ">
-      <div class="row">
-        <div class="col-md-12">
-          <h1 class="text-center">{{title}}</h1>
-          <br>
-        </div>
+  <br>
+  <br>
+</div>
+<div *ngIf="podiumObject && podiumObject.length && !isMobile" data-aos="fade-up" data-aos-duration="1500"
+  data-aos-offset="100">
+  <a class="deleteLinkUnderline" [routerLink]="isDetail ? [] : ['/details', routing]">
+    <div class="row">
+      <div class="col-md-12">
+        <h1 class="text-center">{{title}}</h1>
+        <br>
       </div>
-      <div class="row pull-down shadow-bottom">
-        <div class="col-md-4 pr-0 pl-0" (click)="isDetail ? addDataset(podiumObject[1]) : undefined">
-          <div class="no-border">
-            <div *ngIf="podiumObject[1].image" class="image-square">
-              <img src="{{podiumObject[1].image}}" alt="Album Art" class="card-img-top">
-            </div>
-            <div class="card card-body pb-4 pt-4">
-              <h5 class="text-center hide-overflow">{{podiumObject[1].title}}</h5>
-              <h6 class="text-center hide-overflow">{{podiumObject[1].subtitle}}</h6>
-              <h6 class="text-center hide-overflow">{{podiumObject[1].additionalInfo}}</h6>
-              <p class="text-center">{{podiumObject[1].ranking}}</p>
-            </div>
+    </div>
+    <div class="row pull-down shadow-bottom">
+      <div class="col-md-4 pr-0 pl-0" (click)="isDetail ? addDataset(podiumObject[1]) : undefined">
+        <div class="no-border">
+          <div *ngIf="podiumObject[1].image" class="image-square">
+            <img src="{{podiumObject[1].image}}" alt="Album Art" class="card-img-top">
           </div>
-        </div>
-        <div class="col-md-4 pr-0 pl-0" (click)="isDetail ? addDataset(podiumObject[0]) : undefined">
-          <div class=" no-border">
-              <div *ngIf="podiumObject[0].image" class="image-square">
-                  <img src="{{podiumObject[0].image}}" alt="Album Art" class="card-img-top">
-                </div>
-                <div class="card card-body pb-5 pt-5">
-                  <h5 class="text-center hide-overflow">{{podiumObject[0].title}}</h5>
-                  <h6 class="text-center hide-overflow">{{podiumObject[0].subtitle}}</h6>
-                  <h6 class="text-center hide-overflow">{{podiumObject[0].additionalInfo}}</h6>
-                  <p class="text-center">{{podiumObject[0].ranking}}</p>
-                </div>
-          </div>
-        </div>
-        <div class="col-md-4 pr-0 pl-0" (click)="isDetail ? addDataset(podiumObject[2]) : undefined">
-          <div class=" no-border">
-              <div *ngIf="podiumObject[2].image" class="image-square">
-                  <img src="{{podiumObject[2].image}}" alt="Album Art" class="card-img-top">
-                </div>
-                <div class="card card-body pb-1 pt-1">
-                  <h5 class="text-center hide-overflow">{{podiumObject[2].title}}</h5>
-                  <h6 class="text-center hide-overflow">{{podiumObject[2].subtitle}}</h6>
-                  <h6 class="text-center hide-overflow">{{podiumObject[2].additionalInfo}}</h6>
-                  <p class="text-center">{{podiumObject[2].ranking}}</p>
-                </div>
+          <div class="card card-body pb-4 pt-4">
+            <h5 class="text-center hide-overflow">{{podiumObject[1].title}}</h5>
+            <h6 class="text-center hide-overflow">{{podiumObject[1].subtitle}}</h6>
+            <h6 class="text-center hide-overflow">{{podiumObject[1].additionalInfo}}</h6>
+            <p class="text-center">{{podiumObject[1].ranking}}</p>
           </div>
         </div>
       </div>
-    </a>
-  </div>
-  
-  <div *ngIf="podiumObject && isMobile" data-aos="fade-up" data-aos-duration="1500">
+      <div class="col-md-4 pr-0 pl-0" (click)="isDetail ? addDataset(podiumObject[0]) : undefined">
+        <div class=" no-border">
+          <div *ngIf="podiumObject[0].image" class="image-square">
+            <img src="{{podiumObject[0].image}}" alt="Album Art" class="card-img-top">
+          </div>
+          <div class="card card-body pb-5 pt-5">
+            <h5 class="text-center hide-overflow">{{podiumObject[0].title}}</h5>
+            <h6 class="text-center hide-overflow">{{podiumObject[0].subtitle}}</h6>
+            <h6 class="text-center hide-overflow">{{podiumObject[0].additionalInfo}}</h6>
+            <p class="text-center">{{podiumObject[0].ranking}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 pr-0 pl-0" (click)="isDetail ? addDataset(podiumObject[2]) : undefined">
+        <div class=" no-border">
+          <div *ngIf="podiumObject[2].image" class="image-square">
+            <img src="{{podiumObject[2].image}}" alt="Album Art" class="card-img-top">
+          </div>
+          <div class="card card-body pb-1 pt-1">
+            <h5 class="text-center hide-overflow">{{podiumObject[2].title}}</h5>
+            <h6 class="text-center hide-overflow">{{podiumObject[2].subtitle}}</h6>
+            <h6 class="text-center hide-overflow">{{podiumObject[2].additionalInfo}}</h6>
+            <p class="text-center">{{podiumObject[2].ranking}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </a>
+</div>
+
+<div *ngIf="podiumObject && isMobile" data-aos="fade-up" data-aos-duration="1500">
+  <a class="deleteLinkUnderline" [routerLink]="isDetail ? [] : ['/details', routing] ">
     <div class="row">
       <div class="col-sm-12">
         <h1 class="text-center">{{title}}</h1>
@@ -75,4 +77,5 @@
         </div>
       </div>
     </div>
-  </div>
+  </a>
+</div>
