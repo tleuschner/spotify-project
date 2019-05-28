@@ -9,3 +9,7 @@
 .front {
   z-index: 1031;
 }
+
+.AbstandFuerFusszeile {
+  margin-bottom: 200px;
+}

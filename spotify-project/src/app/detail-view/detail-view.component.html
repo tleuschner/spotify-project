@@ -21,6 +21,7 @@
           <div *ngFor="let playlist of playlists" (click)="analysePlaylist(playlist)" class="dropdown-item">
             {{playlist.name}}</div>
         </div>
+        <div class="AbstandFuerFusszeile" *ngIf="chart"></div>
       </div>
     </div>
   </div>
