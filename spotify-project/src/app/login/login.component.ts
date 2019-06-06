@@ -21,18 +21,11 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log("Test");
     if (this.oauthService.hasValidAccessToken()) {
       this.router.navigate(['']);
     }
     this.name = localStorage.getItem("Person");
-    /*if(this.name.match("")){
-      console.log("false");
-      this.wasloggedIn = false;
-    } else {
-      console.log("true");
-      this.wasloggedIn = true;
-    }*/
+
   }
 
   login(): void {

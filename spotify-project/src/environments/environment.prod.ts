@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  visitorsUrl: 'http://localhost:8000'
+  visitorsUrl: 'https://lit-tundra-16311.herokuapp.com'
 };

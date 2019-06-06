@@ -22,7 +22,6 @@ export class TopDisplayComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log(this.artist);
   }
 
   private addDataset(detail: PodiumObject) {

@@ -162,7 +162,6 @@ export class DetailViewComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private generateTopTrackData() {
     this.dataService.topTracks.pipe(takeUntil(this.unsubscribe$)).subscribe((tracks: Track[]) => {
-      console.log(tracks);
       this.podiumObject = [];
       this.detailObject = [];
       let podiumArtists = tracks.slice(0, 3);
