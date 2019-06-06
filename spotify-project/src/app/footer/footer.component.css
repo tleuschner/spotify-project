@@ -12,6 +12,10 @@
 }
 
 .grey-background {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  max-height: 155px;
   background-color: #343a40d0;
   color: darkgrey;
   text-align: center;
