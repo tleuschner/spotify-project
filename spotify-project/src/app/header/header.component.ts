@@ -19,6 +19,8 @@ export class HeaderComponent implements OnInit {
   private dropdownCaption = 'Zeitraum auswählen';
   private addedUser = false;
   private visitors$: Observable<number>;
+  private startside: boolean;
+  private isTimeRangeShowed: boolean;
 
   constructor(private oauthService: OAuthService,
     private router: Router,
@@ -29,7 +31,12 @@ export class HeaderComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    let href = window.location.href;
+    this.startside = href.endsWith("#/") || href.endsWith("/#") || href.includes("access");
+    console.log(href,this.startside);
     this.authService.isAuthenticatedObs().subscribe(res => {
+      var hrefNeu = window.location.href;
+      this.isTimeRangeShowed = !hrefNeu.endsWith("playlist");
       if (res === true && !this.addedUser) {
         this.addedUser = true;
         this.addVisitor();
