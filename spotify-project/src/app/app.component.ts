@@ -45,7 +45,8 @@ const authConfig: AuthConfig = {
   oidc: false,
   clientId: 'a47354060499425696ed113bdee074d2',
   responseType: 'token',
-  redirectUri: 'http://spotify.timleuschner.de',
+  // redirectUri: 'http://spotify.timleuschner.de/#/',
+  redirectUri: 'http://localhost:4200',
   scope: 'playlist-read-private user-library-read user-top-read user-read-recently-played user-read-private',
   loginUrl: 'https://accounts.spotify.com/authorize',
 };

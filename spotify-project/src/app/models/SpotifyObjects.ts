@@ -237,13 +237,13 @@ export class Artist {
     type: string;
     uri: string;
 
-    protected static SInit = (() => {
-        Artist.prototype.images = [{
-            url: 'http://timleuschner.de/img/nopic.png',
-            height: 1000,
-            width: 1000
-        }];
-    })();
+    // protected static SInit = (() => {
+    //     Artist.prototype.images = [{
+    //         url: 'http://timleuschner.de/img/nopic.png',
+    //         height: 1000,
+    //         width: 1000
+    //     }];
+    // })();
 }
 
 export class AudioFeatures {
