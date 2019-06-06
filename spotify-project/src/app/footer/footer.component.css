@@ -12,9 +12,13 @@
 }
 
 .grey-background {
+  position: relative;
+  width: 100%;
   background-color: #343a40d0;
   color: darkgrey;
   text-align: center;
+  bottom: 0px;
+  left: 0px;
 }
 
 .nav h5:hover {
