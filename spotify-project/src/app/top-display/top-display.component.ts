@@ -14,6 +14,7 @@ export class TopDisplayComponent implements OnInit {
   @Input() routing: string;
   @Input() title: string;
   @Input() isDetail?: boolean;
+  @Input() artist?: boolean;
 
   constructor(
     private spotifyService: SpotifyService,
@@ -21,6 +22,7 @@ export class TopDisplayComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log(this.artist);
   }
 
   private addDataset(detail: PodiumObject) {

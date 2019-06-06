@@ -3,3 +3,6 @@
     color:#191414;
   }
   
+.no-pointer {
+  cursor: initial!important;
+}

@@ -24,6 +24,7 @@ export class DetailViewComponent implements OnInit, OnDestroy, AfterViewInit {
   public chart = false;
   public playlist = false;
   public sticky = false;
+  public artist = false;
   public done = false;
   private firstCall = false;
   private elementPos: any;
@@ -48,7 +49,6 @@ export class DetailViewComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit() {
     this.activatedRoute.paramMap.pipe(takeUntil(this.unsubscribe$)).subscribe((params: ParamMap) => {
       this.type = params.get('id');
-      console.log(this.type)
       if (this.type === 'tracks' || this.type === 'artists' || this.type === 'recents') {
         this.podium = true;
       } else {
@@ -60,12 +60,14 @@ export class DetailViewComponent implements OnInit, OnDestroy, AfterViewInit {
         case 'tracks':
           this.chart = true;
           this.playlist = false;
+          this.artist = false;
           this.title = "Top Tracks";
           this.generateTopTrackData();
           break;
         case 'artists':
           this.chart = false;
           this.playlist = false;
+          this.artist = true;
           this.generateTopArtistsData();
           this.title = "Top Künstler";
           break;
@@ -73,6 +75,7 @@ export class DetailViewComponent implements OnInit, OnDestroy, AfterViewInit {
           this.generateRecentlyListenedData();
           this.chart = true;
           this.playlist = false;
+          this.artist = false;
           this.title = "Zuletzt gehört";
           break;
         case 'genres':
@@ -81,6 +84,7 @@ export class DetailViewComponent implements OnInit, OnDestroy, AfterViewInit {
           this.title = 'Playlist Analyse'
           this.playlist = true;
           this.chart = false;
+          this.artist = false;
           this.getPlaylists();
           this.cleanup();
           break;

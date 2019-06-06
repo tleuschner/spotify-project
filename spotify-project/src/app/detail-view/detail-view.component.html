@@ -4,7 +4,7 @@
   <h1 class="text-center">{{title}}</h1>
   <div *ngIf="podium">
     <app-top-display [isMobile]="false" [podiumObject]="podiumObject" [routing]="none" [title]=""
-      [isDetail]="(chart || playlist)">
+      [isDetail]="(chart || playlist)" [artist]="artist">
     </app-top-display>
   </div>
 
