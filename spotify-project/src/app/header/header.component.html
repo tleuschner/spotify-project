@@ -12,9 +12,10 @@
 
     <ul class="navbar-nav ml-auto">
       <li class="nav-item dropdown">
-        <div class="nav-link dropdown-toggle clickable" id="navbarDropdown" role="button" data-toggle="dropdown"
+        <div *ngIf="isTimeRangeShowed" class="nav-link dropdown-toggle clickable" id="navbarDropdown" role="button" data-toggle="dropdown"
              aria-haspopup="true" aria-expanded="false" #navbarDropdown>
-          Zeitraum auswählen (6 Monate)
+          <span *ngIf="startside">Zeitraum auswählen (6 Monate)</span>
+          <span *ngIf="!startside">Bitte Zeitraum auswählen</span>
         </div>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <div class="dropdown-item pointer" (click)="changeTimeRange(0)">4 Wochen</div>
