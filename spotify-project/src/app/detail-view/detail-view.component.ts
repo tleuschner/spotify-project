@@ -48,6 +48,7 @@ export class DetailViewComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit() {
     this.activatedRoute.paramMap.pipe(takeUntil(this.unsubscribe$)).subscribe((params: ParamMap) => {
       this.type = params.get('id');
+      console.log(this.type)
       if (this.type === 'tracks' || this.type === 'artists' || this.type === 'recents') {
         this.podium = true;
       } else {
@@ -58,6 +59,7 @@ export class DetailViewComponent implements OnInit, OnDestroy, AfterViewInit {
       switch (this.type) {
         case 'tracks':
           this.chart = true;
+          this.playlist = false;
           this.title = "Top Tracks";
           this.generateTopTrackData();
           break;
@@ -70,14 +72,17 @@ export class DetailViewComponent implements OnInit, OnDestroy, AfterViewInit {
         case 'recents':
           this.generateRecentlyListenedData();
           this.chart = true;
+          this.playlist = false;
           this.title = "Zuletzt gehört";
           break;
         case 'genres':
           break;
         case 'playlist':
           this.title = 'Playlist Analyse'
-          this.chart = this.playlist = true;
+          this.playlist = true;
+          this.chart = false;
           this.getPlaylists();
+          this.cleanup();
           break;
         default:
           this.router.navigate([''])
@@ -112,6 +117,7 @@ export class DetailViewComponent implements OnInit, OnDestroy, AfterViewInit {
   // }
 
   public analysePlaylist(playlist: Playlist) {
+    this.chart = true;
     this.playlistDropdown.nativeElement.innerText = playlist.name;
     this.detailObject = [];
 
@@ -143,6 +149,11 @@ export class DetailViewComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     })
+  }
+
+  private cleanup() {
+    this.podiumObject = [];
+    this.detailObject = [];
   }
 
   private generateTopTrackData() {
@@ -225,6 +236,7 @@ export class DetailViewComponent implements OnInit, OnDestroy, AfterViewInit {
   private generateRecentlyListenedData() {
     this.dataService.recentlyPlayed.pipe(takeUntil(this.unsubscribe$)).subscribe((recents: PlayHistoryObject[]) => {
       this.podiumObject = [];
+      this.detailObject = [];
       let ids: string[] = [];
       let podiumRecents = recents.slice(0, 3);
       let detailRecents = recents.slice(3, recents.length);
@@ -303,23 +315,25 @@ export class DetailViewComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private generateChart(features: AudioFeatures[], label: string) {
-    let ctx = this.chartCanvas.nativeElement;
-    let data = {
-      labels: ['Tanzbarkeit', 'Energie', 'Lautstärke', 'Speechiness', 'Akkustik', 'Instrumental', 'Lebhaftigkeit', 'Stimmung'],
-      datasets: [{
-        label: label,
-        data: this.calculateAverages(features),
-        fill: true,
-        backgroundColor: '#1db95450',
-        pointBackgroundColor: 'rgba(25, 20, 20, 1)',
-        pointBorderColor: 'rgba(30, 215, 96, 0.3)',
-      }],
+    if(this.chartCanvas) {
+      let ctx = this.chartCanvas.nativeElement;
+      let data = {
+        labels: ['Tanzbarkeit', 'Energie', 'Lautstärke', 'Speechiness', 'Akkustik', 'Instrumental', 'Lebhaftigkeit', 'Stimmung'],
+        datasets: [{
+          label: label,
+          data: this.calculateAverages(features),
+          fill: true,
+          backgroundColor: '#1db95450',
+          pointBackgroundColor: 'rgba(25, 20, 20, 1)',
+          pointBorderColor: 'rgba(30, 215, 96, 0.3)',
+        }],
+      }
+      this.radarChart = new Chart(ctx, {
+        type: 'radar',
+        data: data,
+      });
+      this.chartService.setChart(this.radarChart);
     }
-    this.radarChart = new Chart(ctx, {
-      type: 'radar',
-      data: data,
-    });
-    this.chartService.setChart(this.radarChart);
   }
 
   private calculateAverages(features: AudioFeatures[]) {
