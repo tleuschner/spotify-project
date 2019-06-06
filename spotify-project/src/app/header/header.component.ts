@@ -31,10 +31,12 @@ export class HeaderComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.startside = window.location.href.endsWith("#/");
+    let href = window.location.href;
+    this.startside = href.endsWith("#/") || href.endsWith("/#") || href.includes("access");
+    console.log(href,this.startside);
     this.authService.isAuthenticatedObs().subscribe(res => {
-      var href = window.location.href;
-      this.isTimeRangeShowed = !href.endsWith("playlist");
+      var hrefNeu = window.location.href;
+      this.isTimeRangeShowed = !hrefNeu.endsWith("playlist");
       if (res === true && !this.addedUser) {
         this.addedUser = true;
         this.addVisitor();
