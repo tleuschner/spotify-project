@@ -15,7 +15,7 @@ import { slideInAnimation } from './animations';
     slideInAnimation
   ]
 })
-export class AppComponent implements OnInit, AfterViewInit {
+export class AppComponent implements OnInit {
   public done = false;
 
   constructor(private oauthService: OAuthService) {
@@ -26,11 +26,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     AOS.init();
   }
 
-  ngAfterViewInit(): void {
-    setTimeout(()=> {
-      this.done = true;
-    }, 1000)
-  }
 
   private configureWithNewConfigApi() {
     this.oauthService.setStorage(localStorage);

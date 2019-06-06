@@ -13,7 +13,7 @@ import {DetailObject} from "../models/DetailObject";
 })
 export class GenreDetailsComponent implements OnInit {
   @ViewChild('test', { read: ElementRef }) radarChartCanvas: ElementRef;
-
+  private firstCall = true;
   private genreObject = [];
   private sumCount;
   private artistToGenre : string[][] = [];
@@ -34,8 +34,12 @@ export class GenreDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.firstCall = false;
     this.spotifyService.timeRange.subscribe((time: string) => {
-      this.dataService.updateData(time);
+      if(!this.firstCall) {
+        this.dataService.updateData(time);
+      }
+      this.firstCall = false;
     });
     this.dataService.topGeneres.subscribe(res => {
       this.genreObject = res;

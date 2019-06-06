@@ -1,22 +1,23 @@
 import { Injectable } from '@angular/core';
 import { SpotifyService } from './spotify.service';
 import { Track, Artist, PlayHistoryObject, AudioFeatures } from '../models/SpotifyObjects';
-import { Observable, of, Subject } from 'rxjs';
+import { Observable, of, Subject, ReplaySubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
   private timeRange: string;
-  private topSpotifyTracks: Subject<Track[]> = new Subject();
-  private recentlyPlayedTracks: Subject<PlayHistoryObject[]> = new Subject();
-  private topSpotifyArtists: Subject<Artist[]> = new Subject();
-  private topSpotifyGenres: Subject<[[string, number]]> = new Subject();
-  private artistsBehindGenres: Subject<[[string, string]]> = new Subject();
+  private topSpotifyTracks: ReplaySubject<Track[]> = new ReplaySubject(1);
+  private recentlyPlayedTracks: ReplaySubject<PlayHistoryObject[]> = new ReplaySubject(1);
+  private topSpotifyArtists: ReplaySubject<Artist[]> = new ReplaySubject(1);
+  private topSpotifyGenres: ReplaySubject<[[string, number]]> = new ReplaySubject(1);
+  private artistsBehindGenres: ReplaySubject<[[string, string]]> = new ReplaySubject(1);
 
   constructor(
     private spotifyService: SpotifyService,
   ) { }
+
 
   public updateData(timeRange: string) {
     this.timeRange = timeRange;
@@ -115,7 +116,6 @@ export class DataService {
       }
     }
     return artistIds;
-    // return Array.from(new Set(artistIds));
   }
 
   private countGenres(artists: Artist[]) {
@@ -133,7 +133,6 @@ export class DataService {
         }
       }
     }
-    console.log(genreArtistMap);
     return [genreMap,genreArtistMap];
   }
 

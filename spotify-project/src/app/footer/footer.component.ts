@@ -11,7 +11,7 @@ import { AuthService } from '../services/auth.service';
 })
 export class FooterComponent implements OnInit {
 
-  private visitors$: Observable<number>;
+  public visitors$: Observable<number>;
 
   constructor(
     private _location: Location,

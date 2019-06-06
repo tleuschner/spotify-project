@@ -3,7 +3,8 @@
 
   <h1 class="text-center">{{title}}</h1>
   <div *ngIf="podium">
-    <app-top-display [isMobile]="false" [podiumObject]="podiumObject" [routing]="none" [title]="" [isDetail]="(chart || playlist)">
+    <app-top-display [isMobile]="false" [podiumObject]="podiumObject" [routing]="none" [title]=""
+      [isDetail]="(chart || playlist)">
     </app-top-display>
   </div>
 
@@ -17,7 +18,7 @@
           aria-expanded="false" #playlistDropdown>
           Playlists
         </button>
-        <div *ngIf="playlists.length" class="dropdown-menu front" aria-labelledby="dropdownMenuButton">
+        <div *ngIf="playlists" class="dropdown-menu front" aria-labelledby="dropdownMenuButton">
           <div *ngFor="let playlist of playlists" (click)="analysePlaylist(playlist)" class="dropdown-item">
             {{playlist.name}}</div>
         </div>
@@ -30,7 +31,7 @@
   <div class="row" *ngIf="chart">
     <div class="col-md-2"></div>
     <div class="col-md-8">
-      <canvas #displayChart [class.sticky]="sticky"></canvas>
+      <canvas #displayChart ></canvas>
     </div>
     <div class="col-md-2"></div>
   </div>

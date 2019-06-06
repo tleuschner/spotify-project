@@ -18,6 +18,7 @@ export class ContentWrapperComponent implements OnInit, OnDestroy {
   private isMobile = false;
   private titles = ['Top Tracks', 'Top Künstler', 'Top Genres', 'Zuletzt gehört'];
   private routing = ['tracks', 'artists', 'genres', 'recents'];
+  private firstCall = true;
   private unsubscribe$ = new Subject<void>();
 
   // Track, Artist, Genre, Recents
@@ -27,7 +28,7 @@ export class ContentWrapperComponent implements OnInit, OnDestroy {
     private spotifyService: SpotifyService,
     private breakpointObserver: BreakpointObserver,
     private dataService: DataService,
-  ) { }
+  ) { this.dataService.updateData('medium_term')}
 
   ngOnInit() {
     // Wahrscheinlich auch über CSS lösbar aber klappt ;)
@@ -46,14 +47,17 @@ export class ContentWrapperComponent implements OnInit, OnDestroy {
     });
 
     //update data each time change
+    this.firstCall = true;
     this.spotifyService.timeRange.pipe(takeUntil(this.unsubscribe$)).subscribe(time => {
-      this.dataService.updateData(time);
-
+      if(!this.firstCall) {
+        this.dataService.updateData(time);
+      }
+      this.firstCall = false;
     });
 
     this.dataService.topTracks.pipe(takeUntil(this.unsubscribe$)).subscribe((tracks: Track[]) => {
       let topTracks: PodiumObject[] = [];
-      let topThree = tracks.splice(0, 3);
+      let topThree = tracks.slice(0, 3);
 
       topThree.forEach((track, index) => {
         let artists = [];
@@ -110,7 +114,7 @@ export class ContentWrapperComponent implements OnInit, OnDestroy {
 
     //Get recents
     this.dataService.recentlyPlayed.pipe(takeUntil(this.unsubscribe$)).subscribe((recentlyPlayed: PlayHistoryObject[]) => {
-      recentlyPlayed = recentlyPlayed.splice(0, 3);
+      recentlyPlayed = recentlyPlayed.slice(0, 3);
       let recentTracks: PodiumObject[] = [];
 
       recentlyPlayed.forEach((recentObject) => {

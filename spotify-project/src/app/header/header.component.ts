@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, Params, ParamMap } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { SpotifyService } from '../services/spotify.service';
 import { VisitorsService } from '../services/visitors.service';
@@ -25,7 +25,7 @@ export class HeaderComponent implements OnInit {
     public authService: AuthService,
     private renderer: Renderer2,
     private spotifyService: SpotifyService,
-    private visitorsService: VisitorsService
+    private visitorsService: VisitorsService,
   ) { }
 
   ngOnInit() {

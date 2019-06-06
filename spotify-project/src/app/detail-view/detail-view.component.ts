@@ -25,6 +25,7 @@ export class DetailViewComponent implements OnInit, OnDestroy, AfterViewInit {
   public playlist = false;
   public sticky = false;
   public done = false;
+  private firstCall = false;
   private elementPos: any;
   public radarChart: Chart;
   private topTracks: Track[];
@@ -84,27 +85,31 @@ export class DetailViewComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
 
+    this.firstCall = true;
     this.spotifyService.timeRange.pipe(takeUntil(this.unsubscribe$)).subscribe(time => {
-      this.dataService.updateData(time);
+      if (!this.firstCall) {
+        this.dataService.updateData(time);
+      }
+      this.firstCall = false;
     });
   }
 
   ngAfterViewInit() {
     if (this.chartCanvas) {
       let element: DOMRect = this.chartCanvas.nativeElement.getBoundingClientRect();
-      this.elementPos = element.y + 52 ;
+      this.elementPos = element.y + 52;
     }
   }
 
-  @HostListener('window:scroll', ['$event'])
-  handleScroll() {
-    const windowScroll = window.pageYOffset;
-    if (windowScroll >= this.elementPos) {
-      this.sticky = true;
-    } else {
-      this.sticky = false;
-    }
-  }
+  // @HostListener('window:scroll', ['$event'])
+  // handleScroll() {
+  //   const windowScroll = window.pageYOffset;
+  //   if (windowScroll >= this.elementPos) {
+  //     this.sticky = true;
+  //   } else {
+  //     this.sticky = false;
+  //   }
+  // }
 
   public analysePlaylist(playlist: Playlist) {
     this.playlistDropdown.nativeElement.innerText = playlist.name;
@@ -142,6 +147,7 @@ export class DetailViewComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private generateTopTrackData() {
     this.dataService.topTracks.pipe(takeUntil(this.unsubscribe$)).subscribe((tracks: Track[]) => {
+      console.log(tracks);
       this.podiumObject = [];
       this.detailObject = [];
       let podiumArtists = tracks.slice(0, 3);
@@ -252,14 +258,13 @@ export class DetailViewComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         this.detailObject.push(recentDetail);
 
-        this.getAudioFeatures(ids).then(
-          (onFullfilled) => {
-            let audioFeatures = this.flattenArray(onFullfilled)[0].audio_features;
-            this.generateChart(audioFeatures, 'Zuletzt gehört');
-          }
-        );
-
       });
+      this.getAudioFeatures(ids).then(
+        (onFullfilled) => {
+          let audioFeatures = this.flattenArray(onFullfilled)[0].audio_features;
+          this.generateChart(audioFeatures, 'Zuletzt gehört');
+        }
+      );
     });
   }
 
