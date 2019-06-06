@@ -216,7 +216,7 @@ export class DetailViewComponent implements OnInit, OnDestroy, AfterViewInit {
 
       podiumArtists.forEach((artist, index) => {
         let singleArtist: PodiumObject = {
-          image: artist.images[0].url,
+          image: (artist.images[0] ? artist.images[0].url : 'http://timleuschner.de/img/nopic.png'),
           title: artist.name,
           ranking: `#${index + 1}`,
         }
@@ -228,7 +228,7 @@ export class DetailViewComponent implements OnInit, OnDestroy, AfterViewInit {
           firstLine: artist.name,
           secondLine: `# ${index + 4}`,
           id: artist.id,
-          image: artist.images[1].url,
+          image: (artist.images[1] ? artist.images[1].url :  'http://timleuschner.de/img/nopic.png'),
         }
         this.detailObject.push(artistDetail);
       });

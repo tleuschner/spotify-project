@@ -97,7 +97,7 @@ export class ContentWrapperComponent implements OnInit, OnDestroy {
 
       artists.forEach((artist, index) => {
         let singleArtist: PodiumObject = {
-          image: artist.images[0].url,
+          image: (artist.images[0] ? artist.images[0].url :  'http://timleuschner.de/img/nopic.png'),
           title: artist.name,
           ranking: `#${index + 1}`,
         }
