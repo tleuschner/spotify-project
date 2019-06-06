@@ -31,9 +31,9 @@
     </ul>
   </nav>
 
-
   <div class="navigation-container col-sm-3 col-md-2 mr-0 " id="nav-container" #navContainer>
     <span class="close pointer" (click)="toggleNavBar()"><i class="fas fa-times fa-lg"></i></span>
+    <a [routerLink]="['']">Übersicht</a>
     <a [routerLink]="['/details', 'tracks']">Top Tracks</a>
     <a [routerLink]="['/details', 'artists']">Top Künstler</a>
     <a [routerLink]="['/details', 'genres']">Top Genres</a>
