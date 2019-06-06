@@ -137,9 +137,12 @@ export class DataService {
   }
 
   private proofExistenzOfArtist(names: string[], newName: string[]){
+    console.log("DEBUG: ",names,newName);
     let artists = names[0].split(", ");
     for(let artist of artists){
-      if(artist.match(newName[0])){
+      console.log("ARTIST: ",artist)
+      console.log("PROOF: ",artist,"  ||   ",newName[0]);
+      if(artist == newName[0]){
         return names;
       }
     }
