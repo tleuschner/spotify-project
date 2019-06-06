@@ -126,10 +126,10 @@ export class DataService {
       for (let genre of artist.genres) {
         if (!genreMap[genre]) {
           genreMap[genre] = 1;
-          genreArtistMap[genre] = [artist.name,artist.images[0].url];
+          genreArtistMap[genre] = [artist.name, (artist.images[0] ? artist.images[0].url :  'http://timleuschner.de/img/nopic.png')];
         } else {
           genreMap[genre]++;
-          genreArtistMap[genre] = this.proofExistenzOfArtist(genreArtistMap[genre],[artist.name,artist.images[0].url]);
+          genreArtistMap[genre] = this.proofExistenzOfArtist(genreArtistMap[genre],[artist.name, (artist.images[0] ? artist.images[0].url :  'http://timleuschner.de/img/nopic.png')]);
         }
       }
     }

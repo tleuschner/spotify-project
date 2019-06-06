@@ -47,12 +47,8 @@ export class ContentWrapperComponent implements OnInit, OnDestroy {
     });
 
     //update data each time change
-    this.firstCall = true;
     this.spotifyService.timeRange.pipe(takeUntil(this.unsubscribe$)).subscribe(time => {
-      if(!this.firstCall) {
         this.dataService.updateData(time);
-      }
-      this.firstCall = false;
     });
 
     this.dataService.topTracks.pipe(takeUntil(this.unsubscribe$)).subscribe((tracks: Track[]) => {
