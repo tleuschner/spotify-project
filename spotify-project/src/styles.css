@@ -4,6 +4,8 @@
 @import '../node_modules/@fortawesome/fontawesome-free/css/all.css';
 body {
   background-color: lightgrey;
+  min-height: 100vh;
+  position: relative;
   /* padding-top: 50px; */
 }
 
@@ -70,4 +72,9 @@ body {
 
 .pointer {
   cursor: pointer;
+}
+
+.page-container {
+  position: relative;
+  min-height: 100vh;
 }
