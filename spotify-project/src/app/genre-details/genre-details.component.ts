@@ -107,13 +107,10 @@ export class GenreDetailsComponent implements OnInit {
   }
 
   private zeigeGenreInfoAn(label: string){
-    console.log(this.artistToGenre);
     this.showArtistsOfAGenre = [];
-    console.log("ArtistToGenre: ",this.artistToGenre);
     for(let proofGenre of label.split(", ")){
       for(let genre of this.artistToGenre){
         if(genre[0] === proofGenre){
-          console.log("GENRE: ",genre);
           this.showArtistsOfAGenre.push([genre,this.fuegeArtistDerDetailListeHinzu(genre[1])]);
         }
       }
@@ -134,7 +131,6 @@ export class GenreDetailsComponent implements OnInit {
         thirdLine: null,
         id: i.toString()
       };
-      console.log("Details: ",details)
       neueDetailList.push(details);
     }
     return neueDetailList;
