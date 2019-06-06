@@ -34,12 +34,11 @@
 
   <div class="navigation-container col-sm-3 col-md-2 mr-0 " id="nav-container" #navContainer>
     <span class="close pointer" (click)="toggleNavBar()"><i class="fas fa-times fa-lg"></i></span>
-    <a href="#topTracks">Top Tracks</a>
-    <a href="#topKuenstler">Top Künstler</a>
-    <a href="#topGenre">Top Genres</a>
-    <a href="#recentlyPlayed">Zuletzt gehört</a>
-    <a href="#topPlaylists">Playlist Analyse</a>
-
+    <a [routerLink]="['/details', 'tracks']">Top Tracks</a>
+    <a [routerLink]="['/details', 'artists']">Top Künstler</a>
+    <a [routerLink]="['/details', 'genres']">Top Genres</a>
+    <a [routerLink]="['/details', 'recents']">Zuletzt gehört</a>
+    <a [routerLink]="['/details', 'playlist']">Playlist Analyse</a>
   </div>
 
 </div>

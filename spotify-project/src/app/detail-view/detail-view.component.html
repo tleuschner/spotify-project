@@ -1,5 +1,5 @@
 <app-genre-details *ngIf="type.match('genre')"></app-genre-details>
-<div class="container top-margin">
+<div class="container top-margin" *ngIf="!type.match('genre')">
 
   <h1 class="text-center">{{title}}</h1>
   <div *ngIf="podium">
