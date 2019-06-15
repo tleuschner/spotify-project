@@ -8,9 +8,12 @@ import { Artist, TopArtistsPagingObject, TopTracksPagingObject, Track, Playlist,
 @Injectable({
   providedIn: 'root'
 })
+/**
+ * service handling the calls to the spotify API
+ */
 export class SpotifyService {
 
-  private timeRangeSub = new BehaviorSubject<string>('medium_term');
+  private timeRangeSub$ = new BehaviorSubject<string>('medium_term');
   private readonly apiBaseUrl = 'https://api.spotify.com/v1';
 
   constructor(
@@ -18,22 +21,10 @@ export class SpotifyService {
     private oauthService: OAuthService
   ) { }
 
+  //Adds access token to the api calls
   private headers = new HttpHeaders({
     "Authorization": "Bearer " + this.oauthService.getAccessToken()
   });
-
-  public getTopArtists(limit = '20', offset = '0', timeRange = 'medium_term'): Observable<Artist[]> {
-    return this.http.get<TopArtistsPagingObject>(`${this.apiBaseUrl}/me/top/artists`, {
-      headers: this.headers,
-      params: {
-        limit: limit,
-        offset: offset,
-        time_range: timeRange
-      }
-    }).pipe(
-      map(res => res.items)
-    );
-  }
 
   public getArtists(ids: string[]): Observable<Artist[]> {
     if (ids !== undefined && ids.length <= 50) {
@@ -42,9 +33,8 @@ export class SpotifyService {
           ids: ids.join(',')
         }
       }).pipe(map(res => res.artists));
-      //TODO: do this
     } else {
-
+      return of([]);
     }
   }
 
@@ -61,26 +51,7 @@ export class SpotifyService {
     );
   }
 
-  public getTopSongsNew(timeRange = 'medium_term'): Observable<[Track[], Track[]]> {
-    return zip(this.http.get<TopTracksPagingObject>(`${this.apiBaseUrl}/me/top/tracks`, {
-      headers: this.headers,
-      params: {
-        limit: '49',
-        offset: '0',
-        time_range: timeRange
-      }
-    }).pipe(map(res => res.items)),
-      this.http.get<TopTracksPagingObject>(`${this.apiBaseUrl}/me/top/tracks`, {
-        headers: this.headers,
-        params: {
-          limit: '50',
-          offset: '49',
-          time_range: timeRange
-        }
-      }).pipe(map(res => res.items)));
-  }
-
-  public getTopArtistsNew(timeRange = 'medium_term'): Observable<[Artist[], Artist[]]> {
+  public getTopArtists(timeRange = 'medium_term'): Observable<[Artist[], Artist[]]> {
     return zip(
       this.http.get<TopArtistsPagingObject>(`${this.apiBaseUrl}/me/top/artists`, {
         headers: this.headers,
@@ -121,25 +92,12 @@ export class SpotifyService {
         }
       });
     } else if (ids !== undefined && ids.length > 100) {
+      return of([]);
     }
   }
 
   public getAudioFeature(id: string): Observable<AudioFeatures> {
-    return this.http.get<any>(`${this.apiBaseUrl}/audio-features/${id}`, { headers: this.headers }).pipe(
-
-    )
-  }
-
-  // public getPlaylistTracks(playlistId: string): Observable<PlaylistTrack[]> {
-  //   return this.http.get<PlaylistTracksPagingObject>(`${this.apiBaseUrl}/playlists/${playlistId}/tracks`, { headers: this.headers }).pipe(
-  //     map(res => res.items)
-  //   );
-  // }
-
-  public getTracksOfAPlaylist(href: string): Observable<any[]> {
-    return this.http.get<any>(href, { headers: this.headers }).pipe(
-      map(res => res.items)
-    );
+    return this.http.get<any>(`${this.apiBaseUrl}/audio-features/${id}`, { headers: this.headers });
   }
 
   public async getPlaylistTracks(playlistId: string) {
@@ -155,17 +113,16 @@ export class SpotifyService {
     return allTracks;
   }
 
-  //TODO add class instead of any
+  //User info for database
   public getUserInfo(): Observable<any> {
     return this.http.get<any>(`${this.apiBaseUrl}/me`, { headers: this.headers });
   }
 
-
   public setTimeRange(range: string) {
-    this.timeRangeSub.next(range);
+    this.timeRangeSub$.next(range);
   }
 
   public get timeRange(): Observable<string> {
-    return this.timeRangeSub.asObservable();
+    return this.timeRangeSub$.asObservable();
   }
 }

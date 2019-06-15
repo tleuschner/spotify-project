@@ -8,6 +8,10 @@ import { map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
+
+/**
+ * Service for adding visitors to the Database and getting the Visitor count
+ */
 export class VisitorsService {
 
   private readonly apiVisitorUrl = environment.visitorsUrl;
@@ -23,9 +27,6 @@ export class VisitorsService {
     );
   }
 
-  //TODO: check if succesful
-  //TODO: retry if unsuccesful
-  //TODO: add class 
   public postVisitor(spotifyID: string, country: string): Observable<HttpResponse<any>> {
     return this.http.post(`${this.apiVisitorUrl}/user`, {
       spotifyID: spotifyID,

@@ -9,11 +9,11 @@ import { Router } from '@angular/router';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
+
+//simple class handling the login
 export class LoginComponent implements OnInit {
-  //@ViewChild('rememberMe', { read: ElementRef }) rememberMe: ElementRef;
   seitenaufrufe = "Besucher insgesamt: 2";
   public name : string;
-  private wasloggedIn: boolean;
 
   constructor(
     private oauthService: OAuthService,
@@ -29,24 +29,6 @@ export class LoginComponent implements OnInit {
   }
 
   login(): void {
-    //let rememberCheck = this.rememberMe.nativeElement.checked;
-    let skipDialog: Boolean;
-
-    /*if (rememberCheck) {
-      localStorage.setItem('skipLoginForm', 'true');
-    } else {
-      localStorage.removeItem('skipLoginForm');
-    }*/
-
-    skipDialog = !!localStorage.getItem('skipLoginForm');
-
-
-    /*if (!skipDialog) {
-       this.oauthService.customQueryParams = { 'show_dialog': true };
-    } else {
-       this.oauthService.customQueryParams = {};
-    }*/
-
     this.oauthService.initImplicitFlow();
   }
 

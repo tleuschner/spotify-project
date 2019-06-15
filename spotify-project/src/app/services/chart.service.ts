@@ -5,6 +5,9 @@ import { Chart } from 'chart.js/dist/Chart.js'
 @Injectable({
   providedIn: 'root'
 })
+/**
+ * service to make chart accessible to every component
+ */
 export class ChartService {
 
   private chart: Chart;

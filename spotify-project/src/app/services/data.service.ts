@@ -6,6 +6,11 @@ import { Observable, of, Subject, ReplaySubject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
+/**
+ * provides a single service that loads all the Data once and then distributes it to the components
+ * Only needs to be called whenever the time range changes. Thus all components are updated at the same
+ * time and no new data needs to be fetched when changing components
+ */
 export class DataService {
   private timeRange: string;
   private topSpotifyTracks: ReplaySubject<Track[]> = new ReplaySubject(1);
@@ -18,7 +23,10 @@ export class DataService {
     private spotifyService: SpotifyService,
   ) { }
 
-
+/**
+ * only update Data whenever the time range changes
+ * @param timeRange short/medium/long term data
+ */
   public updateData(timeRange: string) {
     this.timeRange = timeRange;
     this.updateTopTracksAndGenres();
@@ -46,6 +54,7 @@ export class DataService {
     return this.artistsBehindGenres.asObservable();
   }
 
+  //Gets top 99 Tracks
   private updateTopTracksAndGenres() {
     this.spotifyService.getTopSongs('49', '0', this.timeRange).subscribe((firstTracks: Track[]) => {
       this.spotifyService.getTopSongs('50', '49', this.timeRange).subscribe(async (secondTracks: Track[]) => {
@@ -55,7 +64,7 @@ export class DataService {
       //Calculate geners
       let artistIds = this.extractArtistIds(flatTracks);
 
-      //API call can only handle 50 ids at time
+      //API call can only handle 50 ids at time, make as many calls as needed and get generes based on those artists
       if (artistIds.length > 50) {
         let artists = [];
         let i: number, j: number, chunk = 50;
@@ -73,7 +82,7 @@ export class DataService {
         this.topSpotifyGenres.next(sortedGenres);
         this.artistsBehindGenres.next(sortedArtistToGenre);
       } else {
-        
+  
         this.spotifyService.getArtists(artistIds).subscribe((artists: Artist[]) => {
           let responses = this.countGenres(artists);
           let genreCountMap = responses[0];
@@ -169,7 +178,6 @@ export class DataService {
     sortable.sort((a, b) => {
       return b[1] - a[1];
     });
-    //kinda dirty
     return <[[string, string]]>sortable;
   }
 }

@@ -16,17 +16,25 @@ import { slideInAnimation } from './animations';
   ]
 })
 export class AppComponent implements OnInit {
-  public done = false;
 
+  /**
+   * configure OAuth Library whenever main component loads
+   */
   constructor(private oauthService: OAuthService) {
     this.configureWithNewConfigApi();
   }
 
+  /**
+   * Initialize AnimateOnScroll Libraray
+   */
   ngOnInit() {
     AOS.init();
   }
 
 
+  /**
+   * Sets where to keep access token and tries to login the user
+   */
   private configureWithNewConfigApi() {
     this.oauthService.setStorage(localStorage);
     this.oauthService.configure(authConfig);
@@ -34,12 +42,23 @@ export class AppComponent implements OnInit {
     this.oauthService.tryLogin();
   }
 
+  /**
+   * Adds animations to the route changes
+   * @param outlet the routeroutlet which shall be animated
+   */
   prepareRoute(outlet: RouterOutlet) {
     return outlet && outlet.activatedRouteData && outlet.activatedRouteData['animation'];
   }
 }
 
-
+/**
+ * Specify the
+ *  - authorization endpoint
+ *  - redirection URL
+ *  - Client ID registered w/ spotify
+ *  - Scope -> what data we are allowed to read from the User
+ *  
+ */
 const authConfig: AuthConfig = {
   clearHashAfterLogin: true,
   oidc: false,

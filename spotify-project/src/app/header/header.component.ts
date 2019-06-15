@@ -11,6 +11,9 @@ import { Observable } from 'rxjs';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
+
+//for navigation and control time range of spotify data globally
+//also adds visitor because header is only shown after user succesfully logged in
 export class HeaderComponent implements OnInit {
   @ViewChild('navContainer', { read: ElementRef }) navBar: ElementRef;
   @ViewChild('navbarDropdown', { read: ElementRef }) navDrop: ElementRef;

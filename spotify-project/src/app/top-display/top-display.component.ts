@@ -8,6 +8,17 @@ import { ChartService } from '../services/chart.service';
   templateUrl: './top-display.component.html',
   styleUrls: ['./top-display.component.css']
 })
+
+/**
+ * Template for generating the Podium
+ * Inputs:
+ *  - mobile -> decides whether to show as Podium or list view
+ *  - podiumObject -> contains the standardized data for generating the Podium
+ *  - routing -> Route to navigate to whenever Podium is clicked
+ *  - title -> Title above the Podium
+ *  - isDetail -> whether to allow the Podium to be clickable (disables routing on click if needed / click for adding audiofeatures to chart)
+ *  - aritst -> extra boolean to decide clickability
+ */
 export class TopDisplayComponent implements OnInit {
   @Input() isMobile: Boolean;
   @Input() podiumObject: PodiumObject[];
@@ -16,6 +27,11 @@ export class TopDisplayComponent implements OnInit {
   @Input() isDetail?: boolean;
   @Input() artist?: boolean;
 
+  /**
+   * 
+   * @param spotifyService for retrieving audio features for a track, if it is clicked
+   * @param chartService connects chart from different Component to this one (to show audioFeaturs on it)
+   */
   constructor(
     private spotifyService: SpotifyService,
     private chartService: ChartService,
@@ -24,6 +40,10 @@ export class TopDisplayComponent implements OnInit {
   ngOnInit() {
   }
 
+  /**
+   * Method to add Song Data to the Chart
+   * @param detail the podium Object containing the Song id for the API call
+   */
   private addDataset(detail: PodiumObject) {
     let radarChart = this.chartService.getChart();
     this.spotifyService.getAudioFeature(detail.id).subscribe(res => {
