@@ -9,6 +9,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { GenreDetailsComponent } from "./genre-details/genre-details.component";
 import { DetailViewComponent } from './detail-view/detail-view.component';
 
+//declares the routes, certain routes can only be accessed when logged, also adds animation to the routing events
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: '', component: ContentWrapperComponent, canActivate: [AuthGuard], data: { animation: 'Dashboard' } },
