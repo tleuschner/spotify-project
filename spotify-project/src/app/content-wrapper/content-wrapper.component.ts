@@ -31,9 +31,8 @@ export class ContentWrapperComponent implements OnInit, OnDestroy {
   ) { this.dataService.updateData('medium_term')}
 
   ngOnInit() {
-    // Wahrscheinlich auch über CSS lösbar aber klappt ;)
+    //sets mobile flag
     this.breakpointObserver.observe(['(min-width: 768px)']).pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
-      // this.isMobile = !result.matches
       if (result.matches) {
         this.isMobile = false;
       } else {
@@ -41,7 +40,7 @@ export class ContentWrapperComponent implements OnInit, OnDestroy {
       }
     });
 
-    //Get Current User
+    //Get Current User and puts their name into local storage for later use
     this.spotifyService.getUserInfo().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
       localStorage.setItem("Person", res.display_name);
     });
@@ -51,6 +50,7 @@ export class ContentWrapperComponent implements OnInit, OnDestroy {
         this.dataService.updateData(time);
     });
 
+    //generates TopTracks podium
     this.dataService.topTracks.pipe(takeUntil(this.unsubscribe$)).subscribe((tracks: Track[]) => {
       let topTracks: PodiumObject[] = [];
       let topThree = tracks.slice(0, 3);
@@ -71,7 +71,7 @@ export class ContentWrapperComponent implements OnInit, OnDestroy {
       this.podiumInfo[0] = topTracks;
     });
 
-    //Get TopGenres
+    //Generate data for Top Genre Podium
     this.dataService.topGeneres.pipe(takeUntil(this.unsubscribe$)).subscribe((genres: [[string, number]]) => {
       let topGenres: PodiumObject[] = [];
       let allGenresCount = 0;
@@ -91,6 +91,7 @@ export class ContentWrapperComponent implements OnInit, OnDestroy {
       this.podiumInfo[2] = topGenres;
     });
 
+    //generate data for top Artist podium
     this.dataService.topArtists.pipe(takeUntil(this.unsubscribe$)).subscribe((artists: Artist[]) => {
       let topArtists: PodiumObject[] = [];
       artists = artists.slice(0, 3);
@@ -108,7 +109,7 @@ export class ContentWrapperComponent implements OnInit, OnDestroy {
 
 
 
-    //Get recents
+    //Generate data for recently played podium
     this.dataService.recentlyPlayed.pipe(takeUntil(this.unsubscribe$)).subscribe((recentlyPlayed: PlayHistoryObject[]) => {
       recentlyPlayed = recentlyPlayed.slice(0, 3);
       let recentTracks: PodiumObject[] = [];
@@ -130,6 +131,7 @@ export class ContentWrapperComponent implements OnInit, OnDestroy {
 
   }
 
+  //unsubscribe from service to avoid performance issues
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();

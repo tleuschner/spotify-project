@@ -7,6 +7,9 @@ import { OAuthService } from 'angular-oauth2-oidc';
 @Injectable({
   providedIn: 'root'
 })
+/**
+ * guard for providing canActivate method for protecting routes from unwanted access (user not logged in)
+ */
 export class AuthGuard implements CanActivate {
   constructor(
     private oauthService: OAuthService,

@@ -98,7 +98,7 @@ export class DataService {
   }
 
   private updateTopArtists() {
-    this.spotifyService.getTopArtistsNew(this.timeRange).subscribe((artists: [Artist[], Artist[]]) => {
+    this.spotifyService.getTopArtists(this.timeRange).subscribe((artists: [Artist[], Artist[]]) => {
       let flatArtists = this.flattenArray(artists);
       this.topSpotifyArtists.next(flatArtists);
     });

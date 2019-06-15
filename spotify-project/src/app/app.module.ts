@@ -35,13 +35,8 @@ import { DetailViewComponent } from './detail-view/detail-view.component';
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
-    // automatically sends access token in header to spotify 
-    OAuthModule.forRoot({
-      resourceServer: {
-        allowedUrls: ['https://api.spotify.com/v1'],
-        sendAccessToken: true
-      }
-    }),
+    // automatically sends access token in header to spotify but doesnt work
+    OAuthModule.forRoot(),
     LayoutModule,
   ],
   providers: [],

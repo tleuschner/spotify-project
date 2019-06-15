@@ -15,7 +15,7 @@ import { ChartService } from '../services/chart.service';
   templateUrl: './detail-view.component.html',
   styleUrls: ['./detail-view.component.css']
 })
-export class DetailViewComponent implements OnInit, OnDestroy, AfterViewInit {
+export class DetailViewComponent implements OnInit, OnDestroy {
   @ViewChild('displayChart', { read: ElementRef }) chartCanvas?: ElementRef;
   @ViewChild('playlistDropdown', { read: ElementRef }) playlistDropdown?: ElementRef;
   public type: string;
@@ -27,7 +27,6 @@ export class DetailViewComponent implements OnInit, OnDestroy, AfterViewInit {
   public artist = false;
   public done = false;
   private firstCall = false;
-  private elementPos: any;
   public radarChart: Chart;
   private topTracks: Track[];
   private topArtists: Artist[];
@@ -94,6 +93,7 @@ export class DetailViewComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
 
+    //dont update whenever this component is first called, thus preserving the usefulness of the dataservice
     this.firstCall = true;
     this.spotifyService.timeRange.pipe(takeUntil(this.unsubscribe$)).subscribe(time => {
       if (!this.firstCall) {
@@ -103,23 +103,12 @@ export class DetailViewComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  ngAfterViewInit() {
-    if (this.chartCanvas) {
-      let element: DOMRect = this.chartCanvas.nativeElement.getBoundingClientRect();
-      this.elementPos = element.y + 52;
-    }
-  }
-
-  // @HostListener('window:scroll', ['$event'])
-  // handleScroll() {
-  //   const windowScroll = window.pageYOffset;
-  //   if (windowScroll >= this.elementPos) {
-  //     this.sticky = true;
-  //   } else {
-  //     this.sticky = false;
-  //   }
-  // }
-
+  /**
+   * First get the Playlists tracks, then extract their IDs and get those audioFeatures
+   * Calculates the average of those and displays them in the chart.
+   * Also builds the detailList Object for the tracks that are in the playlist
+   * @param playlist the playlist to be analyzed
+   */
   public analysePlaylist(playlist: Playlist) {
     this.chart = true;
     this.playlistDropdown.nativeElement.innerText = playlist.name;
@@ -155,11 +144,19 @@ export class DetailViewComponent implements OnInit, OnDestroy, AfterViewInit {
     })
   }
 
+  /**
+   * delets current podium and detailObjects
+   */
   private cleanup() {
     this.podiumObject = [];
     this.detailObject = [];
   }
 
+  /**
+   * extracts IDs from the top tracks provided by the dataService#
+   * gets audioFeatures for those Tracks and displays average in the chart
+   * also builds the detailObjects for the detail list
+   */
   private generateTopTrackData() {
     this.dataService.topTracks.pipe(takeUntil(this.unsubscribe$)).subscribe((tracks: Track[]) => {
       this.podiumObject = [];
@@ -207,6 +204,9 @@ export class DetailViewComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
+  /**
+   * just generates the detail and podium Objects to be displayed
+   */
   private generateTopArtistsData() {
     this.dataService.topArtists.pipe(takeUntil(this.unsubscribe$)).subscribe((artists: Artist[]) => {
       this.podiumObject = [];
@@ -236,6 +236,11 @@ export class DetailViewComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
+   /**
+   * extracts IDs from the recently played tracks provided by the dataService#
+   * gets audioFeatures for those Tracks and displays average in the chart
+   * also builds the detailObjects for the detail list
+   */
   private generateRecentlyListenedData() {
     this.dataService.recentlyPlayed.pipe(takeUntil(this.unsubscribe$)).subscribe((recents: PlayHistoryObject[]) => {
       this.podiumObject = [];
@@ -289,6 +294,9 @@ export class DetailViewComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
+  //Helper functions
+
+  //extracts the ids for tracks
   private extractIds(tracks: Track[]): string[] {
     let ids: string[] = [];
     for (const track of tracks) {
@@ -297,6 +305,11 @@ export class DetailViewComponent implements OnInit, OnDestroy, AfterViewInit {
     return ids;
   }
 
+  /**
+   * gets the audio features for the tracks from the spotify api. As the api only
+   * supports 100 track ids at a time, they're split and multiple calls are made.
+   * @param trackIds array containing the track ids
+   */
   private getAudioFeatures(trackIds: string[]): Promise<AudioFeatures[]> {
     let i, j, k = 0;
     let chunk = 100;
@@ -317,9 +330,15 @@ export class DetailViewComponent implements OnInit, OnDestroy, AfterViewInit {
     return Promise.all(promises);
   }
 
+  /**
+   * Displays the charts with the audioFeatures in the canvas that is provided
+   * @param features audioFetures from the tracks
+   * @param label title of the chart
+   */
   private generateChart(features: AudioFeatures[], label: string) {
     if(this.chartCanvas) {
       let ctx = this.chartCanvas.nativeElement;
+      //define what data the chart is supposed to use
       let data = {
         labels: ['Tanzbarkeit', 'Energie', 'Lautstärke', 'Speechiness', 'Akkustik', 'Instrumental', 'Lebhaftigkeit', 'Stimmung'],
         datasets: [{
@@ -331,10 +350,12 @@ export class DetailViewComponent implements OnInit, OnDestroy, AfterViewInit {
           pointBorderColor: 'rgba(30, 215, 96, 0.3)',
         }],
       }
+      //actually initalize the chart
       this.radarChart = new Chart(ctx, {
         type: 'radar',
         data: data,
       });
+      //provide chart to the chart service for the manipulation in other components
       this.chartService.setChart(this.radarChart);
     }
   }

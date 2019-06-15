@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Location } from '@angular/common';
 import { VisitorsService } from '../services/visitors.service';
 import { Observable } from 'rxjs';
@@ -23,6 +23,7 @@ export class FooterComponent implements OnInit {
 
   ngOnInit() {
     this.visitors$ = this.visitorsService.getVisitors();
+    //update visitors every minute
     setInterval(() => {
       this.visitors$ = this.visitorsService.getVisitors();
     }, 60000);

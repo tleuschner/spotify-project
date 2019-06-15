@@ -9,6 +9,11 @@ import { ChartService } from '../services/chart.service';
   styleUrls: ['./detail-list.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
+/**
+ * Class for listing all the tracks/artist that are not in the podium.
+ * if the details are tracks, they are clickable to add a Dataset to the chart
+ * artists just get displayed
+ */
 export class DetailListComponent implements OnInit {
   @Input() detailObject: DetailObject;
   @Input() isDetail?: boolean;

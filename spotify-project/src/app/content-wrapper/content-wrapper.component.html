@@ -1,17 +1,6 @@
 <div class="container-fluid top-margin bottom-margin">
 
   <div class="container">
-    <!-- <app-top-songs [isMobile]="isMobile"></app-top-songs>
-    <div class="spacer"></div>
-    <app-top-artists [isMobile]="isMobile"></app-top-artists>
-    <div class="spacer"></div>
-    <app-top-genres [isMobile]="isMobile"></app-top-genres>
-    <div class="spacer"></div>
-    <app-recently-played [isMobile]="isMobile"></app-recently-played>
-    <div class="spacer"></div>
-    <app-top-playlists></app-top-playlists> -->
-
-
 
     <div *ngFor="let podiumObject of podiumInfo; let i = index">
       <app-top-display [isMobile]="isMobile" [podiumObject]="podiumObject" [routing]="routing[i]" [title]="titles[i]" [isDetail]="false"></app-top-display>

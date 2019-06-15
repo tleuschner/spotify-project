@@ -6,6 +6,7 @@ import { JwksValidationHandler } from 'angular-oauth2-oidc';
 import * as AOS from 'aos';
 import { RouterOutlet } from '@angular/router';
 import { slideInAnimation } from './animations';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -64,8 +65,7 @@ const authConfig: AuthConfig = {
   oidc: false,
   clientId: 'a47354060499425696ed113bdee074d2',
   responseType: 'token',
-  redirectUri: 'http://spotify.timleuschner.de/#/',
-  // redirectUri: 'http://localhost:4200',
+  redirectUri: environment.redirectUrl,
   scope: 'playlist-read-private user-library-read user-top-read user-read-recently-played user-read-private',
   loginUrl: 'https://accounts.spotify.com/authorize',
 };
