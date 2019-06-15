@@ -7,6 +7,9 @@ let cors = require('cors');
 const app = express();
 const jsonParser = bodyParser.json();
 const PORT = process.env.PORT || 1234;
+/**
+ * Setup connection credentials
+ */
 let connection = mysql.createConnection({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
@@ -14,6 +17,9 @@ let connection = mysql.createConnection({
     database: process.env.DB_NAME,
 });
 
+/**
+ * Connect to database
+ */
 connection.connect((err) => {
     if (err) {
         console.error('error connecting: ' + err.stack);
@@ -23,17 +29,15 @@ connection.connect((err) => {
 
 app.use(jsonParser).use(cors());
 
-
-app.get('/', (req, res) => {
-    res.write('Hello World');
-    res.end();
-});
-
+/**
+ * Get current Visitors from Database and send response as JSON
+ * on error send 500 response
+ */
 app.get('/visitors', (req, res) => {
     let uniqueUsers;
     connection.query('SELECT COUNT(*) AS visitors FROM users ', (err, result) => {
         if (err) {
-            res.status(400).json({
+            res.status(500).json({
                 "visitors": 000
             });
         } else {
@@ -46,7 +50,11 @@ app.get('/visitors', (req, res) => {
 });
 
 
-//TODO: double check status codes
+/**
+ * insert users into MySQL Databse. Use INSERT IGNORE to only insert if user hasnt already been added to DB
+ * 
+ *
+ */
 app.post('/user', (req, res) => {
     if (req.body && req.body.spotifyID && req.body.country) {
         let country = req.body.country;
@@ -60,10 +68,13 @@ app.post('/user', (req, res) => {
         res.status(200).json(null);
 
     } else {
-        res.status(400).json(null);
+        res.status(500).json(null);
     }
 });
 
+/**
+ * Start server on specified port
+ */
 app.listen(PORT, () => {
     console.log(`listening on Port ${PORT}`);
 });
