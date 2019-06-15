@@ -23,14 +23,9 @@ export class DetailViewComponent implements OnInit, OnDestroy {
   public podium = false;
   public chart = false;
   public playlist = false;
-  public sticky = false;
   public artist = false;
-  public done = false;
   private firstCall = false;
   public radarChart: Chart;
-  private topTracks: Track[];
-  private topArtists: Artist[];
-  public audioFeatures: AudioFeatures[];
   public podiumObject: PodiumObject[] = [];
   public detailObject: DetailObject[] = [];
   public playlists: Playlist[];
@@ -360,6 +355,10 @@ export class DetailViewComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Calculate each Parameter for the Radar Chart
+   * @param features
+   */
   private calculateAverages(features: AudioFeatures[]) {
     let danceability = 0, energy = 0, loudness = 0, speechiness = 0, acousticness = 0, instrumentalness = 0, liveness = 0, valence = 0;
     let length = features.length;
@@ -379,7 +378,7 @@ export class DetailViewComponent implements OnInit, OnDestroy {
     for (const feature of temp) {
       result.push(feature / length);
     }
-    //Lautstärke besser anzeigen
+    //Better Display of the volume paramter in RadarChart
     result[2] = 1 - result[2];
     return result;
   }
