@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   visitorsUrl: 'http://localhost:8000',
-  redirectUrl: 'http://localhost:4200'
+  redirectUrl: 'http://localhost:4201'
 };
 
 /*

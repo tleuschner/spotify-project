@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+
+  backend:
+    container_name: spotify-backend
+    build:
+      context: ./spotify-backend/
+      dockerfile: Dockerfile
+    ports:
+      - '8000:8000'
+
+  frontend:
+    container_name: spotify-frontend
+    build:
+      context: spotify-project
+      dockerfile: Dockerfile
+    ports:
+      - '4201:4200'
+    command: bash -c "ng serve --host 0.0.0.0"
+
+  

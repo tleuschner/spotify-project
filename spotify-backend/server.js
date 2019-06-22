@@ -10,25 +10,46 @@ const PORT = process.env.PORT || 1234;
 /**
  * Setup connection credentials
  */
-let connection = mysql.createConnection({
+let connection;
+let dbConfig = {
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-});
+}
 
 /**
  * Connect to database
  */
-connection.connect((err) => {
-    if (err) {
-        console.error('error connecting: ' + err.stack);
-        return;
-    }
-});
+function handleDisconnect() {
+    connection = mysql.createConnection(dbConfig);
+
+    connection.connect((err) => {
+        if (err) {
+            console.log('error connecting to database', err);
+            setTimeout(handleDisconnect, 2000);
+        }
+    });
+
+    connection.on('error', (err) => {
+        console.log('Database error', err);
+        if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+            handleDisconnect();
+        } else {
+            throw err;
+        }
+    });
+}
+
+handleDisconnect();
 
 app.use(jsonParser).use(cors());
 
+//Debug feature
+app.get('/', (req, res, next) => {
+    res.write('Hello World');
+    res.end();
+})
 /**
  * Get current Visitors from Database and send response as JSON
  * on error send 500 response
@@ -63,7 +84,7 @@ app.post('/user', (req, res) => {
             if (err) {
                 res.status(500).json(null);
                 throw err;
-            } 
+            }
         });
         res.status(200).json(null);
 
